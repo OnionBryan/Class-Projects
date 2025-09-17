@@ -1181,58 +1181,90 @@ The big picture: "This studied a huge pile of research to figure out what kind o
             }
         };
 
-        const insights = {
-            'overall': 'Transformational leadership shows the highest overall validity, but contingent reward is surprisingly close. Laissez-faire has a strong negative impact.',
-            'job_sat': 'Surprising finding: Contingent reward outperforms transformational leadership for follower job satisfaction (.64 vs .58, p < .05).',
-            'leader_sat': 'Transformational leadership dominates for follower satisfaction with the leader (.71 vs .55, p < .01). The inspirational component matters most here.',
-            'motivation': 'Both transformational and contingent reward show strong positive effects on motivation, with contingent reward slightly ahead.',
-            'job_perf': 'Major surprise: Contingent reward significantly outperforms transformational for actual job performance (.45 vs .27, p < .01).',
-            'org_perf': 'Both transformational and contingent reward show modest effects on organizational performance, with transformational slightly ahead.',
-            'effectiveness': 'Transformational leadership leads for rated effectiveness (.64 vs .55, p < .01), likely due to halo effects from inspired followers.'
+        document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA FROM THE META-ANALYSIS ---
+        const comparisonData = {
+            overall: { Transformational: 0.44, 'Contingent Reward': 0.39, 'MBE-Active': 0.15, 'MBE-Passive': -0.18, 'Laissez-faire': -0.37 },
+            jobSat: { Transformational: 0.58, 'Contingent Reward': 0.64, 'Laissez-faire': -0.28 },
+            leaderSat: { Transformational: 0.71, 'Contingent Reward': 0.55, 'MBE-Active': 0.24, 'MBE-Passive': -0.14, 'Laissez-faire': -0.58 },
+            motivation: { Transformational: 0.53, 'Contingent Reward': 0.59, 'MBE-Active': 0.14, 'MBE-Passive': -0.27, 'Laissez-faire': -0.07 },
+            jobPerf: { Transformational: 0.27, 'Contingent Reward': 0.45, 'MBE-Active': 0.13, 'MBE-Passive': 0.00, 'Laissez-faire': -0.01 },
+            orgPerf: { Transformational: 0.26, 'Contingent Reward': 0.16, 'MBE-Active': -0.09, 'MBE-Passive': -0.17 },
+            effectiveness: { Transformational: 0.64, 'Contingent Reward': 0.55, 'MBE-Active': 0.21, 'MBE-Passive': -0.19, 'Laissez-faire': -0.54 }
         };
 
+        const insights = {
+            overall: 'Transformational leadership shows the highest overall validity, but contingent reward is surprisingly close. Laissez-faire has a strong negative impact.',
+            jobSat: 'Contingent Reward is slightly more effective at predicting follower job satisfaction than Transformational leadership.',
+            leaderSat: 'Transformational leadership is by far the strongest predictor of followers being satisfied with their leader.',
+            motivation: 'Both Transformational and Contingent Reward leadership are strong predictors of follower motivation.',
+            jobPerf: 'Contingent Reward is significantly more effective at predicting leader job performance ratings.',
+            orgPerf: 'Transformational leadership has a moderate link to group performance, while Contingent Reward is weaker.',
+            effectiveness: 'Both active styles strongly predict leader effectiveness ratings, with Transformational having the edge.'
+        };
+
+        // --- CHARTING FUNCTION (FIXED LOGIC) ---
         function updateComparison() {
             const criterion = document.getElementById('criterionSelect').value;
             const data = comparisonData[criterion];
             const chartDiv = document.getElementById('comparisonChart');
             
-            // Clear and rebuild chart
-            chartDiv.innerHTML = '';
-            let maxValue = Math.max(...Object.values(data).map(Math.abs));
-            let chartHTML = '<div style="position: relative; height: 400px;">';
+            chartDiv.innerHTML = ''; // Clear previous chart
             
+            // Find the largest absolute value for scaling, but ensure it's not zero
+            const maxAbsValue = Math.max(...Object.values(data).map(val => Math.abs(val)), 0.1);
+
+            const containerHeight = 384; // 96 in tailwind units (h-96)
+            const axisYPosition = containerHeight / 2;
+            const maxBarHeight = containerHeight / 2 - 40; // Max height for a bar, leaving label room
+
+            let chartHTML = `<div class="absolute bottom-0 left-0 right-0 top-0">`;
+
+            // Draw Zero Axis Line
+            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition}px; left: 10px; right: 10px; height: 2px; background-color: #9ca3af;" aria-hidden="true"></div>`;
+            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition - 10}px; left: -20px; color: #6b7280; font-size: 0.9em;">0.0</div>`;
+            
+            const barWidth = 100;
+            const barMargin = 40;
+            const totalWidth = (barWidth + barMargin) * Object.keys(data).length;
+            chartDiv.style.minWidth = `${totalWidth}px`;
+
             let position = 0;
-            for (let [style, value] of Object.entries(data)) {
-                const height = Math.abs(value) / maxValue * 100;
-                const bottom = value >= 0 ? '200px' : (50 - height) + 'px';
-                const color = value >= 0 ? 
-                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 
-                    'linear-gradient(135deg, #ff6b6b 0%, #ff4444 100%)';
+            for (const [style, value] of Object.entries(data)) {
+                const height = (Math.abs(value) / maxAbsValue) * maxBarHeight;
+                const color = value >= 0 
+                    ? 'linear-gradient(to top, #6366f1, #818cf8)' 
+                    : 'linear-gradient(to top, #ef4444, #f87171)';
                 
+                let bottom;
+                // FIX: Correctly position bars above or below the central axis
+                if (value >= 0) {
+                    bottom = `${axisYPosition}px`;
+                } else {
+                    bottom = `${axisYPosition - height}px`;
+                }
+
+                const left = position * (barWidth + barMargin) + (barMargin / 2);
+
                 chartHTML += `
                     <div class="bar" style="
-                        left: ${position * 240 + 20}px;
+                        left: ${left}px;
+                        width: ${barWidth}px;
                         height: ${height}px;
                         bottom: ${bottom};
                         background: ${color};
-                        width: 120px;
                     ">
-                        <div style="position: absolute; top: -30px; width: 100%; text-align: center; color: #333;">
-                            ${value.toFixed(2)}
-                        </div>
-                        <div style="position: absolute; bottom: -30px; width: 100%; text-align: center; color: #333; font-size: 0.9em;">
-                            ${style}
-                        </div>
+                        <div class="bar-label-top">${value !== null ? value.toFixed(2) : 'N/A'}</div>
+                        <div class="bar-label-bottom">${style}</div>
                     </div>
                 `;
                 position++;
             }
             
-            chartHTML += '<div style="position: absolute; bottom: 100px; left: 0; right: 0; height: 2px; background: #333;"></div>';
             chartHTML += '</div>';
-            
             chartDiv.innerHTML = chartHTML;
             document.getElementById('comparisonInsight').innerHTML = `<strong>Key Insight:</strong> ${insights[criterion]}`;
+        
         }
 
         function updateCalculator() {
