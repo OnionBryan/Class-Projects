@@ -249,23 +249,40 @@
             position: relative;
             height: 400px;
             margin: 20px 0;
+            overflow-x: auto;
         }
 
         .bar {
             position: absolute;
-            bottom: 0;
+            /* bottom: 0; */ /* This is now controlled by JS */
             width: 60px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-align: center;
-            padding: 10px 5px;
+            /* padding: 10px 5px; */ /* JS will handle this */
             border-radius: 5px 5px 0 0;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
+        
+        .bar .bar-label-top {
+            padding: 5px;
+            font-weight: bold;
+        }
+        
+        .bar .bar-label-bottom {
+            padding: 5px;
+            background: rgba(0,0,0,0.2);
+            font-size: 0.9em;
+            word-break: break-word;
+        }
+
 
         .bar:hover {
             opacity: 0.8;
-            transform: translateY(-5px);
+            transform: scale(1.05);
         }
 
         .key-finding {
@@ -1131,76 +1148,26 @@ The big picture: "This studied a huge pile of research to figure out what kind o
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Comparison chart data
-        const comparisonData = {
-            'overall': {
-                'Transformational': 0.44,
-                'Contingent Reward': 0.39,
-                'MBE-Active': 0.15,
-                'MBE-Passive': -0.18,
-                'Laissez-faire': -0.37
-            },
-            'job_sat': {
-                'Transformational': 0.58,
-                'Contingent Reward': 0.64,
-                'Laissez-faire': -0.28
-            },
-            'leader_sat': {
-                'Transformational': 0.71,
-                'Contingent Reward': 0.55,
-                'MBE-Active': 0.24,
-                'MBE-Passive': -0.14,
-                'Laissez-faire': -0.58
-            },
-            'motivation': {
-                'Transformational': 0.53,
-                'Contingent Reward': 0.59,
-                'MBE-Active': 0.14,
-                'MBE-Passive': -0.27,
-                'Laissez-faire': -0.07
-            },
-            'job_perf': {
-                'Transformational': 0.27,
-                'Contingent Reward': 0.45,
-                'MBE-Active': 0.13,
-                'MBE-Passive': 0.00,
-                'Laissez-faire': -0.01
-            },
-            'org_perf': {
-                'Transformational': 0.26,
-                'Contingent Reward': 0.16,
-                'MBE-Active': 0.09,
-                'MBE-Passive': -0.17
-            },
-            'effectiveness': {
-                'Transformational': 0.64,
-                'Contingent Reward': 0.55,
-                'MBE-Active': 0.21,
-                'MBE-Passive': -0.19,
-                'Laissez-faire': -0.54
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
+        
         // --- DATA FROM THE META-ANALYSIS ---
         const comparisonData = {
-            overall: { Transformational: 0.44, 'Contingent Reward': 0.39, 'MBE-Active': 0.15, 'MBE-Passive': -0.18, 'Laissez-faire': -0.37 },
-            job_Sat: { Transformational: 0.58, 'Contingent Reward': 0.64, 'Laissez-faire': -0.28 },
-            leaderSat: { Transformational: 0.71, 'Contingent Reward': 0.55, 'MBE-Active': 0.24, 'MBE-Passive': -0.14, 'Laissez-faire': -0.58 },
-            motivation: { Transformational: 0.53, 'Contingent Reward': 0.59, 'MBE-Active': 0.14, 'MBE-Passive': -0.27, 'Laissez-faire': -0.07 },
-            jobPerf: { Transformational: 0.27, 'Contingent Reward': 0.45, 'MBE-Active': 0.13, 'MBE-Passive': 0.00, 'Laissez-faire': -0.01 },
-            orgPerf: { Transformational: 0.26, 'Contingent Reward': 0.16, 'MBE-Active': -0.09, 'MBE-Passive': -0.17 },
-            effectiveness: { Transformational: 0.64, 'Contingent Reward': 0.55, 'MBE-Active': 0.21, 'MBE-Passive': -0.19, 'Laissez-faire': -0.54 }
+            'overall': { 'Transformational': 0.44, 'Contingent Reward': 0.39, 'MBE-Active': 0.15, 'MBE-Passive': -0.18, 'Laissez-faire': -0.37 },
+            'job_sat': { 'Transformational': 0.58, 'Contingent Reward': 0.64, 'Laissez-faire': -0.28 },
+            'leader_sat': { 'Transformational': 0.71, 'Contingent Reward': 0.55, 'MBE-Active': 0.24, 'MBE-Passive': -0.14, 'Laissez-faire': -0.58 },
+            'motivation': { 'Transformational': 0.53, 'Contingent Reward': 0.59, 'MBE-Active': 0.14, 'MBE-Passive': -0.27, 'Laissez-faire': -0.07 },
+            'job_perf': { 'Transformational': 0.27, 'Contingent Reward': 0.45, 'MBE-Active': 0.13, 'MBE-Passive': 0.00, 'Laissez-faire': -0.01 },
+            'org_perf': { 'Transformational': 0.26, 'Contingent Reward': 0.16, 'MBE-Active': 0.09, 'MBE-Passive': -0.17 },
+            'effectiveness': { 'Transformational': 0.64, 'Contingent Reward': 0.55, 'MBE-Active': 0.21, 'MBE-Passive': -0.19, 'Laissez-faire': -0.54 }
         };
 
         const insights = {
-            overall: 'Transformational leadership shows the highest overall validity, but contingent reward is surprisingly close. Laissez-faire has a strong negative impact.',
-            job_Sat: 'Contingent Reward is slightly more effective at predicting follower job satisfaction than Transformational leadership.',
-            leaderSat: 'Transformational leadership is by far the strongest predictor of followers being satisfied with their leader.',
-            motivation: 'Both Transformational and Contingent Reward leadership are strong predictors of follower motivation.',
-            jobPerf: 'Contingent Reward is significantly more effective at predicting leader job performance ratings.',
-            orgPerf: 'Transformational leadership has a moderate link to group performance, while Contingent Reward is weaker.',
-            effectiveness: 'Both active styles strongly predict leader effectiveness ratings, with Transformational having the edge.'
+            'overall': 'Transformational leadership shows the highest overall validity, but contingent reward is surprisingly close. Laissez-faire has a strong negative impact.',
+            'job_sat': 'Contingent Reward is slightly more effective at predicting follower job satisfaction than Transformational leadership.',
+            'leader_sat': 'Transformational leadership is by far the strongest predictor of followers being satisfied with their leader.',
+            'motivation': 'Both Transformational and Contingent Reward leadership are strong predictors of follower motivation.',
+            'job_perf': 'Contingent Reward is significantly more effective at predicting leader job performance ratings.',
+            'org_perf': 'Transformational leadership has a moderate link to group performance, while Contingent Reward is weaker.',
+            'effectiveness': 'Both active styles strongly predict leader effectiveness ratings, with Transformational having the edge.'
         };
 
         // --- CHARTING FUNCTION (FIXED LOGIC) ---
@@ -1211,49 +1178,53 @@ The big picture: "This studied a huge pile of research to figure out what kind o
             
             chartDiv.innerHTML = ''; // Clear previous chart
             
+            if (!data) {
+                chartDiv.innerHTML = '<p style="color: red;">Error: Could not find data for the selected criterion.</p>';
+                return;
+            }
+
             // Find the largest absolute value for scaling, but ensure it's not zero
             const maxAbsValue = Math.max(...Object.values(data).map(val => Math.abs(val)), 0.1);
 
-            const containerHeight = 384; // 96 in tailwind units (h-96)
+            const containerHeight = 400; 
             const axisYPosition = containerHeight / 2;
-            const maxBarHeight = containerHeight / 2 - 40; // Max height for a bar, leaving label room
+            const maxBarHeight = containerHeight / 2 - 20; // Max height for a bar, leaving label room
 
-            let chartHTML = `<div class="absolute bottom-0 left-0 right-0 top-0">`;
+            let chartHTML = `<div style="position: relative; width: 100%; height: 100%;">`;
 
             // Draw Zero Axis Line
-            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition}px; left: 10px; right: 10px; height: 2px; background-color: #9ca3af;" aria-hidden="true"></div>`;
-            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition - 10}px; left: -20px; color: #6b7280; font-size: 0.9em;">0.0</div>`;
+            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition}px; left: 10px; right: 10px; height: 1px; background-color: #9ca3af;" aria-hidden="true"></div>`;
+            chartHTML += `<div style="position: absolute; bottom: ${axisYPosition - 10}px; left: -25px; color: #6b7280; font-size: 0.9em;">0.0</div>`;
             
-            const barWidth = 100;
-            const barMargin = 40;
-            const totalWidth = (barWidth + barMargin) * Object.keys(data).length;
-            chartDiv.style.minWidth = `${totalWidth}px`;
+            const numBars = Object.keys(data).length;
+            const gap = 20;
+            const totalGap = (numBars - 1) * gap;
+            const barWidth = `calc((100% - ${totalGap}px) / ${numBars})`;
+
 
             let position = 0;
             for (const [style, value] of Object.entries(data)) {
                 const height = (Math.abs(value) / maxAbsValue) * maxBarHeight;
                 const color = value >= 0 
-                    ? 'linear-gradient(to top, #6366f1, #818cf8)' 
+                    ? 'linear-gradient(to top, #667eea, #764ba2)' 
                     : 'linear-gradient(to top, #ef4444, #f87171)';
                 
-                let bottom;
-                // FIX: Correctly position bars above or below the central axis
+                let barStyles = `
+                    position: absolute;
+                    width: ${barWidth};
+                    left: calc(${position} * (${barWidth} + ${gap}px));
+                    height: ${height}px;
+                    background: ${color};
+                `;
+
                 if (value >= 0) {
-                    bottom = `${axisYPosition}px`;
+                    barStyles += `bottom: ${axisYPosition}px; border-radius: 5px 5px 0 0;`;
                 } else {
-                    bottom = `${axisYPosition - height}px`;
+                    barStyles += `bottom: ${axisYPosition - height}px; border-radius: 0 0 5px 5px;`;
                 }
 
-                const left = position * (barWidth + barMargin) + (barMargin / 2);
-
                 chartHTML += `
-                    <div class="bar" style="
-                        left: ${left}px;
-                        width: ${barWidth}px;
-                        height: ${height}px;
-                        bottom: ${bottom};
-                        background: ${color};
-                    ">
+                    <div class="bar" style="${barStyles}">
                         <div class="bar-label-top">${value !== null ? value.toFixed(2) : 'N/A'}</div>
                         <div class="bar-label-bottom">${style}</div>
                     </div>
@@ -1266,6 +1237,7 @@ The big picture: "This studied a huge pile of research to figure out what kind o
             document.getElementById('comparisonInsight').innerHTML = `<strong>Key Insight:</strong> ${insights[criterion]}`;
         
         }
+
 
         function updateCalculator() {
             const trans = document.getElementById('transSlider').value / 100;
