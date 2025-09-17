@@ -1054,6 +1054,25 @@
 </div>
 
     <script>
+        // Tab switching function
+        function switchTab(tabId) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+    
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => button.classList.remove('active'));
+    
+            // Show selected tab pane
+            document.getElementById(tabId).classList.add('active');
+    
+            // Add active class to clicked button
+            event.target.classList.add('active');
+    
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+}
         // Tab functionality
         function showTab(tabId) {
             const tabs = document.querySelectorAll('.tab');
