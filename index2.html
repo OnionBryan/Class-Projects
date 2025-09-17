@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judge & Piccolo (2004) Meta-Analysis: Complete Academic Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #FAFAF9;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #4B5563;
+            --accent-primary: #2563EB;
+            --accent-secondary: #3B82F6;
+            --border-color: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        .data-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table tbody tr:hover {
+            background-color: #F3F4F6;
+        }
+        .significance {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .sig-001 { background-color: #DCFCE7; color: #166534; }
+        .sig-01 { background-color: #FEF3C7; color: #92400E; }
+        .sig-05 { background-color: #FEE2E2; color: #991B1B; }
+        .ns { background-color: #F3F4F6; color: #6B7280; }
+        .correlation-cell {
+            font-weight: 600;
+            text-align: center;
+        }
+        .positive-strong { color: #059669; }
+        .positive-moderate { color: #10B981; }
+        .positive-weak { color: #6EE7B7; }
+        .negative-weak { color: #FCA5A5; }
+        .negative-moderate { color: #EF4444; }
+        .negative-strong { color: #B91C1C; }
+        .interactive-element {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .interactive-element:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .matrix-cell {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+        .matrix-header {
+            background: #F9FAFB;
+            font-weight: 600;
+        }
+        .heatmap-cell {
+            transition: all 0.2s ease;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .tooltip.active {
+            opacity: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .ci-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #FCA5A5 0%, #F3F4F6 20%, #10B981 50%, #F3F4F6 80%, #FCA5A5 100%);
+            border-radius: 4px;
+            position: relative;
+        }
+        .ci-marker {
+            position: absolute;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Enhanced Navigation -->
+    <header class="bg-white sticky top-0 z-50 border-b border-gray-200 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <span class="text-xl font-bold bg-gradient-135 from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Judge & Piccolo (2004) Complete Analysis
+                    </span>
+                </div>
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#meta-data" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Meta-Data</a>
+                        <a href="#correlations" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Correlations</a>
+                        <a href="#validity" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Validity</a>
+                        <a href="#augmentation" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Augmentation</a>
+                        <a href="#moderators" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Moderators</a>
+                        <a href="#regression" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Regression</a>
+                        <a href="#methodology" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Methods</a>
+                        <a href="#implications" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Implications</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section with Key Statistics -->
+        <section class="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+                        Transformational and Transactional Leadership:<br>
+                        A Meta-Analytic Test of Their Relative Validity
+                    </h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Timothy A. Judge & Ronald F. Piccolo (2004)<br>
+                        Journal of Applied Psychology, 89(5), 755-768
+                    </p>
+                </div>
+
+                <!-- Key Statistics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
+                    <div class="stat-card">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Total Correlations</div>
+                        <div class="stat-value">626</div>
+                        <div class="text-gray-600 text-sm mt-2">from 87 sources</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Combined N</div>
+                        <div class="stat-value">17,105</div>
+                        <div class="text-gray-600 text-sm mt-2">transformational</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Key Finding</div>
+                        <div class="stat-value">ρ̂ = .80</div>
+                        <div class="text-gray-600 text-sm mt-2">TF-CR correlation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Time Span</div>
+                        <div class="stat-value">1980-2003</div>
+                        <div class="text-gray-600 text-sm mt-2">studies included</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Comprehensive Meta-Analytic Data Tables -->
+        <section id="meta-data" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Table 1: Overall Validities of Leadership Dimensions
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Complete meta-analytic results showing corrected correlations (ρ̂), confidence intervals,
+                        and credibility intervals for all leadership dimensions across all criteria.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Leadership Dimension</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>r̄</th>
+                                <th>ρ̂</th>
+                                <th>SDρ</th>
+                                <th>80% CV</th>
+                                <th>90% CI</th>
+                                <th>Q statistic</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Transformational</td>
+                                <td class="mono">93</td>
+                                <td class="mono">17,105</td>
+                                <td class="mono">.38</td>
+                                <td class="correlation-cell positive-moderate">.44</td>
+                                <td class="mono">.27</td>
+                                <td class="mono">.10, .78</td>
+                                <td class="mono">.39, .49</td>
+                                <td class="mono">1,279.91**</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="mono">42</td>
+                                <td class="mono">9,688</td>
+                                <td class="mono">.32</td>
+                                <td class="correlation-cell positive-moderate">.39</td>
+                                <td class="mono">.28</td>
+                                <td class="mono">.04, .75</td>
+                                <td class="mono">.31, .48</td>
+                                <td class="mono">686.59**</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">MBE-Active</td>
+                                <td class="mono">28</td>
+                                <td class="mono">4,439</td>
+                                <td class="mono">.12</td>
+                                <td class="correlation-cell positive-weak">.15</td>
+                                <td class="mono">.15</td>
+                                <td class="mono">-.04, .34</td>
+                                <td class="mono">.09, .21</td>
+                                <td class="mono">156.23**</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">MBE-Passive</td>
+                                <td class="mono">21</td>
+                                <td class="mono">5,532</td>
+                                <td class="mono">-.14</td>
+                                <td class="correlation-cell negative-weak">-.18</td>
+                                <td class="mono">.20</td>
+                                <td class="mono">-.43, .08</td>
+                                <td class="mono">-.27, -.09</td>
+                                <td class="mono">234.78**</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Laissez-Faire</td>
+                                <td class="mono">15</td>
+                                <td class="mono">2,517</td>
+                                <td class="mono">-.28</td>
+                                <td class="correlation-cell negative-moderate">-.37</td>
+                                <td class="mono">.37</td>
+                                <td class="mono">-.84, .09</td>
+                                <td class="mono">-.56, -.19</td>
+                                <td class="mono">298.45**</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+                    <p class="text-sm text-blue-900">
+                        <strong>Note:</strong> k = number of correlations; N = combined sample size; r̄ = mean uncorrected correlation;
+                        ρ̂ = estimated true score correlation; SDρ = standard deviation of ρ̂; CV = credibility interval;
+                        CI = confidence interval; MBE = Management by Exception. **p < .01
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Criterion-Specific Validity Comparisons -->
+        <section id="validity" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Table 2: Leadership Validities by Specific Criteria
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Transformational and Contingent Reward leadership validities across six organizational criteria,
+                        with significance tests comparing their relative effectiveness.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Criterion</th>
+                                <th colspan="3">Transformational</th>
+                                <th colspan="3">Contingent Reward</th>
+                                <th rowspan="2">t-test</th>
+                                <th rowspan="2">Favors</th>
+                            </tr>
+                            <tr>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>ρ̂</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>ρ̂</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Follower Job Satisfaction</td>
+                                <td class="mono">18</td>
+                                <td class="mono">5,279</td>
+                                <td class="correlation-cell positive-strong">.58</td>
+                                <td class="mono">6</td>
+                                <td class="mono">1,933</td>
+                                <td class="correlation-cell positive-strong">.64</td>
+                                <td class="mono">-2.21*</td>
+                                <td><span class="significance sig-05">CR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Follower Satisfaction with Leader</td>
+                                <td class="mono">23</td>
+                                <td class="mono">4,349</td>
+                                <td class="correlation-cell positive-strong">.71</td>
+                                <td class="mono">14</td>
+                                <td class="mono">4,076</td>
+                                <td class="correlation-cell positive-strong">.55</td>
+                                <td class="mono">5.46**</td>
+                                <td><span class="significance sig-001">TF</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Follower Motivation</td>
+                                <td class="mono">16</td>
+                                <td class="mono">4,773</td>
+                                <td class="correlation-cell positive-strong">.53</td>
+                                <td class="mono">13</td>
+                                <td class="mono">3,615</td>
+                                <td class="correlation-cell positive-strong">.59</td>
+                                <td class="mono">-1.95</td>
+                                <td><span class="significance ns">NS</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Leader Job Performance</td>
+                                <td class="mono">13</td>
+                                <td class="mono">2,126</td>
+                                <td class="correlation-cell positive-weak">.27</td>
+                                <td class="mono">6</td>
+                                <td class="mono">684</td>
+                                <td class="correlation-cell positive-moderate">.45</td>
+                                <td class="mono">-3.25**</td>
+                                <td><span class="significance sig-001">CR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Group/Organization Performance</td>
+                                <td class="mono">41</td>
+                                <td class="mono">6,197</td>
+                                <td class="correlation-cell positive-weak">.26</td>
+                                <td class="mono">16</td>
+                                <td class="mono">3,227</td>
+                                <td class="correlation-cell positive-weak">.16</td>
+                                <td class="mono">1.60</td>
+                                <td><span class="significance ns">NS</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Rated Leader Effectiveness</td>
+                                <td class="mono">27</td>
+                                <td class="mono">5,415</td>
+                                <td class="correlation-cell positive-strong">.64</td>
+                                <td class="mono">18</td>
+                                <td class="mono">3,886</td>
+                                <td class="correlation-cell positive-strong">.55</td>
+                                <td class="mono">2.67**</td>
+                                <td><span class="significance sig-01">TF</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Interactive Validity Comparison Chart -->
+                <div class="mt-12">
+                    <h3 class="text-xl font-semibold mb-6">Interactive Validity Comparison</h3>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <canvas id="validityComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Intercorrelation Matrix -->
+        <section id="correlations" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Leadership Dimension Intercorrelations
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        The remarkably high correlation between Transformational and Contingent Reward (ρ̂ = .80)
+                        raises fundamental questions about discriminant validity and the distinctiveness of these constructs.
+                    </p>
+                </div>
+
+                <!-- Interactive Correlation Heatmap -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div id="correlationHeatmap"></div>
+                </div>
+
+                <!-- Detailed Correlation Table -->
+                <div class="mt-12 overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension 1</th>
+                                <th>Dimension 2</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>r̄</th>
+                                <th>ρ̂</th>
+                                <th>80% CV</th>
+                                <th>90% CI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-yellow-50">
+                                <td class="font-semibold">Transformational</td>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="mono">87</td>
+                                <td class="mono">22,369</td>
+                                <td class="mono">.68</td>
+                                <td class="correlation-cell positive-strong text-xl">.80</td>
+                                <td class="mono">.65, .95</td>
+                                <td class="mono">.78, .83</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Transformational</td>
+                                <td class="font-semibold">MBE-Active</td>
+                                <td class="mono">60</td>
+                                <td class="mono">12,600</td>
+                                <td class="mono">.14</td>
+                                <td class="correlation-cell positive-weak">.17</td>
+                                <td class="mono">-.36, .69</td>
+                                <td class="mono">.06, .27</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Transformational</td>
+                                <td class="font-semibold">MBE-Passive</td>
+                                <td class="mono">50</td>
+                                <td class="mono">10,928</td>
+                                <td class="mono">-.17</td>
+                                <td class="correlation-cell negative-weak">-.20</td>
+                                <td class="mono">-.64, .24</td>
+                                <td class="mono">-.30, -.10</td>
+                            </tr>
+                            <tr class="bg-red-50">
+                                <td class="font-semibold">Transformational</td>
+                                <td class="font-semibold">Laissez-Faire</td>
+                                <td class="mono">25</td>
+                                <td class="mono">5,674</td>
+                                <td class="mono">-.50</td>
+                                <td class="correlation-cell negative-strong text-xl">-.65</td>
+                                <td class="mono">-.91, -.39</td>
+                                <td class="mono">-.73, -.57</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="font-semibold">MBE-Active</td>
+                                <td class="mono">20</td>
+                                <td class="mono">4,892</td>
+                                <td class="mono">.16</td>
+                                <td class="correlation-cell positive-weak">.19</td>
+                                <td class="mono">-.15, .53</td>
+                                <td class="mono">.10, .28</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="font-semibold">MBE-Passive</td>
+                                <td class="mono">17</td>
+                                <td class="mono">3,421</td>
+                                <td class="mono">-.04</td>
+                                <td class="correlation-cell">-.05</td>
+                                <td class="mono">-.38, .28</td>
+                                <td class="mono">-.16, .06</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="font-semibold">Laissez-Faire</td>
+                                <td class="mono">6</td>
+                                <td class="mono">1,234</td>
+                                <td class="mono">-.31</td>
+                                <td class="correlation-cell negative-moderate">-.38</td>
+                                <td class="mono">-.68, -.08</td>
+                                <td class="mono">-.52, -.24</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Augmentation Hypothesis & Regression Analysis -->
+        <section id="augmentation" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Testing the Augmentation Hypothesis
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Hierarchical regression analysis reveals whether transformational leadership adds incremental validity
+                        beyond transactional leadership (and vice versa). Results show substantial validity decrements when
+                        controlling for other leadership styles.
+                    </p>
+                </div>
+
+                <!-- Regression Results Table -->
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Leadership Dimension</th>
+                                <th colspan="5">Standardized Beta Coefficients (β̂)</th>
+                                <th rowspan="2">Validity<br>Decrement</th>
+                            </tr>
+                            <tr>
+                                <th>Overall</th>
+                                <th>Follower Sat.<br>with Leader</th>
+                                <th>Follower<br>Motivation</th>
+                                <th>Leader Job<br>Performance</th>
+                                <th>Leader<br>Effectiveness</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Transformational</td>
+                                <td class="mono">.24**</td>
+                                <td class="mono">.52**</td>
+                                <td class="mono">.32**</td>
+                                <td class="mono correlation-cell negative-weak">.02</td>
+                                <td class="mono">.37**</td>
+                                <td class="text-red-600 font-semibold">-45%</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Contingent Reward</td>
+                                <td class="mono">.11**</td>
+                                <td class="mono">.06**</td>
+                                <td class="mono">.22**</td>
+                                <td class="mono correlation-cell positive-moderate">.45**</td>
+                                <td class="mono">.15**</td>
+                                <td class="text-red-600 font-semibold">-72%</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">MBE-Active</td>
+                                <td class="mono">.03**</td>
+                                <td class="mono">.07**</td>
+                                <td class="mono">.12**</td>
+                                <td class="mono">.11**</td>
+                                <td class="mono">.04*</td>
+                                <td class="text-gray-600">-80%</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">MBE-Passive</td>
+                                <td class="mono">-.08**</td>
+                                <td class="mono">-.01</td>
+                                <td class="mono">-.10**</td>
+                                <td class="mono">-.01</td>
+                                <td class="mono">-.06**</td>
+                                <td class="text-gray-600">-56%</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Laissez-Faire</td>
+                                <td class="mono">-.09**</td>
+                                <td class="mono">-.13**</td>
+                                <td class="mono">.03</td>
+                                <td class="mono correlation-cell positive-weak">.22**</td>
+                                <td class="mono">-.14**</td>
+                                <td class="text-red-600 font-semibold">-76%</td>
+                            </tr>
+                            <tr class="bg-blue-50 font-semibold">
+                                <td>Multiple R</td>
+                                <td class="mono">.41**</td>
+                                <td class="mono">.66**</td>
+                                <td class="mono">.53**</td>
+                                <td class="mono">.43**</td>
+                                <td class="mono">.59**</td>
+                                <td>—</td>
+                            </tr>
+                            <tr class="bg-blue-50 font-semibold">
+                                <td>R²</td>
+                                <td class="mono">.17**</td>
+                                <td class="mono">.44**</td>
+                                <td class="mono">.28**</td>
+                                <td class="mono">.18**</td>
+                                <td class="mono">.35**</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Multicollinearity Warning -->
+                <div class="mt-8 p-6 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                    <h3 class="text-lg font-semibold text-red-900 mb-2">Critical Multicollinearity Issue</h3>
+                    <p class="text-red-800">
+                        The paradoxical positive coefficient for Laissez-Faire predicting Leader Job Performance (β = .22**)
+                        despite a near-zero bivariate correlation (ρ̂ = -.01) demonstrates severe multicollinearity.
+                        With Transformational-Contingent Reward at ρ̂ = .80 and Transformational-Laissez-Faire at ρ̂ = -.65,
+                        the regression coefficients become unstable and potentially misleading.
+                    </p>
+                </div>
+
+                <!-- Interactive Augmentation Visualization -->
+                <div class="mt-12">
+                    <h3 class="text-xl font-semibold mb-6">Interactive Augmentation Analysis</h3>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div id="augmentationPlot"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Moderator Analysis -->
+        <section id="moderators" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Moderator Analysis: When Context Matters
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Significant Q statistics (Transformational: Q = 1,279.91, p < .01; Contingent Reward: Q = 686.59, p < .01)
+                        indicate substantial heterogeneity requiring moderator analysis.
+                    </p>
+                </div>
+
+                <!-- Moderator Results Table -->
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Moderator</th>
+                                <th rowspan="2">Category</th>
+                                <th colspan="4">Transformational</th>
+                                <th colspan="4">Contingent Reward</th>
+                            </tr>
+                            <tr>
+                                <th>k</th>
+                                <th>ρ̂</th>
+                                <th>80% CV</th>
+                                <th>Generalizes?</th>
+                                <th>k</th>
+                                <th>ρ̂</th>
+                                <th>80% CV</th>
+                                <th>Generalizes?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t-2 border-gray-400">
+                                <td rowspan="2" class="font-semibold">Research Design</td>
+                                <td>Cross-sectional</td>
+                                <td class="mono">62</td>
+                                <td class="correlation-cell positive-strong">.50</td>
+                                <td class="mono">.28, .72</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">30</td>
+                                <td class="correlation-cell positive-moderate">.49</td>
+                                <td class="mono">.25, .73</td>
+                                <td class="text-green-600">✓</td>
+                            </tr>
+                            <tr>
+                                <td>Longitudinal</td>
+                                <td class="mono">31</td>
+                                <td class="correlation-cell positive-weak">.27</td>
+                                <td class="mono">.05, .49</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">12</td>
+                                <td class="correlation-cell positive-weak">.13</td>
+                                <td class="mono">-.11, .37</td>
+                                <td class="text-red-600">✗</td>
+                            </tr>
+                            <tr class="border-t-2 border-gray-400">
+                                <td rowspan="2" class="font-semibold">Data Source</td>
+                                <td>Same source</td>
+                                <td class="mono">38</td>
+                                <td class="correlation-cell positive-strong">.55</td>
+                                <td class="mono">.33, .77</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">21</td>
+                                <td class="correlation-cell positive-strong">.54</td>
+                                <td class="mono">.30, .78</td>
+                                <td class="text-green-600">✓</td>
+                            </tr>
+                            <tr>
+                                <td>Different source</td>
+                                <td class="mono">55</td>
+                                <td class="correlation-cell positive-weak">.28</td>
+                                <td class="mono">.06, .50</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">21</td>
+                                <td class="correlation-cell positive-weak">.15</td>
+                                <td class="mono">-.09, .39</td>
+                                <td class="text-red-600">✗</td>
+                            </tr>
+                            <tr class="border-t-2 border-gray-400">
+                                <td rowspan="4" class="font-semibold">Study Setting</td>
+                                <td>Business</td>
+                                <td class="mono">44</td>
+                                <td class="correlation-cell positive-moderate">.42</td>
+                                <td class="mono">.20, .64</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">18</td>
+                                <td class="correlation-cell positive-strong">.51</td>
+                                <td class="mono">.27, .75</td>
+                                <td class="text-green-600">✓</td>
+                            </tr>
+                            <tr>
+                                <td>College</td>
+                                <td class="mono">19</td>
+                                <td class="correlation-cell positive-moderate">.40</td>
+                                <td class="mono">.18, .62</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">2</td>
+                                <td class="correlation-cell positive-weak">.19</td>
+                                <td class="mono">—</td>
+                                <td class="text-gray-400">—</td>
+                            </tr>
+                            <tr>
+                                <td>Military</td>
+                                <td class="mono">15</td>
+                                <td class="correlation-cell positive-strong">.51</td>
+                                <td class="mono">.29, .73</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">13</td>
+                                <td class="correlation-cell positive-moderate">.32</td>
+                                <td class="mono">.08, .56</td>
+                                <td class="text-green-600">✓</td>
+                            </tr>
+                            <tr>
+                                <td>Public Sector</td>
+                                <td class="mono">14</td>
+                                <td class="correlation-cell positive-moderate">.49</td>
+                                <td class="mono">.27, .71</td>
+                                <td class="text-green-600">✓</td>
+                                <td class="mono">9</td>
+                                <td class="correlation-cell positive-weak">.27</td>
+                                <td class="mono">.03, .51</td>
+                                <td class="text-green-600">✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Key Moderator Insights -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-3">Design Impact</h3>
+                        <p class="text-gray-600 mb-4">
+                            Validity drops dramatically in rigorous designs:
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>TF Cross-sectional:</span>
+                                <span class="font-mono font-semibold">.50</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>TF Longitudinal:</span>
+                                <span class="font-mono font-semibold text-red-600">.27</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-2">46% validity reduction</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-3">Common Method Bias</h3>
+                        <p class="text-gray-600 mb-4">
+                            Same vs. different source comparison:
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>CR Same source:</span>
+                                <span class="font-mono font-semibold">.54</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>CR Different source:</span>
+                                <span class="font-mono font-semibold text-red-600">.15</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-2">72% validity reduction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Hunter-Schmidt Methodology -->
+        <section id="methodology" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Hunter-Schmidt Meta-Analytic Procedures
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Understanding the statistical corrections applied to derive true score correlations (ρ̂)
+                        from observed correlations (r).
+                    </p>
+                </div>
+
+                <!-- Methodology Steps -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stat-card">
+                        <div class="text-blue-600 text-3xl mb-4">1</div>
+                        <h3 class="text-lg font-semibold mb-2">Artifact Corrections</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Each correlation corrected for:
+                        </p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>• Sampling error variance</li>
+                            <li>• Measurement error (unreliability)</li>
+                            <li>• Range restriction (when available)</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-gray-50 rounded">
+                            <p class="text-xs font-mono">
+                                ρ̂ = r / √(rxx × ryy)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="text-blue-600 text-3xl mb-4">2</div>
+                        <h3 class="text-lg font-semibold mb-2">Reliability Estimates</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Mean reliabilities used:
+                        </p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>• Transformational: α = .90</li>
+                            <li>• Transactional: α = .75</li>
+                            <li>• Laissez-faire: α = .67</li>
+                            <li>• Criteria: α = .84</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-gray-50 rounded">
+                            <p class="text-xs text-gray-600">
+                                83% of studies reported reliabilities
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="text-blue-600 text-3xl mb-4">3</div>
+                        <h3 class="text-lg font-semibold mb-2">Weighted Aggregation</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Sample-size weighted mean:
+                        </p>
+                        <div class="p-3 bg-gray-50 rounded mb-4">
+                            <p class="text-xs font-mono">
+                                r̄ = Σ(Ni × ri) / ΣNi
+                            </p>
+                        </div>
+                        <p class="text-xs text-gray-600">
+                            Larger studies receive proportionally more weight,
+                            reflecting greater statistical precision
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Critical Intervals Explanation -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4">Confidence Intervals (90% CI)</h3>
+                        <p class="text-gray-600 mb-4">
+                            Estimates variability in the <strong>mean</strong> correlation due to sampling error.
+                        </p>
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="text-sm">
+                                <strong>Interpretation:</strong> If CI excludes zero, we can be 95% confident
+                                the true mean correlation is greater than zero.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-600">
+                                Example: Transformational CI [.39, .49] means the true population mean
+                                is likely between .39 and .49
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4">Credibility Intervals (80% CV)</h3>
+                        <p class="text-gray-600 mb-4">
+                            Estimates variability of <strong>individual</strong> correlations across studies.
+                        </p>
+                        <div class="bg-green-50 p-4 rounded">
+                            <p class="text-sm">
+                                <strong>Interpretation:</strong> If CV excludes zero, more than 90% of
+                                individual study correlations are positive.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-600">
+                                Example: Transformational CV [.10, .78] means 80% of true correlations
+                                fall within this range
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Study Characteristics & Q Statistics -->
+        <section id="study-characteristics" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Meta-Analysis Study Characteristics
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Comprehensive breakdown of the 87 source studies (68 journal articles, 18 dissertations, 1 unpublished dataset)
+                        spanning 1980-2003.
+                    </p>
+                </div>
+
+                <!-- Study Distribution Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-4">By Publication Type</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>Journal Articles:</span>
+                                <span class="font-mono font-semibold">68 (78%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Dissertations:</span>
+                                <span class="font-mono font-semibold">18 (21%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Unpublished:</span>
+                                <span class="font-mono font-semibold">1 (1%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-4">By Time Period</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>1980-1989:</span>
+                                <span class="font-mono font-semibold">12 (14%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>1990-1999:</span>
+                                <span class="font-mono font-semibold">53 (61%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>2000-2003:</span>
+                                <span class="font-mono font-semibold">22 (25%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-4">By Measurement</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>MLQ-based:</span>
+                                <span class="font-mono font-semibold">52 (60%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Other measures:</span>
+                                <span class="font-mono font-semibold">23 (26%)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Experimental:</span>
+                                <span class="font-mono font-semibold">12 (14%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q Statistics and Heterogeneity -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-6">Heterogeneity Analysis: Q Statistics</h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Leadership Dimension</th>
+                                    <th>Q Statistic</th>
+                                    <th>df</th>
+                                    <th>p-value</th>
+                                    <th>I² Index</th>
+                                    <th>Interpretation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">Transformational</td>
+                                    <td class="mono">1,279.91</td>
+                                    <td class="mono">92</td>
+                                    <td class="mono">&lt; .001</td>
+                                    <td class="mono">92.8%</td>
+                                    <td class="text-red-600">High heterogeneity</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Contingent Reward</td>
+                                    <td class="mono">686.59</td>
+                                    <td class="mono">41</td>
+                                    <td class="mono">&lt; .001</td>
+                                    <td class="mono">94.0%</td>
+                                    <td class="text-red-600">High heterogeneity</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">MBE-Active</td>
+                                    <td class="mono">156.23</td>
+                                    <td class="mono">27</td>
+                                    <td class="mono">&lt; .001</td>
+                                    <td class="mono">82.7%</td>
+                                    <td class="text-orange-600">Substantial heterogeneity</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">MBE-Passive</td>
+                                    <td class="mono">234.78</td>
+                                    <td class="mono">20</td>
+                                    <td class="mono">&lt; .001</td>
+                                    <td class="mono">91.5%</td>
+                                    <td class="text-red-600">High heterogeneity</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Laissez-Faire</td>
+                                    <td class="mono">298.45</td>
+                                    <td class="mono">14</td>
+                                    <td class="mono">&lt; .001</td>
+                                    <td class="mono">95.3%</td>
+                                    <td class="text-red-600">High heterogeneity</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
+                        <p class="text-sm text-yellow-900">
+                            <strong>Statistical Significance:</strong> All Q statistics are highly significant (p < .001),
+                            indicating that the variance in effect sizes exceeds what would be expected from sampling error alone.
+                            This confirms the presence of moderators and justifies the moderator analyses conducted.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Comparison with Previous Meta-Analyses -->
+        <section id="comparison" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        The Validity Decline: Comparing Meta-Analyses
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Judge & Piccolo's findings reveal dramatically lower validities than Lowe et al. (1996),
+                        likely due to improved methodological rigor in more recent studies.
+                    </p>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Meta-Analysis</th>
+                                <th>Year</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>TF Validity</th>
+                                <th>Multisource %</th>
+                                <th>Key Finding</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-red-50">
+                                <td class="font-semibold">Lowe et al.</td>
+                                <td class="mono">1996</td>
+                                <td class="mono">39</td>
+                                <td class="mono">~6,000</td>
+                                <td class="correlation-cell positive-strong text-xl">.73</td>
+                                <td class="mono">31.4%</td>
+                                <td>Very high validity</td>
+                            </tr>
+                            <tr class="bg-green-50">
+                                <td class="font-semibold">Judge & Piccolo</td>
+                                <td class="mono">2004</td>
+                                <td class="mono">93</td>
+                                <td class="mono">17,105</td>
+                                <td class="correlation-cell positive-moderate text-xl">.44</td>
+                                <td class="mono">59.1%</td>
+                                <td>Moderate validity</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Difference</td>
+                                <td>—</td>
+                                <td class="text-green-600">+138%</td>
+                                <td class="text-green-600">+185%</td>
+                                <td class="text-red-600">-40%</td>
+                                <td class="text-green-600">+88%</td>
+                                <td class="text-red-600">65.9% decline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Timeline Visualization -->
+                <div class="mt-12">
+                    <h3 class="text-xl font-semibold mb-6">Evolution of Research Rigor</h3>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div id="timelinePlot"></div>
+                    </div>
+                </div>
+
+                <!-- Key Differences -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-3">Methodological Improvements</h3>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>More multisource designs (59.1% vs 31.4%)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>Less reliance on MLQ criterion measures</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>More longitudinal studies included</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>Broader range of organizational contexts</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 class="text-lg font-semibold mb-3">Statistical Evidence</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Mean publication year comparison:
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>Multisource studies:</span>
+                                <span class="font-mono font-semibold">1996</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Same-source studies:</span>
+                                <span class="font-mono font-semibold">1993</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-3">
+                                t = 2.17, p < .01
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-4">
+                            Later studies used more rigorous designs, yielding more realistic validity estimates
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Practical Implications -->
+        <section id="implications" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Critical Implications for Leadership Theory & Practice
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Theoretical Implications -->
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-900">Theoretical Challenges</h3>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-blue-800 mb-2">1. Discriminant Validity Crisis</h4>
+                                <p class="text-sm text-gray-700">
+                                    The ρ̂ = .80 correlation between Transformational and Contingent Reward exceeds typical
+                                    alternate-form reliability coefficients, questioning whether these are truly distinct constructs.
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-blue-800 mb-2">2. Augmentation Paradox</h4>
+                                <p class="text-sm text-gray-700">
+                                    While both styles show augmentation effects, the severe multicollinearity makes
+                                    unique contributions difficult to interpret reliably.
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-blue-800 mb-2">3. MLQ Measurement Issues</h4>
+                                <p class="text-sm text-gray-700">
+                                    The four transformational dimensions correlate at r = .83 (ρ̂ = .93 when corrected),
+                                    suggesting they may not be empirically separable.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practical Implications -->
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-green-900">Practical Recommendations</h3>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-green-800 mb-2">1. Context-Dependent Strategy</h4>
+                                <p class="text-sm text-gray-700">
+                                    Use Transformational for follower satisfaction (ρ̂ = .71) but
+                                    Contingent Reward for job performance (ρ̂ = .45).
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-green-800 mb-2">2. Resource Considerations</h4>
+                                <p class="text-sm text-gray-700">
+                                    Contingent Reward works best in business settings (ρ̂ = .51) where
+                                    tangible rewards are available. Less effective in resource-constrained environments.
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded">
+                                <h4 class="font-semibold text-green-800 mb-2">3. Avoid Passive Leadership</h4>
+                                <p class="text-sm text-gray-700">
+                                    Laissez-Faire shows strong negative effects, especially for
+                                    satisfaction with leader (ρ̂ = -.58) and rated effectiveness (ρ̂ = -.54).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Research Directions -->
+                <div class="mt-12 bg-purple-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4 text-purple-900">Future Research Priorities</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded">
+                            <h4 class="font-semibold text-purple-800 mb-2">Measurement</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Develop measures with better discriminant validity</li>
+                                <li>• Move beyond MLQ dominance</li>
+                                <li>• Create context-specific instruments</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded">
+                            <h4 class="font-semibold text-purple-800 mb-2">Design</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• More longitudinal studies</li>
+                                <li>• Objective performance measures</li>
+                                <li>• Experimental manipulations</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded">
+                            <h4 class="font-semibold text-purple-800 mb-2">Theory</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Clarify construct boundaries</li>
+                                <li>• Explore contingency factors</li>
+                                <li>• Integrate with newer theories</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Detailed Findings by Leadership Dimension -->
+        <section id="detailed-findings" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        Comprehensive Findings by Leadership Dimension
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">
+                        Detailed analysis of each leadership dimension's validity across all criteria,
+                        including Management by Exception (Active and Passive) and Laissez-Faire leadership.
+                    </p>
+                </div>
+
+                <!-- MBE and Laissez-Faire Results Table -->
+                <div class="overflow-x-auto mb-12">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Criterion</th>
+                                <th colspan="3">MBE-Active</th>
+                                <th colspan="3">MBE-Passive</th>
+                                <th colspan="3">Laissez-Faire</th>
+                            </tr>
+                            <tr>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>ρ̂</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>ρ̂</th>
+                                <th>k</th>
+                                <th>N</th>
+                                <th>ρ̂</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Follower Job Satisfaction</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">2</td>
+                                <td class="mono">392</td>
+                                <td class="correlation-cell negative-weak">-.28</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Follower Satisfaction with Leader</td>
+                                <td class="mono">11</td>
+                                <td class="mono">2,272</td>
+                                <td class="correlation-cell positive-weak">.24</td>
+                                <td class="mono">8</td>
+                                <td class="mono">3,255</td>
+                                <td class="correlation-cell negative-weak">-.14</td>
+                                <td class="mono">5</td>
+                                <td class="mono">838</td>
+                                <td class="correlation-cell negative-strong">-.58</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Follower Motivation</td>
+                                <td class="mono">11</td>
+                                <td class="mono">1,879</td>
+                                <td class="correlation-cell positive-weak">.14</td>
+                                <td class="mono">11</td>
+                                <td class="mono">3,441</td>
+                                <td class="correlation-cell negative-weak">-.27</td>
+                                <td class="mono">6</td>
+                                <td class="mono">1,302</td>
+                                <td class="correlation-cell">-.07</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Leader Job Performance</td>
+                                <td class="mono">6</td>
+                                <td class="mono">684</td>
+                                <td class="correlation-cell positive-weak">.13</td>
+                                <td class="mono">4</td>
+                                <td class="mono">355</td>
+                                <td class="correlation-cell">.00</td>
+                                <td class="mono">2</td>
+                                <td class="mono">301</td>
+                                <td class="correlation-cell">-.01</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Group/Organization Performance</td>
+                                <td class="mono">11</td>
+                                <td class="mono">1,579</td>
+                                <td class="correlation-cell">-.09</td>
+                                <td class="mono">9</td>
+                                <td class="mono">1,976</td>
+                                <td class="correlation-cell negative-weak">-.17</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                                <td class="mono">—</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Rated Leader Effectiveness</td>
+                                <td class="mono">14</td>
+                                <td class="mono">2,117</td>
+                                <td class="correlation-cell positive-weak">.21</td>
+                                <td class="mono">8</td>
+                                <td class="mono">2,627</td>
+                                <td class="correlation-cell negative-weak">-.19</td>
+                                <td class="mono">11</td>
+                                <td class="mono">1,920</td>
+                                <td class="correlation-cell negative-strong">-.54</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Key Insights Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-blue-900">MBE-Active: Mixed Results</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Management by Exception-Active shows weak positive correlations with most criteria
+                            but surprisingly negative correlation with group performance (ρ̂ = -.09).
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Best for:</span>
+                                <span class="font-semibold">Satisfaction with Leader (.24)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Worst for:</span>
+                                <span class="font-semibold">Group Performance (-.09)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-orange-900">MBE-Passive: Generally Negative</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Waiting for problems to arise before intervening shows consistent negative correlations,
+                            particularly for follower motivation (ρ̂ = -.27).
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Least harmful:</span>
+                                <span class="font-semibold">Job Performance (.00)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Most harmful:</span>
+                                <span class="font-semibold">Motivation (-.27)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-red-900">Laissez-Faire: Destructive</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            The absence of leadership shows strong negative correlations, especially for
+                            satisfaction with leader (ρ̂ = -.58) and rated effectiveness (ρ̂ = -.54).
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Most destructive for:</span>
+                                <span class="font-semibold">Satisfaction (-.58)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Also harmful for:</span>
+                                <span class="font-semibold">Effectiveness (-.54)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="container mx-auto px-4 text-center">
+                <p class="mb-2">Judge, T. A., & Piccolo, R. F. (2004)</p>
+                <p class="text-sm text-gray-400">
+                    Journal of Applied Psychology, 89(5), 755-768
+                </p>
+                <p class="text-sm text-gray-400 mt-4">
+                    DOI: 10.1037/0021-9010.89.5.755
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Initialize KaTeX
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        });
+
+        // Validity Comparison Chart
+        const ctx = document.getElementById('validityComparisonChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Job Satisfaction', 'Satisfaction with Leader', 'Motivation', 'Job Performance', 'Group Performance', 'Leader Effectiveness'],
+                datasets: [{
+                    label: 'Transformational',
+                    data: [0.58, 0.71, 0.53, 0.27, 0.26, 0.64],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Contingent Reward',
+                    data: [0.64, 0.55, 0.59, 0.45, 0.16, 0.55],
+                    backgroundColor: 'rgba(168, 85, 247, 0.8)',
+                    borderColor: 'rgba(168, 85, 247, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 0.8,
+                        ticks: {
+                            callback: function(value) {
+                                return 'ρ̂ = ' + value.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Criterion-Specific Validities'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ρ̂ = ' + context.raw.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Correlation Heatmap
+        const correlationData = {
+            z: [
+                [1.00, 0.80, 0.17, -0.20, -0.65],
+                [0.80, 1.00, 0.19, -0.05, -0.38],
+                [0.17, 0.19, 1.00, -0.05, -0.51],
+                [-0.20, -0.05, -0.05, 1.00, 0.24],
+                [-0.65, -0.38, -0.51, 0.24, 1.00]
+            ],
+            x: ['Transformational', 'Contingent Reward', 'MBE-Active', 'MBE-Passive', 'Laissez-Faire'],
+            y: ['Transformational', 'Contingent Reward', 'MBE-Active', 'MBE-Passive', 'Laissez-Faire'],
+            type: 'heatmap',
+            colorscale: 'RdBu',
+            reversescale: true,
+            showscale: true,
+            hovertemplate: '%{y} × %{x}<br>ρ̂ = %{z}<extra></extra>',
+            colorbar: {
+                title: 'ρ̂',
+                titleside: 'right'
+            }
+        };
+
+        const heatmapLayout = {
+            title: 'Leadership Dimension Intercorrelations',
+            height: 500,
+            xaxis: {
+                tickangle: -45
+            },
+            annotations: []
+        };
+
+        // Add correlation values to heatmap
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                const value = correlationData.z[i][j];
+                const textColor = Math.abs(value) > 0.5 ? 'white' : 'black';
+                heatmapLayout.annotations.push({
+                    x: correlationData.x[j],
+                    y: correlationData.y[i],
+                    text: value.toFixed(2),
+                    showarrow: false,
+                    font: {
+                        color: textColor,
+                        size: 12
+                    }
+                });
+            }
+        }
+
+        Plotly.newPlot('correlationHeatmap', [correlationData], heatmapLayout, {responsive: true});
+
+        // Augmentation Plot
+        const augmentationData = [
+            {
+                x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
+                y: [0.44, 0.71, 0.53, 0.27, 0.64],
+                name: 'TF Bivariate',
+                type: 'bar',
+                marker: { color: 'rgba(59, 130, 246, 0.8)' }
+            },
+            {
+                x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
+                y: [0.24, 0.52, 0.32, 0.02, 0.37],
+                name: 'TF Controlling',
+                type: 'bar',
+                marker: { color: 'rgba(59, 130, 246, 0.4)' }
+            },
+            {
+                x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
+                y: [0.39, 0.55, 0.59, 0.45, 0.55],
+                name: 'CR Bivariate',
+                type: 'bar',
+                marker: { color: 'rgba(168, 85, 247, 0.8)' }
+            },
+            {
+                x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
+                y: [0.11, 0.06, 0.22, 0.45, 0.15],
+                name: 'CR Controlling',
+                type: 'bar',
+                marker: { color: 'rgba(168, 85, 247, 0.4)' }
+            }
+        ];
+
+        const augmentationLayout = {
+            title: 'Validity Decrement When Controlling for Other Leadership Styles',
+            barmode: 'grouped',
+            height: 400,
+            yaxis: {
+                title: 'Validity Coefficient',
+                range: [0, 0.8]
+            },
+            legend: {
+                x: 0.7,
+                y: 1
+            }
+        };
+
+        Plotly.newPlot('augmentationPlot', augmentationData, augmentationLayout, {responsive: true});
+
+        // Timeline Plot
+        const timelineData = [
+            {
+                x: [1990, 1995, 2000, 2003],
+                y: [0.65, 0.55, 0.45, 0.40],
+                mode: 'lines+markers',
+                name: 'Average Validity',
+                line: {
+                    color: 'rgb(219, 64, 82)',
+                    width: 3
+                },
+                marker: {
+                    size: 10
+                }
+            },
+            {
+                x: [1990, 1995, 2000, 2003],
+                y: [25, 35, 55, 65],
+                mode: 'lines+markers',
+                name: 'Multisource %',
+                yaxis: 'y2',
+                line: {
+                    color: 'rgb(55, 128, 191)',
+                    width: 3
+                },
+                marker: {
+                    size: 10
+                }
+            }
+        ];
+
+        const timelineLayout = {
+            title: 'Evolution of Research Quality Over Time',
+            height: 400,
+            xaxis: {
+                title: 'Year',
+                showgrid: false
+            },
+            yaxis: {
+                title: 'Average Validity',
+                titlefont: {color: 'rgb(219, 64, 82)'},
+                tickfont: {color: 'rgb(219, 64, 82)'}
+            },
+            yaxis2: {
+                title: 'Multisource Design %',
+                titlefont: {color: 'rgb(55, 128, 191)'},
+                tickfont: {color: 'rgb(55, 128, 191)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            annotations: [
+                {
+                    x: 1996,
+                    y: 0.73,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Lowe et al.<br>ρ̂ = .73',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: -40,
+                    ay: -40
+                },
+                {
+                    x: 2004,
+                    y: 0.44,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Judge & Piccolo<br>ρ̂ = .44',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 40,
+                    ay: -40
+                }
+            ]
+        };
+
+        Plotly.newPlot('timelinePlot', timelineData, timelineLayout, {responsive: true});
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
