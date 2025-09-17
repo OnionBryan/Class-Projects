@@ -1204,7 +1204,7 @@ The big picture: "This studied a huge pile of research to figure out what kind o
             let position = 0;
             for (let [style, value] of Object.entries(data)) {
                 const height = Math.abs(value) / maxValue * 100;
-                const bottom = value >= 0 ? '0px' : (50 - height) + 'px';
+                const bottom = value >= 0 ? '200px' : (50 - height) + 'px';
                 const color = value >= 0 ? 
                     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 
                     'linear-gradient(135deg, #ff6b6b 0%, #ff4444 100%)';
