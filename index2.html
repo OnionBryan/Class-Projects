@@ -1534,9 +1534,19 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
     </main>
 
     <script>
-        // Initialize KaTeX
+        /**
+         * Initializes the KaTeX library to render mathematical formulas in the document.
+         * It searches for text enclosed in '$$...$$' for display mode and '$...$' for inline mode.
+         */
+        /**
+         * @callback DOMContentLoadedCallback
+         * @description This anonymous function is executed once the initial HTML document has been completely loaded and parsed.
+         * It is responsible for rendering mathematical formulas using the KaTeX library.
+         */
         document.addEventListener('DOMContentLoaded', () => {
+            // Check if the KaTeX rendering function is available before calling it.
             if (typeof renderMathInElement === 'function') {
+                // This function finds and renders all mathematical expressions in the document body.
                 renderMathInElement(document.body, {
                     delimiters: [
                         {left: '$$', right: '$$', display: true},
@@ -1546,25 +1556,33 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         });
 
-        // Validity Comparison Chart
+        /**
+         * Creates and configures the 'validityComparisonChart' using Chart.js.
+         * This bar chart compares the criterion-specific validities of Transformational
+         * and Contingent Reward leadership styles.
+         */
         const ctx = document.getElementById('validityComparisonChart').getContext('2d');
+        // Instantiates a new Chart.js chart object, which renders the chart to the canvas.
         new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Job Satisfaction', 'Satisfaction with Leader', 'Motivation', 'Job Performance', 'Group Performance', 'Leader Effectiveness'],
-                datasets: [{
-                    label: 'Transformational',
-                    data: [0.58, 0.71, 0.53, 0.27, 0.26, 0.64],
-                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Contingent Reward',
-                    data: [0.64, 0.55, 0.59, 0.45, 0.16, 0.55],
-                    backgroundColor: 'rgba(168, 85, 247, 0.8)',
-                    borderColor: 'rgba(168, 85, 247, 1)',
-                    borderWidth: 1
-                }]
+                datasets: [
+                    {
+                        label: 'Transformational',
+                        data: [0.58, 0.71, 0.53, 0.27, 0.26, 0.64],
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Contingent Reward',
+                        data: [0.64, 0.55, 0.59, 0.45, 0.16, 0.55],
+                        backgroundColor: 'rgba(168, 85, 247, 0.8)',
+                        borderColor: 'rgba(168, 85, 247, 1)',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -1573,7 +1591,13 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                     y: {
                         beginAtZero: true,
                         max: 0.8,
+                        // Custom tick format to show the rho-hat symbol.
                         ticks: {
+                            /**
+                             * Formats the y-axis tick labels to include the rho-hat symbol.
+                             * @param {number} value The tick value.
+                             * @returns {string} The formatted tick label.
+                             */
                             callback: function(value) {
                                 return 'ρ̂ = ' + value.toFixed(2);
                             }
@@ -1588,8 +1612,14 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                         display: true,
                         text: 'Criterion-Specific Validities'
                     },
+                    // Custom tooltip to format the label.
                     tooltip: {
                         callbacks: {
+                            /**
+                             * Formats the tooltip label to show the leadership style and its value.
+                             * @param {object} context The tooltip context from Chart.js.
+                             * @returns {string} The formatted tooltip label.
+                             */
                             label: function(context) {
                                 return context.dataset.label + ': ρ̂ = ' + context.raw.toFixed(2);
                             }
@@ -1599,8 +1629,18 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         });
 
-        // Correlation Heatmap
+        /**
+         * Creates and configures the 'correlationHeatmap' using Plotly.js.
+         * This heatmap visualizes the intercorrelations between the different
+         * leadership dimensions, with annotations showing the correlation values.
+         */
+        /**
+         * @description Configuration object for the Plotly heatmap's data.
+         * Defines the data matrix (z), axis labels (x, y), chart type,
+         * and styling for the color scale and hover information.
+         */
         const correlationData = {
+            // The matrix of correlation values.
             z: [
                 [1.00, 0.80, 0.17, -0.20, -0.65],
                 [0.80, 1.00, 0.19, -0.05, -0.38],
@@ -1608,12 +1648,14 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 [-0.20, -0.05, -0.05, 1.00, 0.24],
                 [-0.65, -0.38, -0.51, 0.24, 1.00]
             ],
+            // Labels for the x and y axes.
             x: ['Transformational', 'Contingent Reward', 'MBE-Active', 'MBE-Passive', 'Laissez-Faire'],
             y: ['Transformational', 'Contingent Reward', 'MBE-Active', 'MBE-Passive', 'Laissez-Faire'],
             type: 'heatmap',
-            colorscale: 'RdBu',
+            colorscale: 'RdBu', // Red-Blue color scale for positive/negative correlations.
             reversescale: true,
             showscale: true,
+            // Custom hover text for each cell.
             hovertemplate: '%{y} × %{x}<br>ρ̂ = %{z}<extra></extra>',
             colorbar: {
                 title: 'ρ̂',
@@ -1621,16 +1663,21 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         };
 
+        /**
+         * @description Configuration object for the Plotly heatmap's layout.
+         * Defines the title, dimensions, and axis properties. The annotations
+         * array is populated dynamically in the loop below.
+         */
         const heatmapLayout = {
             title: 'Leadership Dimension Intercorrelations',
             height: 500,
             xaxis: {
-                tickangle: -45
+                tickangle: -45 // Angle the x-axis labels to prevent overlap.
             },
-            annotations: []
+            annotations: [] // Annotations will be added in the loop below.
         };
 
-        // Add correlation values to heatmap
+        // This loop programmatically adds the correlation values as text annotations on top of the heatmap cells.
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 const value = correlationData.z[i][j];
@@ -1647,11 +1694,22 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 });
             }
         }
-
+        // Instantiates and renders the Plotly heatmap in the 'correlationHeatmap' div.
         Plotly.newPlot('correlationHeatmap', [correlationData], heatmapLayout, {responsive: true});
 
-        // Augmentation Plot
+        /**
+         * Creates and configures the 'augmentationPlot' using Plotly.js.
+         * This grouped bar chart visualizes the validity decrement of leadership styles
+         * when controlling for other styles, illustrating the augmentation hypothesis.
+         */
+        /**
+         * @description Data configuration for the Plotly augmentation chart.
+         * Contains four traces (data series) to create a grouped bar chart,
+         * comparing the bivariate and controlled validities for both
+         * Transformational (TF) and Contingent Reward (CR) leadership.
+         */
         const augmentationData = [
+            // Bar group for the simple bivariate correlation of Transformational Leadership.
             {
                 x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
                 y: [0.44, 0.71, 0.53, 0.27, 0.64],
@@ -1659,6 +1717,7 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 type: 'bar',
                 marker: { color: 'rgba(59, 130, 246, 0.8)' }
             },
+            // Bar group showing the reduced correlation when controlling for other styles.
             {
                 x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
                 y: [0.24, 0.52, 0.32, 0.02, 0.37],
@@ -1666,6 +1725,7 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 type: 'bar',
                 marker: { color: 'rgba(59, 130, 246, 0.4)' }
             },
+            // Bar group for the simple bivariate correlation of Contingent Reward.
             {
                 x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
                 y: [0.39, 0.55, 0.59, 0.45, 0.55],
@@ -1673,6 +1733,7 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 type: 'bar',
                 marker: { color: 'rgba(168, 85, 247, 0.8)' }
             },
+            // Bar group showing the reduced correlation for CR when controlling.
             {
                 x: ['Overall', 'Sat. Leader', 'Motivation', 'Job Perf.', 'Effectiveness'],
                 y: [0.11, 0.06, 0.22, 0.45, 0.15],
@@ -1682,9 +1743,13 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         ];
 
+        /**
+         * @description Layout configuration for the Plotly augmentation chart.
+         * Sets the title, bar mode, dimensions, axis titles, and legend position.
+         */
         const augmentationLayout = {
             title: 'Validity Decrement When Controlling for Other Leadership Styles',
-            barmode: 'grouped',
+            barmode: 'grouped', // Group bars for direct comparison.
             height: 400,
             yaxis: {
                 title: 'Validity Coefficient',
@@ -1696,10 +1761,21 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         };
 
+        // Instantiates and renders the Plotly augmentation plot in the 'augmentationPlot' div.
         Plotly.newPlot('augmentationPlot', augmentationData, augmentationLayout, {responsive: true});
 
-        // Timeline Plot
+        /**
+         * Creates and configures the 'timelinePlot' using Plotly.js.
+         * This plot shows the evolution of research quality over time, plotting
+         * average validity and the percentage of multisource designs against the year.
+         */
+        /**
+         * @description Data configuration for the Plotly timeline chart.
+         * Contains two traces: one for the average validity and one for the
+         * percentage of multisource designs, plotted against time.
+         */
         const timelineData = [
+            // Line for the average validity of leadership studies over time.
             {
                 x: [1990, 1995, 2000, 2003],
                 y: [0.65, 0.55, 0.45, 0.40],
@@ -1713,12 +1789,13 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                     size: 10
                 }
             },
+            // Line for the percentage of studies using multisource data, plotted on a secondary y-axis.
             {
                 x: [1990, 1995, 2000, 2003],
                 y: [25, 35, 55, 65],
                 mode: 'lines+markers',
                 name: 'Multisource %',
-                yaxis: 'y2',
+                yaxis: 'y2', // Assign to the secondary y-axis.
                 line: {
                     color: 'rgb(55, 128, 191)',
                     width: 3
@@ -1729,6 +1806,11 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             }
         ];
 
+        /**
+         * @description Layout configuration for the Plotly timeline chart.
+         * Sets the title, dimensions, and configures primary and secondary y-axes.
+         * Also includes annotations to highlight specific data points.
+         */
         const timelineLayout = {
             title: 'Evolution of Research Quality Over Time',
             height: 400,
@@ -1736,11 +1818,13 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 title: 'Year',
                 showgrid: false
             },
+            // Configuration for the primary (left) y-axis.
             yaxis: {
                 title: 'Average Validity',
                 titlefont: {color: 'rgb(219, 64, 82)'},
                 tickfont: {color: 'rgb(219, 64, 82)'}
             },
+            // Configuration for the secondary (right) y-axis.
             yaxis2: {
                 title: 'Multisource Design %',
                 titlefont: {color: 'rgb(55, 128, 191)'},
@@ -1748,6 +1832,7 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
                 overlaying: 'y',
                 side: 'right'
             },
+            // Annotations to highlight key meta-analysis results on the chart.
             annotations: [
                 {
                     x: 1996,
@@ -1774,13 +1859,26 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             ]
         };
 
+        // Instantiates and renders the Plotly timeline plot in the 'timelinePlot' div.
         Plotly.newPlot('timelinePlot', timelineData, timelineLayout, {responsive: true});
 
-        // Smooth scrolling for navigation
+        /**
+         * Implements smooth scrolling for anchor links.
+         * Attaches a click event listener to all anchor tags with an href starting with '#'.
+         * Prevents the default anchor behavior and smoothly scrolls to the target element.
+         */
+        /**
+         * @callback ForEachAnchorCallback
+         * @param {HTMLAnchorElement} anchor The anchor element being processed.
+         * @description This anonymous function iterates over each anchor tag with an href starting with '#'.
+         * It attaches a click event listener to implement smooth scrolling.
+         */
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // This anonymous function is the event handler for the click event.
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent the default jump-to-anchor behavior.
                 const target = document.querySelector(this.getAttribute('href'));
+                // If the target element exists, scroll to it smoothly.
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
@@ -1790,14 +1888,25 @@ In conclusion, the legacy of Judge and Piccolo (2004) is not that it disproved t
             });
         });
 
-        // Add fade-in animation on scroll
+        /**
+         * Implements a fade-in animation on scroll for all <section> elements.
+         * Uses the Intersection Observer API to add the 'fade-in' class to a section
+         * when it enters the viewport.
+         */
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
         };
 
+        /**
+         * @callback IntersectionObserverCallback
+         * @param {IntersectionObserverEntry[]} entries An array of objects, each representing one observed target.
+         * @description This anonymous function is the callback for the IntersectionObserver. It adds a
+         * 'fade-in' class to any observed section that enters the viewport.
+         */
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
+                // If the observed element is intersecting with the viewport, add the 'fade-in' class.
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');
                 }
