@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Management Culture & Leadership Development - Maurer et al. (2017)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            color: #333;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Page Navigation */
+        .page-nav-container {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .page-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .page-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .page-btn.active {
+            background: white;
+            color: #1e3c72;
+            border-color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .header .stats-preview {
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            margin-top: 15px;
+        }
+
+        /* Section Styles */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.8s ease;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #1e3c72;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #2a5298;
+            margin: 25px 0 15px;
+            font-size: 1.4em;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        /* Card Styles */
+        .card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(30,60,114,0.3);
+            border-color: #2a5298;
+        }
+
+        .card h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Stat Box Styles */
+        .stat-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(30,60,114,0.4);
+        }
+
+        .stat-value {
+            font-size: 2.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Key Finding Box */
+        .key-finding {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-size: 1.15em;
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+            border-left: 5px solid #ff5252;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(10,189,227,0.3);
+        }
+
+        /* Tab System */
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: #f0f4f8;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-color: #1e3c72;
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e6ed;
+            background: white;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Path Model */
+        .path-model {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .path-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .path-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .path-arrow {
+            font-size: 2em;
+            color: #2a5298;
+            margin: 0 10px;
+        }
+
+        .significant {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .non-significant {
+            color: #9e9e9e;
+            font-style: italic;
+        }
+
+        /* Interactive Demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .slider-container {
+            margin: 25px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #2a5298;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .result-display {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 3px solid #2a5298;
+        }
+
+        /* Hypothesis Results */
+        .hypothesis-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+
+        .supported {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .partially-supported {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .not-supported {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        /* Attribution */
+        .attribution {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .attribution a {
+            color: #64b5f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .attribution a:hover {
+            color: #90caf9;
+            text-decoration: underline;
+        }
+
+        /* Chart Styles */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .bar {
+            position: absolute;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .bar-label {
+            padding: 5px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .bar-value {
+            padding: 10px 5px;
+            font-size: 1.1em;
+        }
+
+        /* Definition Card Styles */
+        .definition-card {
+            background: white;
+            border-left: 5px solid #2a5298;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .definition-term {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .definition-content {
+            line-height: 1.8;
+        }
+
+        /* Practical Breakdown Styles */
+        .breakdown-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .breakdown-header {
+            color: #1e3c72;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .breakdown-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+
+        /* Correlation Matrix */
+        .correlation-matrix {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        .matrix-cell {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e6ed;
+            font-size: 0.9em;
+        }
+
+        .matrix-header {
+            background: #1e3c72;
+            color: white;
+            font-weight: bold;
+        }
+
+        .positive-corr {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .negative-corr {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .neutral-corr {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .grid { grid-template-columns: 1fr; }
+            .section { padding: 25px; }
+            .tabs { flex-direction: column; }
+            .tab { width: 100%; text-align: center; }
+            .page-btn { padding: 8px 15px; font-size: 0.9em; }
+            .chart-container { height: 500px; overflow-x: auto; }
+            .bar { font-size: 0.8em; }
+            table { font-size: 0.85em; }
+            .matrix-cell { padding: 5px; font-size: 0.8em; }
+        }
+
+        /* Page visibility */
+        #main { display: block; }
+        #analysis { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <div class="page-nav-container">
+        <div class="page-nav">
+            <button class="page-btn active" onclick="switchPage('main', this)">Main Study Overview</button>
+            <button class="page-btn" onclick="switchPage('analysis', this)">Charts & Deep Analysis</button>
+        </div>
+    </div>
+
+    <!-- Main Page -->
+    <div id="main">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Error Management Culture & Leadership Development</h1>
+            <p class="subtitle">A Path from Organizational Culture to Leader Career Success</p>
+            <p class="subtitle">Maurer, Hartnell & Lippstreu (2017) - Interactive Analysis</p>
+            <div class="stats-preview">
+                📊 151 Employee-Supervisor Pairs | 📅 1-Year Longitudinal Study | ✅ 5 Hypotheses Tested
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>📈 Executive Summary</h2>
+            <div class="grid">
+                <div class="stat-box">
+                    <div class="stat-value">$15.5B</div>
+                    <div class="stat-label">Annual U.S. Leadership Development Spending</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">β = .32</div>
+                    <div class="stat-label">Error Management → MTDL Effect</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">86.61%</div>
+                    <div class="stat-label">MTDL's Share of Leadership Capacity Variance</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">β = .23</div>
+                    <div class="stat-label">MTDL → Leadership Capacity</div>
+                </div>
+            </div>
+
+            <div class="key-finding">
+                💡 <strong>Revolutionary Finding:</strong> Motivation to develop leadership skills (MTDL) is a stronger predictor of leadership capacity than motivation to lead (MTL). Social-normative duty—not personal enjoyment—drives leadership development.
+            </div>
+
+            <div class="insight-box">
+                🎓 <strong>Key Insight:</strong> Organizations that constructively manage errors create leaders who feel obligated to serve, leading to greater skill development and career success. Punitive error cultures suppress leadership emergence.
+            </div>
+        </div>
+
+        <!-- Key Terminology -->
+        <div class="section">
+            <h2>📚 Key Concepts & Definitions</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Error Management Culture</h4>
+                    <p><strong>Definition:</strong> A positive, proactive approach where errors are viewed as learning opportunities.</p>
+                    <p style="margin-top: 10px;"><strong>Characteristics:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Encourages error communication</li>
+                        <li>Promotes experimentation</li>
+                        <li>Creates psychological safety</li>
+                        <li>Views errors as resources</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Error Aversion Culture</h4>
+                    <p><strong>Definition:</strong> A punitive approach where errors are covered up or punished, creating strain.</p>
+                    <p style="margin-top: 10px;"><strong>Characteristics:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Punishment for mistakes</li>
+                        <li>Error concealment</li>
+                        <li>Fear-based management</li>
+                        <li>Blame culture</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>MTL: Motivation to Lead</h4>
+                    <p><strong>Definition:</strong> Employee motivation to assume leadership roles and responsibilities.</p>
+                    <p style="margin-top: 10px;"><strong>Three Dimensions:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Affective-Identity:</strong> Leading because you enjoy it</li>
+                        <li><strong>Social-Normative:</strong> Leading from duty/obligation</li>
+                        <li><strong>Non-Calculative:</strong> Leading regardless of personal benefits</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>MTDL: Motivation to Develop Leadership Skills</h4>
+                    <p><strong>Definition:</strong> The drive to improve leadership competencies through effort and learning.</p>
+                    <p style="margin-top: 10px;"><strong>Focus Areas:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Task management skills</li>
+                        <li>Relational capabilities</li>
+                        <li>Strategic thinking</li>
+                        <li>Team building</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Leadership Capacity</h4>
+                    <p><strong>Definition:</strong> A composite resource reflecting ability to influence others.</p>
+                    <p style="margin-top: 10px;"><strong>Components:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Leadership performance</li>
+                        <li>Leadership development</li>
+                        <li>Leadership potential</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Career Success Indicators</h4>
+                    <p><strong>Measured Outcomes:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Promotions:</strong> Upward job level changes</li>
+                        <li><strong>Leadership Responsibilities:</strong> Increased scope</li>
+                        <li><strong>Pay Increases:</strong> Financial rewards</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-style: italic;">All measured over 1-year period by supervisors</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Methodology -->
+        <div class="section">
+            <h2>🔬 Research Methodology</h2>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showMethodTab('sample')">Sample & Design</button>
+                <button class="tab" onclick="showMethodTab('measures')">Measures</button>
+                <button class="tab" onclick="showMethodTab('analysis')">Statistical Analysis</button>
+                <button class="tab" onclick="showMethodTab('timeline')">Timeline</button>
+            </div>
+
+            <div id="sample" class="tab-content active">
+                <h3>Sample Characteristics</h3>
+                <table>
+                    <tr>
+                        <th>Characteristic</th>
+                        <th>Employees (T1)</th>
+                        <th>Supervisors (T2)</th>
+                    </tr>
+                    <tr>
+                        <td>Sample Size</td>
+                        <td>151</td>
+                        <td>151</td>
+                    </tr>
+                    <tr>
+                        <td>Mean Age</td>
+                        <td>40.28 years (SD = 10.50)</td>
+                        <td>45.92 years (SD = 9.91)</td>
+                    </tr>
+                    <tr>
+                        <td>Gender (% Male)</td>
+                        <td>34%</td>
+                        <td>51%</td>
+                    </tr>
+                    <tr>
+                        <td>Ethnicity (% Caucasian)</td>
+                        <td>86%</td>
+                        <td>87%</td>
+                    </tr>
+                    <tr>
+                        <td>Work Experience</td>
+                        <td>19.74 years (SD = 10.10)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Current Job Tenure</td>
+                        <td>7.70 years (SD = 8.02)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership Experience</td>
+                        <td>70% had formal experience</td>
+                        <td>—</td>
+                    </tr>
+                </table>
+
+                <h3>Recruitment & Response Rates</h3>
+                <ul style="line-height: 1.8; margin-left: 20px;">
+                    <li>Initial contact: 10,739 workers</li>
+                    <li>T1 responses: 1,299 (12.1% response rate)</li>
+                    <li>T2 active participants: 750</li>
+                    <li>Final supervisor responses: 151 (20.1% of active)</li>
+                    <li>Data collection via StudyResponse platform</li>
+                </ul>
+            </div>
+
+            <div id="measures" class="tab-content">
+                <h3>Measurement Instruments</h3>
+
+                <div style="margin: 20px 0;">
+                    <h4>Error Culture (van Dyck et al., 2005)</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Error Management:</strong> 9 items, α = .89</li>
+                        <li><strong>Error Aversion:</strong> 6 items, α = .86</li>
+                        <li>5-point scale (1 = does not apply at all, 5 = applies completely)</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h4>Motivation to Lead (Chan & Drasgow, 2001)</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Affective-Identity MTL:</strong> 9 items, α = .84</li>
+                        <li><strong>Social-Normative MTL:</strong> 9 items, α = .87</li>
+                        <li><strong>Non-Calculative MTL:</strong> 9 items, α = .83</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h4>Motivation to Develop Leadership Skills</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>39 leadership attributes (Tett et al., 2000)</li>
+                        <li>α = .98 (excellent reliability)</li>
+                        <li>5-point scale (1 = not at all motivated, 5 = very motivated)</li>
+                        <li>52.7% variance due to persons, 2.3% due to items</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h4>Leadership Capacity (Supervisor-rated)</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>9 items total (3 dimensions × 3 items)</li>
+                        <li>Performance, Development, Potential</li>
+                        <li>9-point response scale</li>
+                        <li>CFI = .98, RMSEA = .09, SRMR = .02</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="statistical-analysis" class="tab-content">
+                <h3>Statistical Procedures</h3>
+
+                <div style="margin: 20px 0;">
+                    <h4>Path Analysis</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Software: MPLUS 7.2</li>
+                        <li>Model fit: χ² (23, N = 151) = 18.36, ns</li>
+                        <li>CFI = 1.00 (excellent fit)</li>
+                        <li>RMSEA = .00 (excellent fit)</li>
+                        <li>SRMR = .05 (good fit)</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h4>Confirmatory Factor Analysis</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>6-factor model tested (error management, error aversion, 3 MTL dimensions, MTDL)</li>
+                        <li>Item parceling used for MTDL (5 parcels)</li>
+                        <li>Good discriminant validity established</li>
+                        <li>CFI = .95, RMSEA = .07, SRMR = .06</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h4>Relative Weights Analysis</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>MTDL: 86.61% of variance in leadership capacity</li>
+                        <li>Affective-Identity MTL: 3.35%</li>
+                        <li>Social-Normative MTL: 4.09%</li>
+                        <li>Non-Calculative MTL: 5.94%</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="timeline" class="tab-content">
+                <h3>Study Timeline</h3>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>Time 1 (Baseline)</h4>
+                    <p><strong>Participants:</strong> 151 employees</p>
+                    <p><strong>Measures collected:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Error management culture perceptions</li>
+                        <li>Error aversion culture perceptions</li>
+                        <li>Motivation to lead (3 dimensions)</li>
+                        <li>Motivation to develop leadership skills</li>
+                        <li>Demographics</li>
+                    </ul>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>↓ 1 Year Later ↓</h4>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>Time 2 (Follow-up)</h4>
+                    <p><strong>Participants:</strong> 151 supervisors</p>
+                    <p><strong>Measures collected:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Leadership capacity ratings</li>
+                        <li>Promotions received/offered</li>
+                        <li>Increase in leadership responsibilities</li>
+                        <li>Pay increases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Path Model Visualization -->
+        <div class="section">
+            <h2>🔄 The Path Model: From Culture to Success</h2>
+
+            <div class="path-model">
+                <div style="text-align: center;">
+                    <div style="display: inline-block; text-align: left;">
+                        <!-- Row 1: Error Cultures -->
+                        <div style="margin: 20px 0;">
+                            <span class="path-box" style="background: #e8f5e9;">Error Management Culture</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box">Social-Normative MTL</span>
+                            <span class="significant">(β = .26*)</span>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <span class="path-box" style="background: #e8f5e9;">Error Management Culture</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box">MTDL</span>
+                            <span class="significant">(β = .32*)</span>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <span class="path-box" style="background: #ffebee;">Error Aversion Culture</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box">Affective-Identity MTL</span>
+                            <span class="significant">(β = -.18*)</span>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <span class="path-box" style="background: #ffebee;">Error Aversion Culture</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box">Non-Calculative MTL</span>
+                            <span class="significant">(β = -.28*)</span>
+                        </div>
+
+                        <!-- Row 2: MTL to MTDL -->
+                        <div style="margin: 20px 0; padding-left: 100px;">
+                            <span class="path-box">Social-Normative MTL</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box" style="background: #fff3e0;">MTDL</span>
+                            <span class="significant">(β = .28*)</span>
+                        </div>
+
+                        <!-- Row 3: MTDL to Capacity -->
+                        <div style="margin: 20px 0; padding-left: 200px;">
+                            <span class="path-box" style="background: #fff3e0;">MTDL</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box">Leadership Capacity</span>
+                            <span class="significant">(β = .23*)</span>
+                        </div>
+
+                        <!-- Row 4: Capacity to Success -->
+                        <div style="margin: 20px 0; padding-left: 300px;">
+                            <span class="path-box">Leadership Capacity</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-box" style="background: #e8f5e9;">Career Success</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="font-style: italic;">* p < .05 | Green = Positive effect | Red = Negative effect</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hypotheses Results -->
+        <div class="section">
+            <h2>✅ Hypothesis Testing Results</h2>
+
+            <div class="hypothesis-result supported">
+                <h4>H1b: Error Management → MTDL</h4>
+                <p><strong>Result:</strong> SUPPORTED (β = .32, p < .05)</p>
+                <p>Error management culture significantly enhances motivation to develop leadership skills.</p>
+            </div>
+
+            <div class="hypothesis-result partially-supported">
+                <h4>H1a: Error Management → MTL</h4>
+                <p><strong>Result:</strong> PARTIALLY SUPPORTED</p>
+                <p>Significant for Social-Normative MTL (β = .26), not significant for other dimensions.</p>
+            </div>
+
+            <div class="hypothesis-result partially-supported">
+                <h4>H2a: Error Aversion → MTL (negative)</h4>
+                <p><strong>Result:</strong> PARTIALLY SUPPORTED</p>
+                <p>Significant negative effects on Affective-Identity (β = -.18) and Non-Calculative MTL (β = -.28).</p>
+            </div>
+
+            <div class="hypothesis-result not-supported">
+                <h4>H2b: Error Aversion → MTDL (negative)</h4>
+                <p><strong>Result:</strong> NOT SUPPORTED</p>
+                <p>No significant relationship found between error aversion and MTDL.</p>
+            </div>
+
+            <div class="hypothesis-result partially-supported">
+                <h4>H3: MTL → MTDL</h4>
+                <p><strong>Result:</strong> PARTIALLY SUPPORTED</p>
+                <p>Only Social-Normative MTL significantly predicted MTDL (β = .28).</p>
+            </div>
+
+            <div class="hypothesis-result supported">
+                <h4>H4: MTDL → Leadership Capacity</h4>
+                <p><strong>Result:</strong> SUPPORTED (β = .23, p < .05)</p>
+                <p>MTDL significantly predicts leadership capacity.</p>
+            </div>
+
+            <div class="hypothesis-result supported">
+                <h4>H5: Leadership Capacity → Career Success</h4>
+                <p><strong>Result:</strong> SUPPORTED</p>
+                <p>Significant effects on promotions (β = .30), responsibilities (β = .49), and pay (β = .22).</p>
+            </div>
+        </div>
+
+        <!-- Key Findings -->
+        <div class="section">
+            <h2>🎓 Nine Critical Insights</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>1. The Duty Factor 📋</h4>
+                    <p>Social-normative MTL (duty/obligation) is the only MTL dimension that drives skill development.</p>
+                    <p style="margin-top: 10px;"><strong>Implication:</strong> Leadership development is driven by responsibility, not enjoyment.</p>
+                </div>
+
+                <div class="card">
+                    <h4>2. MTDL Dominance 🏆</h4>
+                    <p>MTDL accounts for 86.61% of leadership capacity variance vs. only 13.39% for all MTL dimensions combined.</p>
+                    <p style="margin-top: 10px;"><strong>Implication:</strong> Skill development motivation matters more than leadership desire.</p>
+                </div>
+
+                <div class="card">
+                    <h4>3. Error Management Power 💪</h4>
+                    <p>Constructive error handling creates a cascade: duty → skill development → capacity → success.</p>
+                    <p style="margin-top: 10px;"><strong>Total indirect effect:</strong> Significant on all career outcomes.</p>
+                </div>
+
+                <div class="card">
+                    <h4>4. Error Aversion Damage 🚫</h4>
+                    <p>Punitive cultures reduce affective and non-calculative MTL but don't directly impact MTDL.</p>
+                    <p style="margin-top: 10px;"><strong>Result:</strong> Leaders don't enjoy leading or see it as worthwhile.</p>
+                </div>
+
+                <div class="card">
+                    <h4>5. The $15.5 Billion Question 💰</h4>
+                    <p>U.S. companies spend billions on leadership development annually.</p>
+                    <p style="margin-top: 10px;"><strong>Key:</strong> ROI depends on error management culture.</p>
+                </div>
+
+                <div class="card">
+                    <h4>6. Psychological Safety Link 🛡️</h4>
+                    <p>Error management creates safety → increases experimentation → enhances learning.</p>
+                    <p style="margin-top: 10px;"><strong>Mechanism:</strong> Reduces fear of failure.</p>
+                </div>
+
+                <div class="card">
+                    <h4>7. Career Impact Hierarchy 📊</h4>
+                    <p>Leadership capacity most strongly predicts:</p>
+                    <ol style="margin-left: 20px;">
+                        <li>Leadership responsibilities (β = .49)</li>
+                        <li>Promotions (β = .30)</li>
+                        <li>Pay increases (β = .22)</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h4>8. Occupational Diversity 🌍</h4>
+                    <p>Results span 20+ occupational categories, enhancing generalizability.</p>
+                    <p style="margin-top: 10px;"><strong>Top sectors:</strong> Admin support, education, management, sales.</p>
+                </div>
+
+                <div class="card">
+                    <h4>9. The Longitudinal Advantage ⏰</h4>
+                    <p>1-year follow-up reduces common method bias and establishes temporal precedence.</p>
+                    <p style="margin-top: 10px;"><strong>Strength:</strong> Supervisor ratings eliminate self-report bias.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Calculator -->
+        <div class="section">
+            <h2>🧮 Leadership Development ROI Calculator</h2>
+
+            <div class="interactive-demo">
+                <h3>Estimate Your Organization's Leadership Development Potential</h3>
+                <p>Adjust the sliders to see how error culture impacts leadership outcomes:</p>
+
+                <div class="slider-container">
+                    <label>Error Management Culture (0-100%): <span id="errorMgmtValue">50</span>%</label>
+                    <input type="range" class="slider" id="errorMgmtSlider" min="0" max="100" value="50" oninput="updateCalculator()">
+                </div>
+
+                <div class="slider-container">
+                    <label>Error Aversion Culture (0-100%): <span id="errorAversionValue">50</span>%</label>
+                    <input type="range" class="slider" id="errorAversionSlider" min="0" max="100" value="50" oninput="updateCalculator()">
+                </div>
+
+                <div class="slider-container">
+                    <label>Current Social-Normative MTL (0-100%): <span id="dutyValue">50</span>%</label>
+                    <input type="range" class="slider" id="dutySlider" min="0" max="100" value="50" oninput="updateCalculator()">
+                </div>
+
+                <div id="calculatorResult" class="result-display">
+                    <h4>Predicted Outcomes:</h4>
+                    <p id="mtdlPrediction">MTDL Score: --</p>
+                    <p id="capacityPrediction">Leadership Capacity: --</p>
+                    <p id="successPrediction">Career Success Likelihood: --</p>
+                    <p id="recommendation" style="margin-top: 20px; font-weight: bold; color: #1e3c72;">Adjust sliders to see impact</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Applications -->
+        <div class="section">
+            <h2>💼 Practical Applications</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>For HR Professionals</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Design "failure-tolerant" leadership programs</li>
+                        <li>Focus on duty and service in recruitment</li>
+                        <li>Measure MTDL, not just MTL</li>
+                        <li>Create psychological safety metrics</li>
+                        <li>Implement error management training</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>For Leaders & Managers</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Model constructive error handling</li>
+                        <li>Emphasize learning from mistakes</li>
+                        <li>Reduce punishment for honest errors</li>
+                        <li>Encourage experimentation</li>
+                        <li>Focus on duty-based motivation</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>For Organizations</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Audit error management practices</li>
+                        <li>Calculate leadership development ROI</li>
+                        <li>Create "productive mistake-making" policies</li>
+                        <li>Invest in skill development programs</li>
+                        <li>Track MTDL alongside performance</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>For Researchers</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Distinguish MTL from MTDL in studies</li>
+                        <li>Investigate duty orientation further</li>
+                        <li>Test cross-cultural validity</li>
+                        <li>Explore industry-specific effects</li>
+                        <li>Examine team-level phenomena</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Limitations & Future Directions -->
+        <div class="section">
+            <h2>🔍 Limitations & Future Research</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>Study Limitations</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Cannot definitively establish causality</li>
+                        <li>Self-reported culture perceptions</li>
+                        <li>No organizational performance data</li>
+                        <li>Primarily U.S. sample</li>
+                        <li>12.1% initial response rate</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Future Research Opportunities</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li>Multi-level error culture analysis</li>
+                        <li>Cross-cultural comparisons</li>
+                        <li>Industry-specific effects</li>
+                        <li>Mediating mechanisms (trust, safety)</li>
+                        <li>Long-term career trajectories</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="section" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+            <h2>🎯 Key Takeaways</h2>
+
+            <div style="font-size: 1.15em; line-height: 1.8;">
+                <p>1. <strong>Culture Shapes Leaders:</strong> Error management culture creates leaders through duty-based motivation</p>
+                <p>2. <strong>Skills > Desire:</strong> MTDL is 6x more predictive of leadership capacity than MTL</p>
+                <p>3. <strong>Duty Drives Development:</strong> Social obligation, not enjoyment, motivates skill building</p>
+                <p>4. <strong>Punishment Backfires:</strong> Error aversion reduces leadership emergence and motivation</p>
+                <p>5. <strong>ROI Through Culture:</strong> Leadership development investments require supportive error culture</p>
+                <p>6. <strong>Cascade Effect:</strong> Culture → Duty → Skills → Capacity → Success</p>
+                <p>7. <strong>Practical Recipe:</strong> Create psychological safety, emphasize duty, focus on skill development</p>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(255,255,255,0.5); border-radius: 15px;">
+                    <p style="font-size: 1.3em; text-align: center; color: #1e3c72;">
+                        <strong>"Organizations that constructively manage errors don't just handle mistakes better—<br>
+                        they create leaders who feel obligated to serve and are motivated to develop,<br>
+                        resulting in greater capacity and career success."</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attribution -->
+        <div class="attribution">
+            <h3>📚 About This Presentation</h3>
+            <p style="margin-top: 20px;">Interactive visualization of Maurer, T. J., Hartnell, C. A., & Lippstreu, M. (2017).</p>
+            <p>A model of leadership motivations, error management culture, leadership capacity, and career success.</p>
+            <p><em>Journal of Occupational and Organizational Psychology, 90</em>(4), 481-507.</p>
+            <p style="margin-top: 15px;">DOI: <a href="https://doi.org/10.1111/joop.12181" target="_blank">10.1111/joop.12181</a></p>
+
+            <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.9;">
+                This presentation synthesizes key findings from a longitudinal study of 151 employee-supervisor pairs,<br>
+                demonstrating how organizational error culture shapes leadership development and career outcomes.
+            </p>
+
+            <p style="margin-top: 20px;">
+                <a href="#" onclick="alert('Sharing features would be implemented here')">Share</a> |
+                <a href="#" onclick="alert('Download PDF feature would be implemented here')">Download Summary</a> |
+                <a href="https://doi.org/10.1111/joop.12181" target="_blank">Read Full Paper</a>
+            </p>
+        </div>
+    </div>
+    </div>
+
+    <!-- Analysis Page -->
+    <div id="analysis">
+    <div class="container">
+        <!-- Header for Analysis Page -->
+        <div class="header">
+            <h1>📊 Charts, Definitions & Practical Analysis</h1>
+            <p class="subtitle">Deep Dive into the Data and Applications</p>
+        </div>
+
+        <!-- Correlation Visualization -->
+        <div class="section">
+            <h2>📈 Key Correlations Visualized</h2>
+
+            <div class="chart-container" id="correlationChart">
+                <!-- Chart will be populated by JavaScript -->
+            </div>
+
+            <div class="insight-box">
+                <strong>Key Pattern:</strong> Notice how MTDL shows stronger correlations with outcomes than any individual MTL dimension. The strongest path runs through Social-Normative MTL → MTDL → Leadership Capacity.
+            </div>
+        </div>
+
+        <!-- Variance Explained Chart -->
+        <div class="section">
+            <h2>🎯 Variance Explained in Leadership Capacity</h2>
+
+            <div class="chart-container" id="varianceChart">
+                <!-- Chart will be populated by JavaScript -->
+            </div>
+
+            <div class="key-finding">
+                💡 MTDL alone accounts for nearly 87% of explained variance, while all three MTL dimensions combined contribute only 13%. This dramatically shifts how we should think about leadership development.
+            </div>
+        </div>
+
+        <!-- Comprehensive Definitions -->
+        <div class="section">
+            <h2>📖 Comprehensive Glossary</h2>
+
+            <div class="definition-card">
+                <div class="definition-term">Error Management Culture</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> An organizational approach that treats errors as learning opportunities rather than failures to be punished.</p>
+                    <p style="margin-top: 10px;"><strong>Key Components:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Error Detection:</strong> Systems to quickly identify when errors occur</li>
+                        <li><strong>Error Communication:</strong> Open discussion about mistakes without fear</li>
+                        <li><strong>Error Analysis:</strong> Understanding root causes</li>
+                        <li><strong>Error Correction:</strong> Implementing solutions</li>
+                        <li><strong>Knowledge Sharing:</strong> Spreading lessons learned</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Measurement:</strong> 9 items, α = .89, scale from van Dyck et al. (2005)</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">Motivation to Lead (MTL)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> The individual differences that affect a person's decision to assume leadership roles and responsibilities.</p>
+                    <p style="margin-top: 10px;"><strong>Three Distinct Components:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Affective-Identity (AI-MTL):</strong> "I lead because I enjoy it and see myself as a leader"
+                            <br>Sample item: "I usually want to be the leader in the groups that I work in"</li>
+                        <li><strong>Social-Normative (SN-MTL):</strong> "I lead because it's my duty and responsibility"
+                            <br>Sample item: "I feel that I have a duty to lead others if I am asked"</li>
+                        <li><strong>Non-Calculative (NC-MTL):</strong> "I lead regardless of personal costs/benefits"
+                            <br>Sample item: "I would agree to lead others even if there are no special rewards"</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Critical Finding:</strong> Only SN-MTL drives skill development (β = .28)</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">Motivation to Develop Leadership Skills (MTDL)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> The drive to improve leadership-relevant competencies through effort, distinct from the desire to be in leadership positions.</p>
+                    <p style="margin-top: 10px;"><strong>Key Distinction:</strong> MTL = "I want to be a leader" vs MTDL = "I want to develop leadership capabilities"</p>
+                    <p style="margin-top: 10px;"><strong>Measured Competencies Include:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Directing: Clearly specifying what needs to be done</li>
+                        <li>Team Building: Integrating subordinate roles collaboratively</li>
+                        <li>Strategic Planning: Long-term vision and goal setting</li>
+                        <li>Communication: Conveying information effectively</li>
+                        <li>Problem Solving: Identifying and resolving issues</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Statistical Power:</strong> Accounts for 86.61% of leadership capacity variance</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">Leadership Capacity</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> A composite resource reflecting an employee's ability to influence others, measured by supervisors.</p>
+                    <p style="margin-top: 10px;"><strong>Three Integrated Dimensions:</strong></p>
+                    <ol style="margin-left: 20px;">
+                        <li><strong>Leadership Performance:</strong> Current effectiveness in leadership behaviors</li>
+                        <li><strong>Leadership Development:</strong> Growth and improvement over time</li>
+                        <li><strong>Leadership Potential:</strong> Capacity for future leadership roles</li>
+                    </ol>
+                    <p style="margin-top: 10px;"><strong>Measurement Note:</strong> High intercorrelations (.70-.80) justify composite score</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">Duty Orientation</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> A volitional orientation to loyally serve and faithfully support group members, strive and sacrifice for group tasks.</p>
+                    <p style="margin-top: 10px;"><strong>Theoretical Foundation:</strong> Based on "psychology of obligation" (Schwartz, 1983) and "deonance" theory (Folger, 2012)</p>
+                    <p style="margin-top: 10px;"><strong>Key Insight:</strong> Duty-driven individuals develop leadership skills not for personal gain but to better serve their organization.</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">Path Analysis</div>
+                <div class="definition-content">
+                    <p><strong>Statistical Technique:</strong> Tests relationships between multiple variables simultaneously to understand direct and indirect effects.</p>
+                    <p style="margin-top: 10px;"><strong>Model Fit Indices:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>CFI = 1.00 (values > .95 indicate excellent fit)</li>
+                        <li>RMSEA = .00 (values < .05 indicate excellent fit)</li>
+                        <li>SRMR = .05 (values < .08 indicate good fit)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Breakdown -->
+        <div class="section">
+            <h2>🛠️ Practical Implementation Guide</h2>
+
+            <div class="breakdown-section">
+                <div class="breakdown-header">Phase 1: Cultural Assessment (Weeks 1-4)</div>
+
+                <div class="breakdown-item">
+                    <h4>Step 1: Measure Current Error Culture</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Deploy van Dyck et al. (2005) error culture scale</li>
+                        <li>Survey employees at all levels anonymously</li>
+                        <li>Calculate separate scores for error management vs aversion</li>
+                        <li>Identify department/team variations</li>
+                    </ul>
+                </div>
+
+                <div class="breakdown-item">
+                    <h4>Step 2: Assess Leadership Motivations</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Measure both MTL (3 dimensions) and MTDL</li>
+                        <li>Pay special attention to Social-Normative MTL scores</li>
+                        <li>Identify high-MTDL individuals for development programs</li>
+                        <li>Compare scores across organizational levels</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <div class="breakdown-header">Phase 2: Culture Transformation (Months 2-6)</div>
+
+                <div class="breakdown-item">
+                    <h4>Building Error Management Culture</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Week 1:</strong> Leadership commitment announcement</li>
+                        <li><strong>Week 2-4:</strong> Manager training on constructive error handling</li>
+                        <li><strong>Month 2:</strong> Implement "Learning from Failure" meetings</li>
+                        <li><strong>Month 3:</strong> Create error reporting systems without punishment</li>
+                        <li><strong>Month 4:</strong> Celebrate "productive mistakes" publicly</li>
+                        <li><strong>Month 5-6:</strong> Embed in performance reviews</li>
+                    </ul>
+                </div>
+
+                <div class="breakdown-item">
+                    <h4>Reducing Error Aversion</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Remove punitive policies for honest mistakes</li>
+                        <li>Distinguish between negligence and learning errors</li>
+                        <li>Train managers in psychological safety practices</li>
+                        <li>Create "amnesty" periods for error disclosure</li>
+                        <li>Implement "near-miss" reporting without consequences</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <div class="breakdown-header">Phase 3: Leadership Development (Months 6-12)</div>
+
+                <div class="breakdown-item">
+                    <h4>Enhancing Social-Normative MTL</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Frame leadership as service and duty</li>
+                        <li>Connect individual roles to organizational mission</li>
+                        <li>Highlight impact on team members and customers</li>
+                        <li>Create mentoring programs emphasizing obligation</li>
+                        <li>Recognize duty-based leadership publicly</li>
+                    </ul>
+                </div>
+
+                <div class="breakdown-item">
+                    <h4>Building MTDL</h4>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Offer skill-specific development opportunities</li>
+                        <li>Create safe practice environments (simulations)</li>
+                        <li>Provide immediate, constructive feedback</li>
+                        <li>Allow stretch assignments with safety nets</li>
+                        <li>Track and celebrate skill progression</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <div class="breakdown-header">Measurement & ROI Calculation</div>
+
+                <div class="breakdown-item">
+                    <h4>Key Metrics to Track</h4>
+                    <table style="width: 100%; margin-top: 15px;">
+                        <tr>
+                            <th style="background: #1e3c72; color: white; padding: 10px;">Metric</th>
+                            <th style="background: #1e3c72; color: white; padding: 10px;">Baseline</th>
+                            <th style="background: #1e3c72; color: white; padding: 10px;">6 Months</th>
+                            <th style="background: #1e3c72; color: white; padding: 10px;">12 Months</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Error Management Score</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Measure</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+20%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+40%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Social-Normative MTL</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Measure</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+15%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+25%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">MTDL Scores</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Measure</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+25%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+45%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Leadership Capacity</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Measure</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+10%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+20%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Internal Promotions</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Measure</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+5%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">+15%</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="breakdown-item">
+                    <h4>ROI Calculation Formula</h4>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; font-family: monospace;">
+                        ROI = [(Benefit - Cost) / Cost] × 100
+                        <br><br>
+                        Benefits include:
+                        <br>• Reduced turnover costs
+                        <br>• Increased internal promotions (less external hiring)
+                        <br>• Improved team performance metrics
+                        <br>• Reduced error-related costs
+                        <br><br>
+                        Costs include:
+                        <br>• Training programs
+                        <br>• Assessment tools
+                        <br>• Lost productivity during training
+                        <br>• Consulting/facilitation
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Industry Applications -->
+        <div class="section">
+            <h2>🏢 Industry-Specific Applications</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>Healthcare</h4>
+                    <p><strong>Challenge:</strong> Medical errors can be life-threatening</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Implement "M&M conferences" (Morbidity & Mortality)</li>
+                        <li>Create non-punitive incident reporting</li>
+                        <li>Focus on system improvements, not blame</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Technology</h4>
+                    <p><strong>Challenge:</strong> Rapid innovation requires experimentation</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>"Fail fast" mentality with learning loops</li>
+                        <li>Blameless post-mortems for system failures</li>
+                        <li>Celebrate "intelligent failures"</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Manufacturing</h4>
+                    <p><strong>Challenge:</strong> Quality control vs innovation</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Kaizen approach to continuous improvement</li>
+                        <li>Near-miss reporting systems</li>
+                        <li>Cross-functional error analysis teams</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Financial Services</h4>
+                    <p><strong>Challenge:</strong> Regulatory compliance vs innovation</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Distinguish compliance errors from learning errors</li>
+                        <li>Sandbox environments for experimentation</li>
+                        <li>Risk-taking within defined parameters</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Education</h4>
+                    <p><strong>Challenge:</strong> Modeling learning from failure</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Teacher reflection practices</li>
+                        <li>Student-centered error discussions</li>
+                        <li>Growth mindset culture building</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Retail/Service</h4>
+                    <p><strong>Challenge:</strong> Customer-facing error management</p>
+                    <p><strong>Application:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Service recovery training</li>
+                        <li>Employee empowerment to fix mistakes</li>
+                        <li>Customer feedback as learning tool</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Correlation Matrix -->
+        <div class="section">
+            <h2>📊 Complete Correlation Matrix</h2>
+
+            <div class="correlation-matrix">
+                <table style="width: 100%;">
+                    <tr>
+                        <td class="matrix-cell matrix-header">Variable</td>
+                        <td class="matrix-cell matrix-header">1</td>
+                        <td class="matrix-cell matrix-header">2</td>
+                        <td class="matrix-cell matrix-header">3</td>
+                        <td class="matrix-cell matrix-header">4</td>
+                        <td class="matrix-cell matrix-header">5</td>
+                        <td class="matrix-cell matrix-header">6</td>
+                        <td class="matrix-cell matrix-header">7</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>1. Error Management</strong></td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                        <td class="matrix-cell positive-corr">.25**</td>
+                        <td class="matrix-cell neutral-corr">.11</td>
+                        <td class="matrix-cell positive-corr">.40**</td>
+                        <td class="matrix-cell neutral-corr">.16</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>2. Error Aversion</strong></td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell negative-corr">-.17*</td>
+                        <td class="matrix-cell neutral-corr">-.08</td>
+                        <td class="matrix-cell negative-corr">-.27**</td>
+                        <td class="matrix-cell neutral-corr">-.04</td>
+                        <td class="matrix-cell neutral-corr">-.16</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>3. Affective-Identity MTL</strong></td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                        <td class="matrix-cell negative-corr">-.17*</td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell positive-corr">.51**</td>
+                        <td class="matrix-cell positive-corr">.38**</td>
+                        <td class="matrix-cell positive-corr">.30**</td>
+                        <td class="matrix-cell neutral-corr">.01</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>4. Social-Normative MTL</strong></td>
+                        <td class="matrix-cell positive-corr">.25**</td>
+                        <td class="matrix-cell neutral-corr">-.08</td>
+                        <td class="matrix-cell positive-corr">.51**</td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell positive-corr">.36**</td>
+                        <td class="matrix-cell positive-corr">.44**</td>
+                        <td class="matrix-cell neutral-corr">.08</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>5. Non-Calculative MTL</strong></td>
+                        <td class="matrix-cell neutral-corr">.11</td>
+                        <td class="matrix-cell negative-corr">-.27**</td>
+                        <td class="matrix-cell positive-corr">.38**</td>
+                        <td class="matrix-cell positive-corr">.36**</td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell positive-corr">.23**</td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>6. MTDL</strong></td>
+                        <td class="matrix-cell positive-corr">.40**</td>
+                        <td class="matrix-cell neutral-corr">-.04</td>
+                        <td class="matrix-cell positive-corr">.30**</td>
+                        <td class="matrix-cell positive-corr">.44**</td>
+                        <td class="matrix-cell positive-corr">.23**</td>
+                        <td class="matrix-cell">—</td>
+                        <td class="matrix-cell positive-corr">.23**</td>
+                    </tr>
+                    <tr>
+                        <td class="matrix-cell"><strong>7. Leadership Capacity</strong></td>
+                        <td class="matrix-cell neutral-corr">.16</td>
+                        <td class="matrix-cell neutral-corr">-.16</td>
+                        <td class="matrix-cell neutral-corr">.01</td>
+                        <td class="matrix-cell neutral-corr">.08</td>
+                        <td class="matrix-cell neutral-corr">.06</td>
+                        <td class="matrix-cell positive-corr">.23**</td>
+                        <td class="matrix-cell">—</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 10px; font-style: italic;">* p < .05, ** p < .01 | Green = Positive correlation | Red = Negative correlation</p>
+            </div>
+        </div>
+
+        <!-- Final Thoughts -->
+        <div class="section" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+            <h2 style="color: white; border-bottom-color: white;">🎯 The Bottom Line for Practitioners</h2>
+
+            <div style="font-size: 1.2em; line-height: 2;">
+                <p>✅ <strong>DO:</strong> Create psychological safety for productive mistake-making</p>
+                <p>✅ <strong>DO:</strong> Frame leadership as duty and service to others</p>
+                <p>✅ <strong>DO:</strong> Measure and develop MTDL, not just MTL</p>
+                <p>✅ <strong>DO:</strong> Distinguish between learning errors and negligence</p>
+                <p>✅ <strong>DO:</strong> Track leadership capacity development over time</p>
+
+                <p style="margin-top: 20px;">❌ <strong>DON'T:</strong> Punish honest mistakes or learning attempts</p>
+                <p>❌ <strong>DON'T:</strong> Focus solely on making leadership "fun"</p>
+                <p>❌ <strong>DON'T:</strong> Assume desire to lead equals skill development</p>
+                <p>❌ <strong>DON'T:</strong> Hide or cover up errors</p>
+                <p>❌ <strong>DON'T:</strong> Expect immediate ROI (12-month horizon minimum)</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        function switchPage(pageId, btn) {
+            // Hide all pages
+            document.getElementById('main').style.display = 'none';
+            document.getElementById('analysis').style.display = 'none';
+
+            // Show selected page
+            document.getElementById(pageId).style.display = 'block';
+
+            // Update buttons
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Load charts if analysis page
+            if (pageId === 'analysis') {
+                loadCharts();
+            }
+        }
+
+        // Tab functionality
+        function showMethodTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Find and activate the clicked tab
+            const clickedTab = Array.from(tabs).find(tab => 
+                tab.getAttribute('onclick').includes(`'${tabName}'`)
+            );
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Load Charts
+        function loadCharts() {
+            // Correlation Chart
+            const correlationData = [
+                { name: 'Error Mgmt → MTDL', value: 0.32, color: '#4caf50' },
+                { name: 'Social-Norm MTL → MTDL', value: 0.28, color: '#2196f3' },
+                { name: 'MTDL → Leadership Cap', value: 0.23, color: '#9c27b0' },
+                { name: 'Error Aversion → Affective MTL', value: -0.18, color: '#f44336' },
+                { name: 'Error Aversion → Non-Calc MTL', value: -0.28, color: '#ff5722' },
+                { name: 'Leadership Cap → Promotions', value: 0.30, color: '#00bcd4' },
+                { name: 'Leadership Cap → Responsibilities', value: 0.49, color: '#009688' },
+                { name: 'Leadership Cap → Pay', value: 0.22, color: '#8bc34a' }
+            ];
+
+            const corrChart = document.getElementById('correlationChart');
+            if (!corrChart) return;
+
+            corrChart.innerHTML = '';
+
+            const maxValue = 0.6;
+            const chartWidth = corrChart.offsetWidth - 40;
+            const barHeight = 35;
+            const barGap = 15;
+
+            correlationData.forEach((item, index) => {
+                const barWidth = Math.abs(item.value) / maxValue * chartWidth * 0.8;
+                const isNegative = item.value < 0;
+                const leftPosition = isNegative ? (chartWidth * 0.5 - barWidth) : chartWidth * 0.5;
+
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.position = 'absolute';
+                bar.style.left = leftPosition + 'px';
+                bar.style.top = (index * (barHeight + barGap) + 20) + 'px';
+                bar.style.width = barWidth + 'px';
+                bar.style.height = barHeight + 'px';
+                bar.style.background = item.color;
+                bar.innerHTML = `
+                    <div class="bar-value">${item.value > 0 ? '+' : ''}${item.value.toFixed(2)}</div>
+                `;
+
+                const label = document.createElement('div');
+                label.style.position = 'absolute';
+                label.style.left = '10px';
+                label.style.top = (index * (barHeight + barGap) + 25) + 'px';
+                label.style.fontSize = '0.9em';
+                label.textContent = item.name;
+
+                corrChart.appendChild(bar);
+                corrChart.appendChild(label);
+            });
+
+            // Add center line
+            const centerLine = document.createElement('div');
+            centerLine.style.position = 'absolute';
+            centerLine.style.left = (chartWidth * 0.5) + 'px';
+            centerLine.style.top = '10px';
+            centerLine.style.width = '2px';
+            centerLine.style.height = ((correlationData.length) * (barHeight + barGap)) + 'px';
+            centerLine.style.background = '#666';
+            corrChart.appendChild(centerLine);
+
+            // Variance Chart
+            const varianceData = [
+                { name: 'MTDL', value: 86.61, color: '#1e3c72' },
+                { name: 'Affective-Identity MTL', value: 3.35, color: '#64b5f6' },
+                { name: 'Social-Normative MTL', value: 4.09, color: '#42a5f5' },
+                { name: 'Non-Calculative MTL', value: 5.94, color: '#2196f3' }
+            ];
+
+            const varChart = document.getElementById('varianceChart');
+            if (!varChart) return;
+
+            varChart.innerHTML = '';
+
+            varianceData.forEach((item, index) => {
+                const barWidth = 100;
+                const maxHeight = 300;
+                const barHeight = (item.value / 100) * maxHeight;
+
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.position = 'absolute';
+                bar.style.left = (index * (barWidth + 30) + 50) + 'px';
+                bar.style.bottom = '40px';
+                bar.style.width = barWidth + 'px';
+                bar.style.height = barHeight + 'px';
+                bar.style.background = item.color;
+                bar.innerHTML = `
+                    <div class="bar-value" style="padding: 10px;">${item.value.toFixed(1)}%</div>
+                    <div class="bar-label" style="position: absolute; bottom: -30px; width: 100%; text-align: center; color: #333; font-size: 0.9em;">${item.name}</div>
+                `;
+
+                varChart.appendChild(bar);
+            });
+        }
+
+        // Calculator functionality
+        function updateCalculator() {
+            const errorMgmt = document.getElementById('errorMgmtSlider').value / 100;
+            const errorAversion = document.getElementById('errorAversionSlider').value / 100;
+            const duty = document.getElementById('dutySlider').value / 100;
+
+            // Update display values
+            document.getElementById('errorMgmtValue').textContent = Math.round(errorMgmt * 100);
+            document.getElementById('errorAversionValue').textContent = Math.round(errorAversion * 100);
+            document.getElementById('dutyValue').textContent = Math.round(duty * 100);
+
+            // Calculate predicted outcomes based on study coefficients
+            const mtdl = (errorMgmt * 0.32 + duty * 0.28 - errorAversion * 0.1) / 0.7 * 100;
+            const capacity = (mtdl / 100 * 0.23 + duty * 0.08) / 0.31 * 100;
+            const success = capacity * 0.8; // Simplified calculation
+
+            // Update predictions
+            document.getElementById('mtdlPrediction').textContent =
+                `MTDL Score: ${Math.min(100, Math.max(0, mtdl)).toFixed(0)}%`;
+            document.getElementById('capacityPrediction').textContent =
+                `Leadership Capacity: ${Math.min(100, Math.max(0, capacity)).toFixed(0)}%`;
+            document.getElementById('successPrediction').textContent =
+                `Career Success Likelihood: ${Math.min(100, Math.max(0, success)).toFixed(0)}%`;
+
+            // Recommendations
+            let recommendation = '';
+            if (errorMgmt > 70 && errorAversion < 30) {
+                recommendation = '✅ Excellent culture for leadership development!';
+            } else if (errorMgmt > 50 && errorAversion < 50) {
+                recommendation = '👍 Good foundation, continue improving error management.';
+            } else if (errorAversion > 70) {
+                recommendation = '⚠️ High error aversion is suppressing leadership potential.';
+            } else {
+                recommendation = '📈 Opportunity: Increase error management practices.';
+            }
+
+            document.getElementById('recommendation').textContent = recommendation;
+        }
+
+        // Initialize calculator on load
+        window.onload = function() {
+            updateCalculator();
+        };
+    </script>
+</body>
+</html>
