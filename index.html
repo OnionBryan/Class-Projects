@@ -366,6 +366,42 @@
             margin: 30px 0;
         }
 
+        /* Scenario Button Styles */
+        .scenario-btn {
+            background: white;
+            border: 3px solid #e0e6ed;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        .scenario-btn:hover {
+            border-color: #2a5298;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(30,60,114,0.2);
+        }
+
+        .scenario-btn.selected {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-color: #1e3c72;
+            box-shadow: 0 10px 25px rgba(30,60,114,0.4);
+        }
+
+        .scenario-btn strong {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .scenario-btn small {
+            display: block;
+            opacity: 0.8;
+        }
+
         .slider-container {
             margin: 25px 0;
         }
@@ -390,12 +426,60 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #2a5298;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: none;
+        }
+
         .result-display {
-            padding: 20px;
+            padding: 25px;
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-top: 20px;
             border: 3px solid #2a5298;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Pathway Visualization */
+        .pathway-viz {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .pathway-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 1.05em;
+        }
+
+        .pathway-node {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #2a5298;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .pathway-arrow-right {
+            margin: 0 15px;
+            font-size: 1.5em;
+            color: #2a5298;
+        }
+
+        .pathway-label {
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+            margin-left: 10px;
         }
 
         /* Hypothesis Results */
@@ -589,6 +673,8 @@
             .bar { font-size: 0.8em; }
             table { font-size: 0.85em; }
             .matrix-cell { padding: 5px; font-size: 0.8em; }
+            .pathway-step { flex-direction: column; align-items: flex-start; }
+            .pathway-arrow-right { transform: rotate(90deg); margin: 10px 0; }
         }
 
         /* Page visibility */
@@ -731,7 +817,7 @@
             <div class="tabs">
                 <button class="tab active" onclick="showMethodTab('sample')">Sample & Design</button>
                 <button class="tab" onclick="showMethodTab('measures')">Measures</button>
-                <button class="tab" onclick="showMethodTab('analysis')">Statistical Analysis</button>
+                <button class="tab" onclick="showMethodTab('statistical-analysis')">Statistical Analysis</button>
                 <button class="tab" onclick="showMethodTab('timeline')">Timeline</button>
             </div>
 
@@ -1080,35 +1166,51 @@
             </div>
         </div>
 
-        <!-- Interactive Calculator -->
+        <!-- REVISED CALCULATOR - Scenario-Based -->
         <div class="section">
-            <h2>🧮 Leadership Development ROI Calculator</h2>
+            <h2>🧮 Leadership Development Scenario Calculator</h2>
 
             <div class="interactive-demo">
-                <h3>Estimate Your Organization's Leadership Development Potential</h3>
-                <p>Adjust the sliders to see how error culture impacts leadership outcomes:</p>
+                <h3>Explore How Error Culture + Individual Duty Drive Leadership Outcomes</h3>
+                <p style="margin-bottom: 20px;">Select an organizational scenario below, then adjust individual duty orientation to see predicted outcomes:</p>
 
-                <div class="slider-container">
-                    <label>Error Management Culture (0-100%): <span id="errorMgmtValue">50</span>%</label>
-                    <input type="range" class="slider" id="errorMgmtSlider" min="0" max="100" value="50" oninput="updateCalculator()">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <button class="scenario-btn" id="scenario-optimal" onclick="setScenario('optimal')">
+                        <strong>🌟 Optimal Learning Culture</strong><br>
+                        <small>High error management (80%)<br>Low error aversion (20%)</small>
+                    </button>
+                    
+                    <button class="scenario-btn" id="scenario-developing" onclick="setScenario('developing')">
+                        <strong>📈 Developing Culture</strong><br>
+                        <small>Moderate error management (50%)<br>Moderate error aversion (50%)</small>
+                    </button>
+                    
+                    <button class="scenario-btn" id="scenario-toxic" onclick="setScenario('toxic')">
+                        <strong>🚫 Punitive Culture</strong><br>
+                        <small>Low error management (20%)<br>High error aversion (80%)</small>
+                    </button>
+                    
+                    <button class="scenario-btn" id="scenario-unclear" onclick="setScenario('unclear')">
+                        <strong>❓ Unclear/Weak Culture</strong><br>
+                        <small>Low error management (30%)<br>Low error aversion (30%)</small>
+                    </button>
+
+                    <button class="scenario-btn" id="scenario-mixed" onclick="setScenario('mixed')">
+                        <strong>⚠️ Mixed/Confused Culture</strong><br>
+                        <small>High error management (70%)<br>High error aversion (60%)</small>
+                    </button>
                 </div>
 
-                <div class="slider-container">
-                    <label>Error Aversion Culture (0-100%): <span id="errorAversionValue">50</span>%</label>
-                    <input type="range" class="slider" id="errorAversionSlider" min="0" max="100" value="50" oninput="updateCalculator()">
+                <div class="slider-container" style="margin-top: 30px;">
+                    <label style="font-size: 1.1em; font-weight: 600;">Individual's Baseline Sense of Duty: <span id="dutyValue">50</span>%</label>
+                    <input type="range" class="slider" id="dutySlider" min="0" max="100" value="50" oninput="calculateFromScenario()">
+                    <p style="font-size: 0.95em; font-style: italic; margin-top: 8px; color: #666;">
+                        How strongly does this individual feel obligated to serve and lead others? (Independent of organizational culture)
+                    </p>
                 </div>
 
-                <div class="slider-container">
-                    <label>Current Social-Normative MTL (0-100%): <span id="dutyValue">50</span>%</label>
-                    <input type="range" class="slider" id="dutySlider" min="0" max="100" value="50" oninput="updateCalculator()">
-                </div>
-
-                <div id="calculatorResult" class="result-display">
-                    <h4>Predicted Outcomes:</h4>
-                    <p id="mtdlPrediction">MTDL Score: --</p>
-                    <p id="capacityPrediction">Leadership Capacity: --</p>
-                    <p id="successPrediction">Career Success Likelihood: --</p>
-                    <p id="recommendation" style="margin-top: 20px; font-weight: bold; color: #1e3c72;">Adjust sliders to see impact</p>
+                <div id="calculatorResult" class="result-display" style="display: none;">
+                    <!-- Results will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -1230,8 +1332,6 @@
             </p>
 
             <p style="margin-top: 20px;">
-                <a href="#" onclick="alert('Sharing features would be implemented here')">Share</a> |
-                <a href="#" onclick="alert('Download PDF feature would be implemented here')">Download Summary</a> |
                 <a href="https://doi.org/10.1111/joop.12181" target="_blank">Read Full Paper</a>
             </p>
         </div>
@@ -1697,6 +1797,13 @@
     </div>
 
     <script>
+        // Global variables for scenario state
+        let currentScenario = {
+            name: '',
+            errorMgmt: 0,
+            errorAversion: 0
+        };
+
         function switchPage(pageId, btn) {
             // Hide all pages
             document.getElementById('main').style.display = 'none';
@@ -1732,6 +1839,261 @@
             }
             
             document.getElementById(tabName).classList.add('active');
+        }
+
+        // SCENARIO-BASED CALCULATOR
+
+        function setScenario(scenarioName) {
+            // Remove selected class from all scenario buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Add selected class to clicked scenario
+            document.getElementById('scenario-' + scenarioName).classList.add('selected');
+
+            // Set scenario parameters
+            const scenarios = {
+                'optimal': {
+                    name: 'Optimal Learning Culture',
+                    errorMgmt: 0.80,
+                    errorAversion: 0.20,
+                    description: 'High error management (80%), Low error aversion (20%)'
+                },
+                'developing': {
+                    name: 'Developing Culture',
+                    errorMgmt: 0.50,
+                    errorAversion: 0.50,
+                    description: 'Moderate error management (50%), Moderate error aversion (50%)'
+                },
+                'toxic': {
+                    name: 'Punitive Culture',
+                    errorMgmt: 0.20,
+                    errorAversion: 0.80,
+                    description: 'Low error management (20%), High error aversion (80%)'
+                },
+                'unclear': {
+                    name: 'Unclear/Weak Culture',
+                    errorMgmt: 0.30,
+                    errorAversion: 0.30,
+                    description: 'Low error management (30%), Low error aversion (30%)'
+                },
+                'mixed': {
+                    name: 'Mixed/Confused Culture',
+                    errorMgmt: 0.70,
+                    errorAversion: 0.60,
+                    description: 'High error management (70%), High error aversion (60%)'
+                }
+            };
+
+            currentScenario = scenarios[scenarioName];
+            calculateFromScenario();
+        }
+
+        function calculateFromScenario() {
+            if (!currentScenario.name) {
+                return; // No scenario selected yet
+            }
+
+            const duty = document.getElementById('dutySlider').value / 100;
+            document.getElementById('dutyValue').textContent = Math.round(duty * 100);
+
+            // THE ACTUAL PATHWAYS FROM THE STUDY:
+            
+            // Path 1: Error Management → Social-Normative MTL (β = .26)
+            const snMTL_from_culture = currentScenario.errorMgmt * 0.26;
+            
+            // Path 2: Baseline duty + culture boost
+            const total_snMTL = Math.min(1, duty + snMTL_from_culture);
+            
+            // Path 3: Error Management → MTDL (β = .32, direct effect)
+            const mtdl_from_culture = currentScenario.errorMgmt * 0.32;
+            
+            // Path 4: Social-Normative MTL → MTDL (β = .28)
+            const mtdl_from_duty = total_snMTL * 0.28;
+            
+            // Total MTDL (combining both paths)
+            const total_mtdl = Math.min(1, mtdl_from_culture + mtdl_from_duty);
+            
+            // Path 5: MTDL → Leadership Capacity (β = .23)
+            const capacity = total_mtdl * 0.23;
+            
+            // Path 6: Leadership Capacity → Career Success (average of β = .30, .49, .22)
+            const success = capacity * 0.337;
+            
+            // NOTE: Error aversion affects Affective-Identity and Non-Calculative MTL
+            // but these DON'T significantly predict MTDL or capacity
+            // We'll mention this in the side-effects section
+            
+            const affective_impact = currentScenario.errorAversion * -0.18;
+            const noncalc_impact = currentScenario.errorAversion * -0.28;
+
+            // Convert to percentages for display
+            const mtdl_pct = Math.round(total_mtdl * 100);
+            const capacity_pct = Math.round(capacity * 100);
+            const success_pct = Math.round(success * 100);
+
+            // Display results
+            const resultDiv = document.getElementById('calculatorResult');
+            resultDiv.style.display = 'block';
+            
+            resultDiv.innerHTML = `
+                <h3 style="color: #1e3c72; margin-bottom: 20px;">📊 Predicted Outcomes for "${currentScenario.name}"</h3>
+                
+                <div class="pathway-viz">
+                    <h4 style="margin-bottom: 15px;">The Causal Pathway:</h4>
+                    
+                    <div class="pathway-step">
+                        <div class="pathway-node">Error Mgmt: ${Math.round(currentScenario.errorMgmt * 100)}%</div>
+                        <span class="pathway-arrow-right">→</span>
+                        <div class="pathway-node">Social-Normative MTL: ${Math.round(total_snMTL * 100)}%</div>
+                        <span class="pathway-label">(β = .26 + baseline duty)</span>
+                    </div>
+                    
+                    <div class="pathway-step">
+                        <div class="pathway-node">Error Mgmt: ${Math.round(currentScenario.errorMgmt * 100)}%</div>
+                        <span class="pathway-arrow-right">→</span>
+                        <div class="pathway-node">MTDL: ${mtdl_pct}%</div>
+                        <span class="pathway-label">(β = .32, direct)</span>
+                    </div>
+                    
+                    <div class="pathway-step">
+                        <div class="pathway-node">Social-Normative MTL: ${Math.round(total_snMTL * 100)}%</div>
+                        <span class="pathway-arrow-right">→</span>
+                        <div class="pathway-node">MTDL: ${mtdl_pct}%</div>
+                        <span class="pathway-label">(β = .28)</span>
+                    </div>
+                    
+                    <div class="pathway-step">
+                        <div class="pathway-node">MTDL: ${mtdl_pct}%</div>
+                        <span class="pathway-arrow-right">→</span>
+                        <div class="pathway-node">Leadership Capacity: ${capacity_pct}%</div>
+                        <span class="pathway-label">(β = .23)</span>
+                    </div>
+                    
+                    <div class="pathway-step">
+                        <div class="pathway-node">Leadership Capacity: ${capacity_pct}%</div>
+                        <span class="pathway-arrow-right">→</span>
+                        <div class="pathway-node">Career Success: ${success_pct}%</div>
+                        <span class="pathway-label">(avg β = .337)</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 25px; padding: 20px; background: #e3f2fd; border-radius: 10px;">
+                    <h4 style="color: #1e3c72;">Key Metrics Summary:</h4>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        <li><strong>MTDL (Motivation to Develop Skills):</strong> ${mtdl_pct}%</li>
+                        <li><strong>Leadership Capacity (Supervisor-rated):</strong> ${capacity_pct}%</li>
+                        <li><strong>Career Success Likelihood:</strong> ${success_pct}%</li>
+                        <li style="margin-top: 10px;"><strong>Social-Normative MTL (Duty):</strong> ${Math.round(total_snMTL * 100)}%</li>
+                    </ul>
+                </div>
+                
+                ${currentScenario.errorAversion > 0.4 ? `
+                <div style="margin-top: 20px; padding: 20px; background: #fff3e0; border-radius: 10px; border-left: 5px solid #ff9800;">
+                    <h4 style="color: #e65100;">⚠️ Error Aversion Side Effects (${Math.round(currentScenario.errorAversion * 100)}%):</h4>
+                    <p style="line-height: 1.8;">High error aversion is reducing peripheral leadership motivations:</p>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Affective-Identity MTL impact:</strong> ${Math.round(affective_impact * 100)}% (people enjoy leading less)</li>
+                        <li><strong>Non-Calculative MTL impact:</strong> ${Math.round(noncalc_impact * 100)}% (people become more calculative about benefits)</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-style: italic; color: #666;">
+                        Note: These MTL dimensions don't significantly affect MTDL or capacity, but they reduce overall willingness to assume leadership roles.
+                    </p>
+                </div>
+                ` : ''}
+                
+                <div style="margin-top: 25px; padding: 20px; background: white; border-radius: 10px; border: 2px solid #1e3c72;">
+                    ${generateRecommendation(currentScenario, duty, total_snMTL, total_mtdl)}
+                </div>
+            `;
+        }
+
+        function generateRecommendation(scenario, duty, snMTL, mtdl) {
+            let rec = '<h4 style="color: #1e3c72; margin-bottom: 15px;">💡 Strategic Recommendations:</h4>';
+            rec += '<div style="text-align: left; line-height: 1.8;">';
+            
+            // Culture Assessment
+            rec += '<strong>📊 Culture Assessment:</strong><br>';
+            if (scenario.errorMgmt > 0.7 && scenario.errorAversion < 0.3) {
+                rec += '<span style="color: #4caf50; font-weight: bold;">✅ OPTIMAL CULTURE</span> - High error management, low aversion<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">Your culture is ideal for leadership development. Focus on:</p>';
+                rec += '<ul style="margin-left: 40px;"><li>Maintaining current practices</li><li>Scaling successful programs</li><li>Documenting best practices</li></ul>';
+            } else if (scenario.errorMgmt > 0.5 && scenario.errorAversion < 0.5) {
+                rec += '<span style="color: #2196f3; font-weight: bold;">👍 GOOD CULTURE</span> - Error management is present<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">You have a solid foundation. Priority actions:</p>';
+                rec += '<ul style="margin-left: 40px;"><li>Strengthen error management practices</li><li>Continue reducing punitive responses</li><li>Expand psychological safety initiatives</li></ul>';
+            } else if (scenario.errorAversion > 0.7) {
+                rec += '<span style="color: #f44336; font-weight: bold;">🚨 TOXIC CULTURE</span> - High error aversion suppresses leadership<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">URGENT: This culture is actively harmful. Immediate actions needed:</p>';
+                rec += '<ul style="margin-left: 40px;"><li><strong>Remove punitive policies</strong> for honest mistakes</li><li><strong>Senior leader commitment</strong> to error management</li><li><strong>Anonymous error reporting</strong> systems</li><li><strong>Celebrate learning</strong> from failures publicly</li></ul>';
+            } else if (scenario.errorMgmt < 0.4 && scenario.errorAversion > 0.5) {
+                rec += '<span style="color: #ff9800; font-weight: bold;">⚠️ PROBLEMATIC</span> - Punitive with no learning systems<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">Your culture punishes errors without providing learning alternatives:</p>';
+                rec += '<ul style="margin-left: 40px;"><li>First: Reduce punishment</li><li>Second: Build error management practices</li><li>Focus on psychological safety</li></ul>';
+            } else if (scenario.errorMgmt > 0.6 && scenario.errorAversion > 0.5) {
+                rec += '<span style="color: #ff9800; font-weight: bold;">⚠️ MIXED/CONFUSED</span> - Contradictory signals<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">Your organization sends mixed messages about errors:</p>';
+                rec += '<ul style="margin-left: 40px;"><li>Clarify error management philosophy</li><li>Ensure leadership alignment</li><li>Remove conflicting policies</li><li>Train managers on consistent approach</li></ul>';
+            } else {
+                rec += '<span style="color: #9e9e9e; font-weight: bold;">➡️ NEUTRAL/UNCLEAR</span> - No strong culture signals<br>';
+                rec += '<p style="margin: 10px 0 10px 20px;">Your organization lacks clear error management culture:</p>';
+                rec += '<ul style="margin-left: 40px;"><li>Define error management philosophy</li><li>Communicate expectations clearly</li><li>Build systematic approaches</li></ul>';
+            }
+            
+            rec += '<br><strong>🎯 Key Pathway Analysis:</strong><br>';
+            
+            // Primary pathway strength
+            if (scenario.errorMgmt > 0.6) {
+                rec += '✅ <strong>Error Mgmt → MTDL pathway:</strong> <span style="color: #4caf50;">STRONG</span> (β=.32)<br>';
+            } else if (scenario.errorMgmt > 0.4) {
+                rec += '➡️ <strong>Error Mgmt → MTDL pathway:</strong> <span style="color: #2196f3;">MODERATE</span><br>';
+            } else {
+                rec += '⚠️ <strong>Error Mgmt → MTDL pathway:</strong> <span style="color: #f44336;">WEAK</span><br>';
+            }
+            
+            // Duty pathway
+            if (snMTL > 0.6) {
+                rec += '✅ <strong>Duty → MTDL pathway:</strong> <span style="color: #4caf50;">STRONG</span> (β=.28)<br>';
+            } else if (snMTL > 0.4) {
+                rec += '➡️ <strong>Duty → MTDL pathway:</strong> <span style="color: #2196f3;">MODERATE</span><br>';
+            } else {
+                rec += '⚠️ <strong>Duty → MTDL pathway:</strong> <span style="color: #f44336;">WEAK</span><br>';
+            }
+            
+            rec += '<br><strong>🚀 Top 3 Priority Actions:</strong><br>';
+            
+            // Specific recommendations based on values
+            const recommendations = [];
+            
+            if (scenario.errorMgmt < 0.5) {
+                recommendations.push('<strong>1. Implement Error Management Practices</strong> (biggest impact on MTDL)<br>• Create learning-from-failure meetings<br>• Non-punitive error reporting<br>• Analyze errors for system improvements');
+            }
+            
+            if (duty < 0.5 && scenario.errorMgmt > 0.4) {
+                recommendations.push('<strong>' + (recommendations.length + 1) + '. Frame Leadership as Service/Duty</strong><br>• Connect roles to organizational mission<br>• Emphasize impact on others<br>• Recognize duty-driven behavior');
+            }
+            
+            if (scenario.errorAversion > 0.6) {
+                recommendations.push('<strong>' + (recommendations.length + 1) + '. Reduce Punitive Practices</strong> (harming leadership motivation)<br>• Distinguish negligence from learning errors<br>• Train managers in psychological safety<br>• Remove blame from error discussions');
+            }
+            
+            if (mtdl < 0.4) {
+                recommendations.push('<strong>' + (recommendations.length + 1) + '. Create Skill Development Opportunities</strong><br>• Offer targeted leadership training<br>• Provide safe practice environments<br>• Give stretch assignments with support');
+            }
+            
+            if (recommendations.length === 0) {
+                recommendations.push('<strong>1. Maintain and Scale Current Practices</strong><br>• Document what\'s working<br>• Share best practices<br>• Expand to other teams');
+                recommendations.push('<strong>2. Track and Measure Impact</strong><br>• Monitor MTDL scores<br>• Track leadership capacity<br>• Measure career outcomes');
+            }
+            
+            // Show top 3 recommendations
+            for (let i = 0; i < Math.min(3, recommendations.length); i++) {
+                rec += '<p style="margin: 10px 0 10px 20px;">' + recommendations[i] + '</p>';
+            }
+            
+            rec += '</div>';
+            return rec;
         }
 
         // Load Charts
@@ -1831,61 +2193,17 @@
             });
         }
 
-       function updateCalculator() {
-    const errorMgmt = document.getElementById('errorMgmtSlider').value / 100;
-    const errorAversion = document.getElementById('errorAversionSlider').value / 100;
-    const duty = document.getElementById('dutySlider').value / 100;
-
-    // Update display values
-    document.getElementById('errorMgmtValue').textContent = Math.round(errorMgmt * 100);
-    document.getElementById('errorAversionValue').textContent = Math.round(errorAversion * 100);
-    document.getElementById('dutyValue').textContent = Math.round(duty * 100);
-
-    // Calculate based on ACTUAL study findings:
-    // Error Mgmt → Social-Normative MTL (β = .26)
-    // Error Mgmt → MTDL (β = .32)  
-    // Social-Normative MTL → MTDL (β = .28)
-    // Error Aversion → Affective-Identity MTL (β = -.18)
-    // Error Aversion → Non-Calculative MTL (β = -.28)
-    // Error Aversion → MTDL: NO RELATIONSHIP (H2b not supported)
-    
-    // Calculate social-normative MTL boost from error management
-    const snMTL_boost = errorMgmt * 0.26;
-    const combined_duty = (duty + snMTL_boost) / 2; // Average baseline duty with culture boost
-    
-    // Calculate MTDL (only from error mgmt and duty - NOT from error aversion)
-    const mtdl = (errorMgmt * 0.32 + combined_duty * 0.28) * 100;
-    
-    // Calculate leadership capacity from MTDL
-    const capacity = (mtdl / 100 * 0.23) * 100;
-    
-    // Calculate career success from capacity
-    const success = (capacity / 100) * ((0.30 + 0.49 + 0.22) / 3) * 100;
-
-    // Update predictions
-    document.getElementById('mtdlPrediction').textContent =
-        `MTDL Score: ${Math.min(100, Math.max(0, mtdl)).toFixed(0)}%`;
-    document.getElementById('capacityPrediction').textContent =
-        `Leadership Capacity: ${Math.min(100, Math.max(0, capacity)).toFixed(0)}%`;
-    document.getElementById('successPrediction').textContent =
-        `Career Success Likelihood: ${Math.min(100, Math.max(0, success)).toFixed(0)}%`;
-
-    // Recommendations based on actual findings
-    let recommendation = '';
-    if (errorMgmt > 70 && combined_duty > 0.6) {
-        recommendation = '✅ Excellent! High error management + strong duty orientation = optimal development';
-    } else if (errorMgmt > 50) {
-        recommendation = '👍 Good foundation. Error management is driving duty and skill development.';
-    } else if (errorAversion > 70) {
-        recommendation = '⚠️ Warning: Error aversion suppresses enjoyment and calculative motives (but doesn\'t directly block MTDL)';
-    } else if (errorMgmt < 30) {
-        recommendation = '📈 Critical: Low error management limits duty-based motivation and MTDL';
-    } else {
-        recommendation = '🎯 Opportunity: Boost error management to enhance duty → MTDL → capacity pathway';
-    }
-
-    document.getElementById('recommendation').textContent = recommendation;
-}
+        // Initialize with prompt to select scenario
+        window.onload = function() {
+            const resultDiv = document.getElementById('calculatorResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h3 style="color: #1e3c72; margin-bottom: 15px;">👆 Select a Scenario Above to Begin</h3>
+                    <p style="font-size: 1.1em; color: #666;">Choose an organizational culture scenario, then adjust the individual duty slider to see how error culture and personal duty combine to drive leadership development outcomes.</p>
+                </div>
+            `;
+        };
     </script>
 </body>
 </html>
