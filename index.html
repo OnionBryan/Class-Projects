@@ -1831,49 +1831,61 @@
             });
         }
 
-        // Calculator functionality
-        function updateCalculator() {
-            const errorMgmt = document.getElementById('errorMgmtSlider').value / 100;
-            const errorAversion = document.getElementById('errorAversionSlider').value / 100;
-            const duty = document.getElementById('dutySlider').value / 100;
+       function updateCalculator() {
+    const errorMgmt = document.getElementById('errorMgmtSlider').value / 100;
+    const errorAversion = document.getElementById('errorAversionSlider').value / 100;
+    const duty = document.getElementById('dutySlider').value / 100;
 
-            // Update display values
-            document.getElementById('errorMgmtValue').textContent = Math.round(errorMgmt * 100);
-            document.getElementById('errorAversionValue').textContent = Math.round(errorAversion * 100);
-            document.getElementById('dutyValue').textContent = Math.round(duty * 100);
+    // Update display values
+    document.getElementById('errorMgmtValue').textContent = Math.round(errorMgmt * 100);
+    document.getElementById('errorAversionValue').textContent = Math.round(errorAversion * 100);
+    document.getElementById('dutyValue').textContent = Math.round(duty * 100);
 
-            // Calculate predicted outcomes based on study coefficients
-            const mtdl = (errorMgmt * 0.32 + duty * 0.28 - errorAversion * 0.1) / 0.7 * 100;
-            const capacity = (mtdl / 100 * 0.23 + duty * 0.08) / 0.31 * 100;
-            const success = capacity * 0.8; // Simplified calculation
+    // Calculate based on ACTUAL study findings:
+    // Error Mgmt → Social-Normative MTL (β = .26)
+    // Error Mgmt → MTDL (β = .32)  
+    // Social-Normative MTL → MTDL (β = .28)
+    // Error Aversion → Affective-Identity MTL (β = -.18)
+    // Error Aversion → Non-Calculative MTL (β = -.28)
+    // Error Aversion → MTDL: NO RELATIONSHIP (H2b not supported)
+    
+    // Calculate social-normative MTL boost from error management
+    const snMTL_boost = errorMgmt * 0.26;
+    const combined_duty = (duty + snMTL_boost) / 2; // Average baseline duty with culture boost
+    
+    // Calculate MTDL (only from error mgmt and duty - NOT from error aversion)
+    const mtdl = (errorMgmt * 0.32 + combined_duty * 0.28) * 100;
+    
+    // Calculate leadership capacity from MTDL
+    const capacity = (mtdl / 100 * 0.23) * 100;
+    
+    // Calculate career success from capacity
+    const success = (capacity / 100) * ((0.30 + 0.49 + 0.22) / 3) * 100;
 
-            // Update predictions
-            document.getElementById('mtdlPrediction').textContent =
-                `MTDL Score: ${Math.min(100, Math.max(0, mtdl)).toFixed(0)}%`;
-            document.getElementById('capacityPrediction').textContent =
-                `Leadership Capacity: ${Math.min(100, Math.max(0, capacity)).toFixed(0)}%`;
-            document.getElementById('successPrediction').textContent =
-                `Career Success Likelihood: ${Math.min(100, Math.max(0, success)).toFixed(0)}%`;
+    // Update predictions
+    document.getElementById('mtdlPrediction').textContent =
+        `MTDL Score: ${Math.min(100, Math.max(0, mtdl)).toFixed(0)}%`;
+    document.getElementById('capacityPrediction').textContent =
+        `Leadership Capacity: ${Math.min(100, Math.max(0, capacity)).toFixed(0)}%`;
+    document.getElementById('successPrediction').textContent =
+        `Career Success Likelihood: ${Math.min(100, Math.max(0, success)).toFixed(0)}%`;
 
-            // Recommendations
-            let recommendation = '';
-            if (errorMgmt > 70 && errorAversion < 30) {
-                recommendation = '✅ Excellent culture for leadership development!';
-            } else if (errorMgmt > 50 && errorAversion < 50) {
-                recommendation = '👍 Good foundation, continue improving error management.';
-            } else if (errorAversion > 70) {
-                recommendation = '⚠️ High error aversion is suppressing leadership potential.';
-            } else {
-                recommendation = '📈 Opportunity: Increase error management practices.';
-            }
+    // Recommendations based on actual findings
+    let recommendation = '';
+    if (errorMgmt > 70 && combined_duty > 0.6) {
+        recommendation = '✅ Excellent! High error management + strong duty orientation = optimal development';
+    } else if (errorMgmt > 50) {
+        recommendation = '👍 Good foundation. Error management is driving duty and skill development.';
+    } else if (errorAversion > 70) {
+        recommendation = '⚠️ Warning: Error aversion suppresses enjoyment and calculative motives (but doesn\'t directly block MTDL)';
+    } else if (errorMgmt < 30) {
+        recommendation = '📈 Critical: Low error management limits duty-based motivation and MTDL';
+    } else {
+        recommendation = '🎯 Opportunity: Boost error management to enhance duty → MTDL → capacity pathway';
+    }
 
-            document.getElementById('recommendation').textContent = recommendation;
-        }
-
-        // Initialize calculator on load
-        window.onload = function() {
-            updateCalculator();
-        };
+    document.getElementById('recommendation').textContent = recommendation;
+}
     </script>
 </body>
 </html>
