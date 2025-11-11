@@ -1110,41 +1110,71 @@
             box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6);
         }
 
-        /* Waterfall Chart */
+        /* Waterfall Chart - Enhanced True Waterfall */
         .waterfall-container {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 400px;
+            position: relative;
+            height: 500px;
             background: #f8f9fa;
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 15px;
             margin: 30px 0;
-            position: relative;
+            overflow: visible;
         }
 
         body.dark-mode .waterfall-container {
             background: #1e293b;
         }
 
+        .waterfall-wrapper {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
         .waterfall-bar {
             flex: 1;
-            margin: 0 10px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
             transition: all 0.5s ease;
+            min-width: 80px;
         }
 
         .waterfall-bar-inner {
             width: 100%;
-            border-radius: 5px 5px 0 0;
-            position: absolute;
-            bottom: 0;
+            border-radius: 8px;
+            position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
             transition: all 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            padding: 10px 5px;
+        }
+
+        .waterfall-bar-inner:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .waterfall-value {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .waterfall-percentage {
+            font-size: 0.75em;
+            opacity: 0.9;
+            margin-top: 3px;
         }
 
         .waterfall-label {
@@ -1152,7 +1182,179 @@
             margin-top: 10px;
             font-weight: 600;
             font-size: 0.9em;
+            color: #333;
         }
+
+        body.dark-mode .waterfall-label {
+            color: #e5e7eb;
+        }
+
+        .waterfall-connector {
+            position: absolute;
+            border-top: 2px dashed #666;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Tornado Diagram */
+        .tornado-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        body.dark-mode .tornado-container {
+            background: #1e293b;
+        }
+
+        .tornado-row {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            gap: 10px;
+        }
+
+        .tornado-label {
+            width: 150px;
+            font-weight: 600;
+            text-align: right;
+            padding-right: 15px;
+        }
+
+        .tornado-bar-container {
+            flex: 1;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            position: relative;
+        }
+
+        .tornado-bar {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tornado-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.1);
+        }
+
+        .tornado-bar.negative {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .tornado-bar.positive {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        /* Scenario Comparison Table */
+        .scenario-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .scenario-table th {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .scenario-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        body.dark-mode .scenario-table td {
+            border-bottom: 1px solid #374151;
+        }
+
+        .scenario-table tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .scenario-worst { background: #fef2f2; }
+        .scenario-likely { background: #f0fdf4; }
+        .scenario-best { background: #eff6ff; }
+
+        body.dark-mode .scenario-worst { background: rgba(239, 68, 68, 0.1); }
+        body.dark-mode .scenario-likely { background: rgba(16, 185, 129, 0.1); }
+        body.dark-mode .scenario-best { background: rgba(59, 130, 246, 0.1); }
+
+        .decision-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .decision-strong-yes {
+            background: #10b981;
+            color: white;
+        }
+
+        .decision-yes {
+            background: #6ee7b7;
+            color: #065f46;
+        }
+
+        .decision-maybe {
+            background: #fbbf24;
+            color: #78350f;
+        }
+
+        .decision-no {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Risk Indicator */
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .risk-medium {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .risk-high {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+
+        body.dark-mode .risk-low { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+        body.dark-mode .risk-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        body.dark-mode .risk-high { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
 
         /* Scatter Plot */
         .scatter-plot {
@@ -2539,9 +2741,36 @@ This estimate uses:
         <!-- NEW: Waterfall Chart -->
         <div class="section">
             <h2>💧 Waterfall Analysis: Components of Net Utility</h2>
-            <p>This waterfall chart breaks down how each component contributes to your final Net Utility (ΔU):</p>
+            <p>This true waterfall chart shows how each factor builds upon the previous to create your final Net Utility (ΔU). Watch how value accumulates through multiplication, then see the impact of costs:</p>
             <div class="waterfall-container" id="waterfallChart">
                 <!-- Chart will be populated by JavaScript -->
+            </div>
+            <div id="waterfallInsights" style="margin-top: 20px;">
+                <!-- Dynamic insights will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- NEW: Tornado Diagram for Sensitivity Analysis -->
+        <div class="section">
+            <h2>🌪️ Tornado Diagram: Which Variables Matter Most?</h2>
+            <p>This tornado diagram shows the impact of changing each variable by ±20%. The wider the bar, the more sensitive your ROI is to that variable. <strong>Focus your attention on the widest bars!</strong></p>
+            <div class="tornado-container" id="tornadoChart">
+                <!-- Tornado chart will be populated by JavaScript -->
+            </div>
+            <div id="tornadoInsights" style="margin-top: 20px;">
+                <!-- Dynamic insights will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- NEW: Scenario Comparison Table -->
+        <div class="section">
+            <h2>🎲 Scenario Analysis: Best, Likely, and Worst Cases</h2>
+            <p>See how different assumptions about effect size (d) impact your results. This is critical for stakeholder presentations!</p>
+            <div id="scenarioComparison">
+                <!-- Scenario table will be populated by JavaScript -->
+            </div>
+            <div id="decisionGuidance" style="margin-top: 30px;">
+                <!-- Decision framework will be populated by JavaScript -->
             </div>
         </div>
 
@@ -3327,10 +3556,217 @@ This estimate uses:
             });
         }
         
+        // --- TORNADO DIAGRAM ---
+        function loadTornadoDiagram() {
+            const N = parseFloat(document.getElementById('N_Slider').value);
+            const Salary = parseFloat(document.getElementById('Salary_Slider').value);
+            const C = parseFloat(document.getElementById('Cost_Slider').value);
+            const d = parseFloat(document.getElementById('d_Slider').value);
+            const T = parseFloat(document.getElementById('T_Slider').value);
+            const SDy = Salary * 0.40;
+
+            const baseNetUtility = (N * T * d * SDy) - (N * C);
+
+            // Calculate impact of ±20% change in each variable
+            const variables = [
+                {
+                    name: 'Effect Size (d)',
+                    low: ((N * T * (d * 0.8) * SDy) - (N * C)) - baseNetUtility,
+                    high: ((N * T * (d * 1.2) * SDy) - (N * C)) - baseNetUtility
+                },
+                {
+                    name: 'SDy (Salary × 0.4)',
+                    low: ((N * T * d * (SDy * 0.8)) - (N * C)) - baseNetUtility,
+                    high: ((N * T * d * (SDy * 1.2)) - (N * C)) - baseNetUtility
+                },
+                {
+                    name: 'Duration (T)',
+                    low: ((N * (T * 0.8) * d * SDy) - (N * C)) - baseNetUtility,
+                    high: ((N * (T * 1.2) * d * SDy) - (N * C)) - baseNetUtility
+                },
+                {
+                    name: 'Trainees (N)',
+                    low: (((N * 0.8) * T * d * SDy) - ((N * 0.8) * C)) - baseNetUtility,
+                    high: (((N * 1.2) * T * d * SDy) - ((N * 1.2) * C)) - baseNetUtility
+                },
+                {
+                    name: 'Cost per Trainee (C)',
+                    low: ((N * T * d * SDy) - (N * (C * 0.8))) - baseNetUtility,
+                    high: ((N * T * d * SDy) - (N * (C * 1.2))) - baseNetUtility
+                }
+            ];
+
+            // Sort by total swing (high - low)
+            variables.sort((a, b) => Math.abs(b.high - b.low) - Math.abs(a.high - a.low));
+
+            const maxSwing = Math.max(...variables.map(v => Math.abs(v.high - v.low)));
+            const container = document.getElementById('tornadoChart');
+            container.innerHTML = '';
+
+            variables.forEach(variable => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'tornado-row';
+
+                const lowWidth = (Math.abs(variable.low) / maxSwing) * 300;
+                const highWidth = (Math.abs(variable.high) / maxSwing) * 300;
+
+                rowDiv.innerHTML = `
+                    <div class="tornado-label">${variable.name}</div>
+                    <div class="tornado-bar-container">
+                        <div class="tornado-bar negative" style="width: ${lowWidth}px;"
+                             title="20% decrease: ${formatter.format(variable.low)} impact">
+                            ${formatter.format(variable.low)}
+                        </div>
+                        <div class="tornado-bar positive" style="width: ${highWidth}px;"
+                             title="20% increase: ${formatter.format(variable.high)} impact">
+                            ${formatter.format(variable.high)}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(rowDiv);
+            });
+
+            // Add insights
+            const mostSensitive = variables[0].name;
+            const leastSensitive = variables[variables.length - 1].name;
+
+            let insightHTML = '<div class="insight-box">';
+            insightHTML += '<h3 style="margin-top: 0;">🎯 Action Items:</h3>';
+            insightHTML += `<p><strong>Most Critical Variable:</strong> ${mostSensitive} - A 20% change creates a swing of ${formatter.format(Math.abs(variables[0].high - variables[0].low))}. `;
+
+            if (mostSensitive.includes('Effect Size')) {
+                insightHTML += '<strong>Action:</strong> Invest in program quality, use evidence-based curricula, and measure effectiveness rigorously.</p>';
+            } else if (mostSensitive.includes('SDy')) {
+                insightHTML += '<strong>Action:</strong> Ensure accurate salary data and consider targeting higher-value roles where SDy is larger.</p>';
+            } else if (mostSensitive.includes('Duration')) {
+                insightHTML += '<strong>Action:</strong> Plan for sustained impact through refreshers, coaching, and organizational support.</p>';
+            } else if (mostSensitive.includes('Trainees')) {
+                insightHTML += '<strong>Action:</strong> Scale the program to more participants to maximize returns (if quality can be maintained).</p>';
+            } else if (mostSensitive.includes('Cost')) {
+                insightHTML += '<strong>Action:</strong> Negotiate vendor costs, use internal facilitators, or leverage technology to reduce per-person costs.</p>';
+            }
+
+            insightHTML += `<p><strong>Least Sensitive:</strong> ${leastSensitive} - Changes here have minimal impact, so don't over-optimize this variable.</p>`;
+            insightHTML += '</div>';
+
+            document.getElementById('tornadoInsights').innerHTML = insightHTML;
+        }
+
+        // --- SCENARIO COMPARISON TABLE ---
+        function loadScenarioComparison() {
+            const N = parseFloat(document.getElementById('N_Slider').value);
+            const Salary = parseFloat(document.getElementById('Salary_Slider').value);
+            const C = parseFloat(document.getElementById('Cost_Slider').value);
+            const d = parseFloat(document.getElementById('d_Slider').value);
+            const T = parseFloat(document.getElementById('T_Slider').value);
+            const SDy = Salary * 0.40;
+
+            // Define scenarios with different effect sizes
+            const scenarios = [
+                { name: 'Worst Case', d: 0.2, className: 'scenario-worst', description: 'Conservative estimate (weak program)' },
+                { name: 'Likely', d: d, className: 'scenario-likely', description: `Your current estimate (d=${d.toFixed(2)})` },
+                { name: 'Best Case', d: 0.7, className: 'scenario-best', description: 'Optimistic estimate (excellent program)' }
+            ];
+
+            let tableHTML = '<table class="scenario-table"><thead><tr>';
+            tableHTML += '<th>Scenario</th><th>Effect Size (d)</th><th>Gross Benefit</th><th>Total Cost</th>';
+            tableHTML += '<th>Net Utility</th><th>ROI</th><th>Decision</th></tr></thead><tbody>';
+
+            scenarios.forEach(scenario => {
+                const grossBenefit = N * T * scenario.d * SDy;
+                const totalCost = N * C;
+                const netUtility = grossBenefit - totalCost;
+                const roi = ((netUtility / totalCost) * 100).toFixed(0);
+
+                let decisionBadge = '';
+                let decisionClass = '';
+                if (roi > 300) {
+                    decisionBadge = 'Strong Yes';
+                    decisionClass = 'decision-strong-yes';
+                } else if (roi > 150) {
+                    decisionBadge = 'Yes';
+                    decisionClass = 'decision-yes';
+                } else if (roi > 50) {
+                    decisionBadge = 'Maybe';
+                    decisionClass = 'decision-maybe';
+                } else {
+                    decisionBadge = 'Reconsider';
+                    decisionClass = 'decision-no';
+                }
+
+                tableHTML += `<tr class="${scenario.className}">`;
+                tableHTML += `<td><strong>${scenario.name}</strong><br><small>${scenario.description}</small></td>`;
+                tableHTML += `<td>${scenario.d.toFixed(2)}</td>`;
+                tableHTML += `<td>${formatter.format(grossBenefit)}</td>`;
+                tableHTML += `<td>${formatter.format(totalCost)}</td>`;
+                tableHTML += `<td><strong>${formatter.format(netUtility)}</strong></td>`;
+                tableHTML += `<td><strong>${roi}%</strong></td>`;
+                tableHTML += `<td><span class="decision-badge ${decisionClass}">${decisionBadge}</span></td>`;
+                tableHTML += '</tr>';
+            });
+
+            tableHTML += '</tbody></table>';
+            document.getElementById('scenarioComparison').innerHTML = tableHTML;
+
+            // Add decision guidance
+            const currentNetUtility = N * T * d * SDy - N * C;
+            const currentROI = ((currentNetUtility / (N * C)) * 100).toFixed(0);
+            const worstNetUtility = N * T * 0.2 * SDy - N * C;
+
+            let guidanceHTML = '<h3>💡 Investment Decision Framework</h3>';
+
+            // Risk assessment
+            let riskLevel = 'low';
+            let riskClass = 'risk-low';
+            let riskMessage = '';
+
+            if (worstNetUtility < 0) {
+                riskLevel = 'high';
+                riskClass = 'risk-high';
+                riskMessage = '⚠️ High Risk: Even in worst-case scenario, you could lose money. Ensure strong evidence for your effect size estimate.';
+            } else if (currentROI < 100) {
+                riskLevel = 'medium';
+                riskClass = 'risk-medium';
+                riskMessage = '⚡ Moderate Risk: ROI is positive but modest. Build in contingencies and monitor closely.';
+            } else {
+                riskLevel = 'low';
+                riskClass = 'risk-low';
+                riskMessage = '✅ Low Risk: Even conservative scenarios show positive returns. Strong business case!';
+            }
+
+            guidanceHTML += `<div class="risk-indicator ${riskClass}">${riskMessage}</div>`;
+
+            // Recommendations
+            guidanceHTML += '<div class="insight-box"><h4>📋 Recommended Next Steps:</h4><ul style="line-height: 1.8;">';
+
+            if (currentROI > 300) {
+                guidanceHTML += '<li>✅ <strong>Proceed with confidence</strong> - ROI is strong across all scenarios</li>';
+                guidanceHTML += '<li>📊 Document assumptions for stakeholders using this scenario table</li>';
+                guidanceHTML += '<li>🎯 Consider scaling the program to more participants</li>';
+            } else if (currentROI > 150) {
+                guidanceHTML += '<li>✅ <strong>Good investment case</strong> - Present all three scenarios to stakeholders</li>';
+                guidanceHTML += '<li>📈 Look for ways to improve effect size (d) through better program design</li>';
+                guidanceHTML += '<li>⏱️ Plan for measurement to validate your assumptions</li>';
+            } else if (currentROI > 50) {
+                guidanceHTML += '<li>⚠️ <strong>Marginal case</strong> - Consider if non-financial benefits justify the investment</li>';
+                guidanceHTML += '<li>💰 Explore cost reduction options without sacrificing quality</li>';
+                guidanceHTML += '<li>🔍 Gather pilot data before full rollout</li>';
+            } else {
+                guidanceHTML += '<li>🔴 <strong>Weak business case</strong> - Redesign program or reconsider investment</li>';
+                guidanceHTML += '<li>💡 Options: Reduce costs, increase effect size, or find alternative approaches</li>';
+                guidanceHTML += '<li>📊 Consider if your assumptions are realistic</li>';
+            }
+
+            guidanceHTML += '</ul></div>';
+            document.getElementById('decisionGuidance').innerHTML = guidanceHTML;
+        }
+
         // --- MASTER VISUALIZATION LOADER ---
         function loadAllVisualizations() {
             loadCharts(); // Original bar charts
             loadWaterfallChart();
+            loadTornadoDiagram();
+            loadScenarioComparison();
             loadHeatmap();
             loadScatterPlot();
             loadTimeline();
@@ -3447,7 +3883,7 @@ This estimate uses:
             return bar;
         }
 
-        // --- WATERFALL CHART ---
+        // --- ENHANCED WATERFALL CHART ---
         function loadWaterfallChart() {
             const N = parseFloat(document.getElementById('N_Slider').value);
             const Salary = parseFloat(document.getElementById('Salary_Slider').value);
@@ -3456,32 +3892,91 @@ This estimate uses:
             const T = parseFloat(document.getElementById('T_Slider').value);
             const SDy = Salary * 0.40;
 
+            // Calculate cumulative values for true waterfall effect
+            const totalCost = N * C;
+            const grossBenefit = N * T * d * SDy;
+            const netUtility = grossBenefit - totalCost;
+
             const components = [
-                { label: 'N (Trainees)', value: N, color: '#2196f3' },
-                { label: 'T (Years)', value: N * T, color: '#4caf50' },
-                { label: 'd (Effect)', value: N * T * d, color: '#ff9800' },
-                { label: 'SDy (Value)', value: N * T * d * SDy, color: '#9c27b0' },
-                { label: '- Cost', value: (N * T * d * SDy) - (N * C), color: '#f44336' },
-                { label: 'Net Utility', value: (N * T * d * SDy) - (N * C), color: '#4caf50' }
+                {
+                    label: 'Gross Benefit',
+                    value: grossBenefit,
+                    color: '#10b981',
+                    cumulative: grossBenefit,
+                    description: `N(${N}) × T(${T}) × d(${d.toFixed(2)}) × SDy($${SDy.toLocaleString()})`
+                },
+                {
+                    label: 'Total Cost',
+                    value: -totalCost,
+                    color: '#ef4444',
+                    cumulative: netUtility,
+                    description: `N(${N}) × C($${C.toLocaleString()})`
+                },
+                {
+                    label: 'Net Utility',
+                    value: netUtility,
+                    color: netUtility >= 0 ? '#3b82f6' : '#f97316',
+                    cumulative: netUtility,
+                    description: 'Final Result',
+                    isTotal: true
+                }
             ];
 
-            const maxValue = Math.max(...components.map(c => Math.abs(c.value)));
+            const maxValue = Math.max(Math.abs(grossBenefit), Math.abs(totalCost), Math.abs(netUtility));
             const container = document.getElementById('waterfallChart');
-            container.innerHTML = '';
+            container.innerHTML = '<div class="waterfall-wrapper"></div>';
+            const wrapper = container.querySelector('.waterfall-wrapper');
 
-            components.forEach(comp => {
+            components.forEach((comp, index) => {
                 const barDiv = document.createElement('div');
                 barDiv.className = 'waterfall-bar';
-                const height = (Math.abs(comp.value) / maxValue) * 300;
+                const height = (Math.abs(comp.cumulative) / maxValue) * 350;
+                const percentage = ((comp.value / grossBenefit) * 100).toFixed(1);
 
                 barDiv.innerHTML = `
-                    <div class="waterfall-bar-inner" style="height: ${height}px; background: ${comp.color};">
-                        ${formatter.format(comp.value)}
+                    <div class="waterfall-bar-inner" style="height: ${height}px; background: ${comp.color};"
+                         title="${comp.description}">
+                        <div class="waterfall-value">${formatter.format(comp.cumulative)}</div>
+                        <div class="waterfall-percentage">${comp.isTotal ? '' : percentage + '%'}</div>
                     </div>
                     <div class="waterfall-label">${comp.label}</div>
                 `;
-                container.appendChild(barDiv);
+                wrapper.appendChild(barDiv);
             });
+
+            // Add actionable insights
+            const roi = ((netUtility / totalCost) * 100).toFixed(0);
+            const costRatio = ((totalCost / grossBenefit) * 100).toFixed(1);
+
+            let insightHTML = '<div class="insight-box">';
+            insightHTML += '<h3 style="margin-top: 0;">📊 Key Insights:</h3>';
+            insightHTML += `<p><strong>Cost-to-Benefit Ratio:</strong> Your program costs represent ${costRatio}% of the gross benefit. `;
+
+            if (costRatio < 30) {
+                insightHTML += '✅ Excellent! You have a very favorable cost structure.</p>';
+            } else if (costRatio < 50) {
+                insightHTML += '👍 Good ratio - typical for high-quality programs.</p>';
+            } else if (costRatio < 80) {
+                insightHTML += '⚠️ Moderate - consider if cost reductions are possible without sacrificing quality.</p>';
+            } else {
+                insightHTML += '❌ High cost ratio - you may need to either reduce costs or find ways to increase effect size (d).</p>';
+            }
+
+            insightHTML += `<p><strong>ROI:</strong> ${roi}% - `;
+            if (roi > 500) {
+                insightHTML += 'Outstanding return! Strong business case for investment.</p>';
+            } else if (roi > 200) {
+                insightHTML += 'Solid return that should be attractive to stakeholders.</p>';
+            } else if (roi > 100) {
+                insightHTML += 'Positive but modest. Consider highlighting other benefits beyond financial ROI.</p>';
+            } else if (roi > 0) {
+                insightHTML += 'Marginal return. May need stronger justification or program improvements.</p>';
+            } else {
+                insightHTML += 'Negative return. Program needs redesign or cost reduction.</p>';
+            }
+
+            insightHTML += '</div>';
+            document.getElementById('waterfallInsights').innerHTML = insightHTML;
         }
 
         // --- HEATMAP ---
