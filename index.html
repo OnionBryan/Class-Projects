@@ -1310,6 +1310,149 @@
             font-weight: bold;
             white-space: nowrap;
         }
+
+        /* --- INSIGHT RAYCAST SYSTEM --- */
+        .insight-tooltip {
+            position: fixed;
+            background: rgba(30, 60, 114, 0.98);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-mode .insight-tooltip {
+            background: rgba(15, 23, 42, 0.98);
+            border-color: rgba(147, 197, 253, 0.5);
+        }
+
+        .insight-tooltip.visible {
+            opacity: 1;
+        }
+
+        .insight-tooltip .tooltip-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #93c5fd;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .insight-tooltip .tooltip-content {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .insight-tooltip .tooltip-metric {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-family: monospace;
+        }
+
+        .insight-tooltip .tooltip-insight {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-style: italic;
+            color: #d4e9fd;
+        }
+
+        /* Help Icon System */
+        .help-icon {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .help-icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.5);
+        }
+
+        /* Contextual Insight Box */
+        .contextual-insight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .contextual-insight {
+            background: linear-gradient(135deg, #4c63d2 0%, #5a3d8a 100%);
+        }
+
+        .contextual-insight::before {
+            content: '💡';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 3em;
+            opacity: 0.2;
+        }
+
+        .contextual-insight .insight-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contextual-insight .insight-body {
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        /* Interactive hover enhancement */
+        .chart-element-interactive {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-element-interactive:hover {
+            filter: brightness(1.2);
+            z-index: 100;
+        }
+
+        /* Insight Badge */
+        .insight-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
     </style>
 </head>
 <body>
@@ -1318,6 +1461,12 @@
 
     <!-- Export Button -->
     <button class="export-btn" onclick="exportReport()">📄 Export Report</button>
+
+    <!-- Global Insight Tooltip -->
+    <div id="insightTooltip" class="insight-tooltip">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-content"></div>
+    </div>
 
     <!-- Page Navigation -->
     <div class="page-nav-container">
@@ -1429,46 +1578,51 @@
                 <p>See how each variable flows into the calculation:</p>
 
                 <div class="formula-flow">
-                    <div class="formula-node input">
+                    <div class="formula-node input chart-element-interactive" data-variable="N">
                         <div style="font-size: 0.8em; color: #666;">Number of</div>
                         <div style="font-size: 1.5em; font-weight: bold;">N</div>
                         <div style="font-size: 0.8em; color: #666;">Trainees</div>
                     </div>
                     <span class="formula-arrow">×</span>
-                    <div class="formula-node input">
+                    <div class="formula-node input chart-element-interactive" data-variable="T">
                         <div style="font-size: 0.8em; color: #666;">Duration</div>
                         <div style="font-size: 1.5em; font-weight: bold;">T</div>
                         <div style="font-size: 0.8em; color: #666;">Years</div>
                     </div>
                     <span class="formula-arrow">×</span>
-                    <div class="formula-node input">
+                    <div class="formula-node input chart-element-interactive" data-variable="d">
                         <div style="font-size: 0.8em; color: #666;">Effect Size</div>
                         <div style="font-size: 1.5em; font-weight: bold;">d</div>
                         <div style="font-size: 0.8em; color: #666;">Impact</div>
                     </div>
                     <span class="formula-arrow">×</span>
-                    <div class="formula-node input">
+                    <div class="formula-node input chart-element-interactive" data-variable="SDy">
                         <div style="font-size: 0.8em; color: #666;">Performance $</div>
                         <div style="font-size: 1.5em; font-weight: bold;">SDy</div>
                         <div style="font-size: 0.8em; color: #666;">Value</div>
                     </div>
                     <span class="formula-arrow">=</span>
-                    <div class="formula-node operation">
+                    <div class="formula-node operation chart-element-interactive">
                         <div style="font-size: 0.8em; color: #666;">Gross Gain</div>
                         <div style="font-size: 1.3em; font-weight: bold;">Total Benefit</div>
                     </div>
                     <span class="formula-arrow">−</span>
-                    <div class="formula-node input">
+                    <div class="formula-node input chart-element-interactive" data-variable="C">
                         <div style="font-size: 0.8em; color: #666;">Total Cost</div>
                         <div style="font-size: 1.5em; font-weight: bold;">N × C</div>
                         <div style="font-size: 0.8em; color: #666;">Investment</div>
                     </div>
                     <span class="formula-arrow">=</span>
-                    <div class="formula-node output">
+                    <div class="formula-node output chart-element-interactive">
                         <div style="font-size: 0.8em; color: #666;">Net Utility</div>
                         <div style="font-size: 1.8em; font-weight: bold;">ΔU</div>
                         <div style="font-size: 0.8em; color: #666;">ROI in $</div>
                     </div>
+                </div>
+
+                <div class="contextual-insight" style="margin-top: 20px;">
+                    <div class="insight-title">Key Insight: Hover over each variable above!</div>
+                    <div class="insight-body">Each component of the formula plays a critical role. Hover over any blue box to see detailed insights about how that variable affects your ROI calculation.</div>
                 </div>
                 
                 <table>
@@ -1657,7 +1811,7 @@
 
         <!-- REVISED CALCULATOR -->
         <div class="section">
-            <h2>🧮 Interactive ROI Scenario Calculator</h2>
+            <h2>🧮 Interactive ROI Scenario Calculator<span class="help-icon" data-insight="calculator-help">?</span></h2>
 
             <!-- Preset Scenarios -->
             <div class="scenario-controls">
@@ -2021,6 +2175,153 @@
         let savedScenarios = [];
         let comparisonMode = false;
 
+        // --- INSIGHT RAYCAST SYSTEM ---
+        const InsightEngine = {
+            tooltip: null,
+
+            init() {
+                this.tooltip = document.getElementById('insightTooltip');
+                this.setupHelpIcons();
+                this.setupChartInteractivity();
+            },
+
+            showTooltip(title, content, event) {
+                const tooltip = this.tooltip;
+                tooltip.querySelector('.tooltip-title').textContent = title;
+                tooltip.querySelector('.tooltip-content').innerHTML = content;
+
+                // Position tooltip near mouse
+                const x = event.clientX + 15;
+                const y = event.clientY + 15;
+                tooltip.style.left = x + 'px';
+                tooltip.style.top = y + 'px';
+                tooltip.classList.add('visible');
+            },
+
+            hideTooltip() {
+                this.tooltip.classList.remove('visible');
+            },
+
+            setupHelpIcons() {
+                const insights = {
+                    'calculator-help': {
+                        title: 'How to Use the Calculator',
+                        content: `<p>Adjust each slider to match your program parameters:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>N:</strong> Total number of leaders to be trained</li>
+                            <li><strong>Salary:</strong> Average annual salary of participants</li>
+                            <li><strong>Cost:</strong> Full cost per trainee (direct + indirect)</li>
+                            <li><strong>d:</strong> Expected effect size from research/meta-analysis</li>
+                            <li><strong>T:</strong> Years the training effects will last</li>
+                        </ul>
+                        <div class="tooltip-insight">💡 Tip: Use conservative estimates for more credible projections</div>`
+                    }
+                };
+
+                document.querySelectorAll('.help-icon').forEach(icon => {
+                    const insightKey = icon.getAttribute('data-insight');
+                    if (insights[insightKey]) {
+                        icon.addEventListener('mouseenter', (e) => {
+                            this.showTooltip(insights[insightKey].title, insights[insightKey].content, e);
+                        });
+                        icon.addEventListener('mouseleave', () => {
+                            this.hideTooltip();
+                        });
+                        icon.addEventListener('mousemove', (e) => {
+                            const x = e.clientX + 15;
+                            const y = e.clientY + 15;
+                            this.tooltip.style.left = x + 'px';
+                            this.tooltip.style.top = y + 'px';
+                        });
+                    }
+                });
+            },
+
+            setupChartInteractivity() {
+                // Setup formula node interactivity
+                document.querySelectorAll('.formula-node[data-variable]').forEach(node => {
+                    const variable = node.getAttribute('data-variable');
+                    node.addEventListener('mouseenter', (e) => {
+                        const title = `Variable: ${variable}`;
+                        const content = this.getFormulaNodeInsight({ variable });
+                        this.showTooltip(title, content, e);
+                    });
+                    node.addEventListener('mouseleave', () => {
+                        this.hideTooltip();
+                    });
+                    node.addEventListener('mousemove', (e) => {
+                        const x = e.clientX + 15;
+                        const y = e.clientY + 15;
+                        this.tooltip.style.left = x + 'px';
+                        this.tooltip.style.top = y + 'px';
+                    });
+                });
+            },
+
+            generateInsight(element, data) {
+                const { type, value, context } = data;
+
+                switch(type) {
+                    case 'formula-node':
+                        return this.getFormulaNodeInsight(context);
+                    case 'waterfall-bar':
+                        return this.getWaterfallInsight(context);
+                    case 'heatmap-cell':
+                        return this.getHeatmapInsight(context);
+                    case 'scatter-point':
+                        return this.getScatterInsight(context);
+                    case 'timeline-marker':
+                        return this.getTimelineInsight(context);
+                    default:
+                        return null;
+                }
+            },
+
+            getFormulaNodeInsight(context) {
+                const insights = {
+                    'N': 'Number of trainees - Scales linearly with cost AND benefit. Doubling N doubles both investment and return.',
+                    'T': 'Duration - Critical multiplier. Each additional year multiplies the total return. Consider realistic retention rates.',
+                    'd': 'Effect Size - The "quality" factor. A 0.1 increase in d can add millions in value. Invest in evidence-based programs!',
+                    'SDy': 'Performance Value - Represents how much more valuable a high-performer is vs. average. Higher for complex roles.',
+                    'C': 'Cost - Include ALL costs: materials, time, salary of attendees, lost productivity. Most orgs underestimate this.'
+                };
+                return insights[context.variable] || 'Hover over formula components for insights';
+            },
+
+            getWaterfallInsight(context) {
+                return `<div class="tooltip-metric">${context.label}: ${formatter.format(context.value)}</div>
+                        <p>${context.description}</p>
+                        <div class="tooltip-insight">This step ${context.impact}</div>`;
+            },
+
+            getHeatmapInsight(context) {
+                const roi = context.roi;
+                let analysis = '';
+                if (roi >= 200) analysis = 'Excellent ROI - This combination suggests a highly effective program worth pursuing.';
+                else if (roi >= 100) analysis = 'Good ROI - Solid return justifies investment for most organizations.';
+                else if (roi >= 50) analysis = 'Moderate ROI - Consider if non-financial benefits justify investment.';
+                else analysis = 'Poor ROI - May need to reduce costs or improve program quality (increase d).';
+
+                return `<div class="tooltip-metric">Effect Size: ${context.d} | Cost: ${formatter.format(context.cost)}</div>
+                        <p><strong>ROI: ${roi.toFixed(0)}%</strong></p>
+                        <div class="tooltip-insight">${analysis}</div>`;
+            },
+
+            getScatterInsight(context) {
+                return `<div class="tooltip-metric">Net Utility: ${formatter.format(context.utility)}</div>
+                        <p>Effect Size (d): ${context.d.toFixed(2)}<br>
+                        Cost per Trainee: ${formatter.format(context.cost)}</p>
+                        <div class="tooltip-insight">Bubble size represents total dollar value created</div>`;
+            },
+
+            getTimelineInsight(context) {
+                const breakEven = context.cumulative >= 0 ? 'Program has paid for itself!' : 'Still recovering initial investment';
+                return `<div class="tooltip-metric">Year ${context.year}: ${formatter.format(context.cumulative)}</div>
+                        <p>Cumulative utility after ${context.year} year(s)</p>
+                        <div class="tooltip-insight">${breakEven}</div>`;
+            }
+        };
+
         // --- DARK MODE ---
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
@@ -2293,7 +2594,59 @@
             // Update all visualizations
             if (document.getElementById('analysis').style.display === 'block') {
                 loadAllVisualizations();
+                showContextualInsights(NetUtility, ROI, d, T);
             }
+        }
+
+        function showContextualInsights(netUtility, roi, effectSize, duration) {
+            // Find or create contextual insight container
+            let insightContainer = document.getElementById('calculatorContextualInsight');
+            if (!insightContainer) {
+                insightContainer = document.createElement('div');
+                insightContainer.id = 'calculatorContextualInsight';
+                insightContainer.className = 'contextual-insight';
+                document.getElementById('calculatorResult').appendChild(insightContainer);
+            }
+
+            let insightTitle = '';
+            let insightBody = '';
+
+            if (roi >= 300) {
+                insightTitle = '🚀 Outstanding ROI!';
+                insightBody = `With a ${roi.toFixed(0)}% return, this program creates exceptional value. Consider expanding it to more leaders or extending the duration. Programs with this ROI are rare and should be prioritized in your budget.`;
+            } else if (roi >= 200) {
+                insightTitle = '✨ Excellent Investment';
+                insightBody = `A ${roi.toFixed(0)}% ROI is outstanding. This program returns $${((roi/100) + 1).toFixed(2)} for every dollar spent. Most leadership programs struggle to demonstrate such clear value.`;
+            } else if (roi >= 100) {
+                insightTitle = '✅ Strong Business Case';
+                insightBody = `At ${roi.toFixed(0)}% ROI, you're doubling your investment or better. This provides solid justification for budget approval. Consider documenting assumptions carefully for stakeholders.`;
+            } else if (roi >= 50) {
+                insightTitle = '⚠️ Moderate Return';
+                insightBody = `A ${roi.toFixed(0)}% ROI suggests the program is profitable but may not be the best use of resources. Consider: (1) Reducing costs, (2) Improving program quality to increase d, or (3) Extending duration T.`;
+            } else if (roi >= 0) {
+                insightTitle = '⚠️ Low ROI - Optimization Needed';
+                insightBody = `At ${roi.toFixed(0)}% ROI, this program barely breaks even. <strong>Recommendations:</strong> Increase effect size (d) by using evidence-based curriculum, reduce costs, or extend the duration of impact.`;
+            } else {
+                insightTitle = '❌ Negative ROI - Major Concerns';
+                insightBody = `This program is projected to lose money (${formatter.format(netUtility)}). <strong>Do not proceed</strong> without major changes. Either drastically reduce costs or significantly improve program quality (increase d).`;
+            }
+
+            // Add specific insights based on effect size
+            if (effectSize < 0.2) {
+                insightBody += `<br><br><strong>⚠️ Very low effect size (d=${effectSize.toFixed(2)}):</strong> This is below typical leadership training programs. Review your program design or use a more conservative estimate if this is speculative.`;
+            } else if (effectSize >= 0.6) {
+                insightBody += `<br><br><strong>📊 High effect size (d=${effectSize.toFixed(2)}):</strong> This is excellent! Make sure you have research evidence to support this estimate when presenting to stakeholders.`;
+            }
+
+            // Add insight about duration
+            if (duration >= 7) {
+                insightBody += `<br><br><strong>⏳ Long duration (T=${duration} years):</strong> Ensure you account for employee turnover and skill decay. Consider using a more conservative estimate.`;
+            }
+
+            insightContainer.innerHTML = `
+                <div class="insight-title">${insightTitle}</div>
+                <div class="insight-body">${insightBody}</div>
+            `;
         }
 
         function updateRiskIndicator(ROI) {
@@ -2532,6 +2885,23 @@
 
                     cell.style.background = bgColor;
                     cell.textContent = `${roi.toFixed(0)}%`;
+                    cell.classList.add('chart-element-interactive');
+
+                    // Add tooltip interactivity
+                    cell.addEventListener('mouseenter', (e) => {
+                        const content = InsightEngine.getHeatmapInsight({ d, cost, roi });
+                        InsightEngine.showTooltip('Scenario Analysis', content, e);
+                    });
+                    cell.addEventListener('mouseleave', () => {
+                        InsightEngine.hideTooltip();
+                    });
+                    cell.addEventListener('mousemove', (e) => {
+                        const x = e.clientX + 15;
+                        const y = e.clientY + 15;
+                        InsightEngine.tooltip.style.left = x + 'px';
+                        InsightEngine.tooltip.style.top = y + 'px';
+                    });
+
                     container.appendChild(cell);
                 });
             });
@@ -2577,6 +2947,26 @@
                 point.style.background = netUtility > 0 ? '#4caf50' : '#f44336';
                 point.title = `d=${scenario.d}, Cost=$${scenario.cost}, ΔU=${formatter.format(netUtility)}`;
                 point.textContent = scenario.d.toFixed(1);
+                point.classList.add('chart-element-interactive');
+
+                // Add tooltip interactivity
+                point.addEventListener('mouseenter', (e) => {
+                    const content = InsightEngine.getScatterInsight({
+                        d: scenario.d,
+                        cost: scenario.cost,
+                        utility: netUtility
+                    });
+                    InsightEngine.showTooltip('Scenario Explorer', content, e);
+                });
+                point.addEventListener('mouseleave', () => {
+                    InsightEngine.hideTooltip();
+                });
+                point.addEventListener('mousemove', (e) => {
+                    const x = e.clientX + 15;
+                    const y = e.clientY + 15;
+                    InsightEngine.tooltip.style.left = x + 'px';
+                    InsightEngine.tooltip.style.top = y + 'px';
+                });
 
                 container.appendChild(point);
             });
@@ -2603,13 +2993,34 @@
 
             for (let year = 0; year <= T; year++) {
                 const marker = document.createElement('div');
-                marker.className = 'timeline-marker';
+                marker.className = 'timeline-marker chart-element-interactive';
                 marker.style.left = `${(year / T) * 100}%`;
                 marker.textContent = year;
 
                 const label = document.createElement('div');
                 label.className = 'timeline-label';
                 label.textContent = formatter.format(cumulativeUtility);
+
+                // Store current cumulative for tooltip
+                const currentCumulative = cumulativeUtility;
+
+                // Add tooltip interactivity
+                marker.addEventListener('mouseenter', (e) => {
+                    const content = InsightEngine.getTimelineInsight({
+                        year: year,
+                        cumulative: currentCumulative
+                    });
+                    InsightEngine.showTooltip(`Year ${year}`, content, e);
+                });
+                marker.addEventListener('mouseleave', () => {
+                    InsightEngine.hideTooltip();
+                });
+                marker.addEventListener('mousemove', (e) => {
+                    const x = e.clientX + 15;
+                    const y = e.clientY + 15;
+                    InsightEngine.tooltip.style.left = x + 'px';
+                    InsightEngine.tooltip.style.top = y + 'px';
+                });
 
                 marker.appendChild(label);
                 timelineLine.appendChild(marker);
@@ -2735,6 +3146,9 @@
 
         // Initialize calculator and charts on first load
         (function() {
+            // Initialize Insight Engine
+            InsightEngine.init();
+
             // Check if analysis page is active, if so, init
             if (document.getElementById('analysis').style.display === 'block') {
                 calculateROI();
