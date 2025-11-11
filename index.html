@@ -1211,48 +1211,88 @@
         .tornado-row {
             display: flex;
             align-items: center;
-            margin: 15px 0;
+            margin: 20px 0;
             gap: 10px;
         }
 
         .tornado-label {
-            width: 150px;
+            width: 180px;
             font-weight: 600;
             text-align: right;
             padding-right: 15px;
+            font-size: 0.95em;
         }
 
         .tornado-bar-container {
             flex: 1;
             display: flex;
-            gap: 5px;
             align-items: center;
+            position: relative;
+            height: 45px;
+        }
+
+        .tornado-center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #64748b;
+            z-index: 1;
+        }
+
+        .tornado-bars-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
             position: relative;
         }
 
-        .tornado-bar {
-            height: 40px;
+        .tornado-bar-left {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-left: 8px;
+            height: 35px;
+            border-radius: 5px 0 0 5px;
+            background: linear-gradient(90deg, #ef4444, #f87171);
             color: white;
-            font-weight: bold;
-            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85em;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .tornado-bar:hover {
-            opacity: 0.8;
-            transform: scaleY(1.1);
+        .tornado-bar-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            height: 35px;
+            border-radius: 0 5px 5px 0;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .tornado-bar.negative {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
+        .tornado-bar-left:hover,
+        .tornado-bar-right:hover {
+            opacity: 0.85;
+            transform: scaleY(1.08);
         }
 
-        .tornado-bar.positive {
-            background: linear-gradient(90deg, #10b981, #059669);
+        .tornado-value-label {
+            position: absolute;
+            font-size: 0.8em;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        body.dark-mode .tornado-value-label {
+            color: #94a3b8;
         }
 
         /* Scenario Comparison Table */
@@ -2753,7 +2793,13 @@ This estimate uses:
         <!-- NEW: Tornado Diagram for Sensitivity Analysis -->
         <div class="section">
             <h2>🌪️ Tornado Diagram: Which Variables Matter Most?</h2>
-            <p>This tornado diagram shows the impact of changing each variable by ±20%. The wider the bar, the more sensitive your ROI is to that variable. <strong>Focus your attention on the widest bars!</strong></p>
+            <p>This tornado diagram shows the <strong>range of possible outcomes</strong> when each variable changes by ±20%. Each row shows:</p>
+            <ul style="margin: 10px 0 20px 40px; line-height: 1.8;">
+                <li><strong style="color: #ef4444;">Red bar (left):</strong> Worst-case outcome if this variable moves against you</li>
+                <li><strong style="color: #10b981;">Green bar (right):</strong> Best-case outcome if this variable moves in your favor</li>
+                <li><strong>Wider bars = Higher sensitivity</strong> → These variables have the most impact on your ROI</li>
+            </ul>
+            <p><strong>Strategy:</strong> Focus your efforts on the top variables—they create the most risk and opportunity!</p>
             <div class="tornado-container" id="tornadoChart">
                 <!-- Tornado chart will be populated by JavaScript -->
             </div>
@@ -3565,41 +3611,59 @@ This estimate uses:
             const T = parseFloat(document.getElementById('T_Slider').value);
             const SDy = Salary * 0.40;
 
+            // Calculate base Net Utility
             const baseNetUtility = (N * T * d * SDy) - (N * C);
 
-            // Calculate impact of ±20% change in each variable
+            // For each variable, calculate outcomes when it changes by ±20%
+            // Key insight: For most variables, increasing them increases utility
+            // BUT for Cost, increasing it DECREASES utility (inverse relationship)
             const variables = [
                 {
                     name: 'Effect Size (d)',
-                    low: ((N * T * (d * 0.8) * SDy) - (N * C)) - baseNetUtility,
-                    high: ((N * T * (d * 1.2) * SDy) - (N * C)) - baseNetUtility
+                    lowValue: (N * T * (d * 0.8) * SDy) - (N * C),  // d decreases → utility decreases
+                    highValue: (N * T * (d * 1.2) * SDy) - (N * C), // d increases → utility increases
+                    lowLabel: 'd × 0.8',
+                    highLabel: 'd × 1.2'
                 },
                 {
-                    name: 'SDy (Salary × 0.4)',
-                    low: ((N * T * d * (SDy * 0.8)) - (N * C)) - baseNetUtility,
-                    high: ((N * T * d * (SDy * 1.2)) - (N * C)) - baseNetUtility
+                    name: 'Duration (T years)',
+                    lowValue: (N * (T * 0.8) * d * SDy) - (N * C),  // T decreases → utility decreases
+                    highValue: (N * (T * 1.2) * d * SDy) - (N * C), // T increases → utility increases
+                    lowLabel: 'T × 0.8',
+                    highLabel: 'T × 1.2'
                 },
                 {
-                    name: 'Duration (T)',
-                    low: ((N * (T * 0.8) * d * SDy) - (N * C)) - baseNetUtility,
-                    high: ((N * (T * 1.2) * d * SDy) - (N * C)) - baseNetUtility
+                    name: 'Number of Trainees (N)',
+                    lowValue: ((N * 0.8) * T * d * SDy) - ((N * 0.8) * C), // N decreases → utility decreases
+                    highValue: ((N * 1.2) * T * d * SDy) - ((N * 1.2) * C), // N increases → utility increases
+                    lowLabel: 'N × 0.8',
+                    highLabel: 'N × 1.2'
                 },
                 {
-                    name: 'Trainees (N)',
-                    low: (((N * 0.8) * T * d * SDy) - ((N * 0.8) * C)) - baseNetUtility,
-                    high: (((N * 1.2) * T * d * SDy) - ((N * 1.2) * C)) - baseNetUtility
+                    name: 'SDy (40% of Salary)',
+                    lowValue: (N * T * d * (SDy * 0.8)) - (N * C),  // SDy decreases → utility decreases
+                    highValue: (N * T * d * (SDy * 1.2)) - (N * C), // SDy increases → utility increases
+                    lowLabel: 'SDy × 0.8',
+                    highLabel: 'SDy × 1.2'
                 },
                 {
                     name: 'Cost per Trainee (C)',
-                    low: ((N * T * d * SDy) - (N * (C * 0.8))) - baseNetUtility,
-                    high: ((N * T * d * SDy) - (N * (C * 1.2))) - baseNetUtility
+                    lowValue: (N * T * d * SDy) - (N * (C * 1.2)),  // C increases → utility DECREASES (inverse!)
+                    highValue: (N * T * d * SDy) - (N * (C * 0.8)), // C decreases → utility INCREASES (inverse!)
+                    lowLabel: 'C × 1.2',
+                    highLabel: 'C × 0.8'
                 }
             ];
 
-            // Sort by total swing (high - low)
-            variables.sort((a, b) => Math.abs(b.high - b.low) - Math.abs(a.high - a.low));
+            // Calculate swing for each variable and sort by impact (largest first)
+            variables.forEach(v => {
+                v.swing = Math.abs(v.highValue - v.lowValue);
+            });
+            variables.sort((a, b) => b.swing - a.swing);
 
-            const maxSwing = Math.max(...variables.map(v => Math.abs(v.high - v.low)));
+            // Find the maximum swing for scaling
+            const maxSwing = variables[0].swing;
+
             const container = document.getElementById('tornadoChart');
             container.innerHTML = '';
 
@@ -3607,46 +3671,68 @@ This estimate uses:
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'tornado-row';
 
-                const lowWidth = (Math.abs(variable.low) / maxSwing) * 300;
-                const highWidth = (Math.abs(variable.high) / maxSwing) * 300;
+                // Calculate bar widths as percentage of maximum swing
+                // Each side can be up to 50% of the container width
+                const leftWidth = (variable.swing / maxSwing) * 45; // percentage
+                const rightWidth = (variable.swing / maxSwing) * 45; // percentage
+
+                const lowImpact = variable.lowValue - baseNetUtility;
+                const highImpact = variable.highValue - baseNetUtility;
 
                 rowDiv.innerHTML = `
                     <div class="tornado-label">${variable.name}</div>
                     <div class="tornado-bar-container">
-                        <div class="tornado-bar negative" style="width: ${lowWidth}px;"
-                             title="20% decrease: ${formatter.format(variable.low)} impact">
-                            ${formatter.format(variable.low)}
-                        </div>
-                        <div class="tornado-bar positive" style="width: ${highWidth}px;"
-                             title="20% increase: ${formatter.format(variable.high)} impact">
-                            ${formatter.format(variable.high)}
+                        <div class="tornado-center-line"></div>
+                        <div class="tornado-bars-wrapper">
+                            <div style="width: 50%; display: flex; justify-content: flex-end; padding-right: 2px;">
+                                <div class="tornado-bar-left"
+                                     style="width: ${leftWidth}%;"
+                                     title="Worst Case: ${variable.lowLabel} → ${formatter.format(variable.lowValue)} (${formatter.format(lowImpact)} vs baseline)">
+                                    ${formatter.format(variable.lowValue)}
+                                </div>
+                            </div>
+                            <div style="width: 50%; display: flex; justify-content: flex-start; padding-left: 2px;">
+                                <div class="tornado-bar-right"
+                                     style="width: ${rightWidth}%;"
+                                     title="Best Case: ${variable.highLabel} → ${formatter.format(variable.highValue)} (${formatter.format(highImpact)} vs baseline)">
+                                    ${formatter.format(variable.highValue)}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
                 container.appendChild(rowDiv);
             });
 
-            // Add insights
-            const mostSensitive = variables[0].name;
-            const leastSensitive = variables[variables.length - 1].name;
+            // Generate insights
+            const mostSensitive = variables[0];
+            const leastSensitive = variables[variables.length - 1];
 
             let insightHTML = '<div class="insight-box">';
-            insightHTML += '<h3 style="margin-top: 0;">🎯 Action Items:</h3>';
-            insightHTML += `<p><strong>Most Critical Variable:</strong> ${mostSensitive} - A 20% change creates a swing of ${formatter.format(Math.abs(variables[0].high - variables[0].low))}. `;
+            insightHTML += '<h3 style="margin-top: 0;">🎯 Key Insights</h3>';
 
-            if (mostSensitive.includes('Effect Size')) {
-                insightHTML += '<strong>Action:</strong> Invest in program quality, use evidence-based curricula, and measure effectiveness rigorously.</p>';
-            } else if (mostSensitive.includes('SDy')) {
-                insightHTML += '<strong>Action:</strong> Ensure accurate salary data and consider targeting higher-value roles where SDy is larger.</p>';
-            } else if (mostSensitive.includes('Duration')) {
-                insightHTML += '<strong>Action:</strong> Plan for sustained impact through refreshers, coaching, and organizational support.</p>';
-            } else if (mostSensitive.includes('Trainees')) {
-                insightHTML += '<strong>Action:</strong> Scale the program to more participants to maximize returns (if quality can be maintained).</p>';
-            } else if (mostSensitive.includes('Cost')) {
-                insightHTML += '<strong>Action:</strong> Negotiate vendor costs, use internal facilitators, or leverage technology to reduce per-person costs.</p>';
+            insightHTML += `<p><strong>Highest Impact Variable:</strong> ${mostSensitive.name}</p>`;
+            insightHTML += `<ul style="margin: 10px 0;">`;
+            insightHTML += `<li><strong>Range:</strong> ${formatter.format(mostSensitive.lowValue)} (worst) to ${formatter.format(mostSensitive.highValue)} (best)</li>`;
+            insightHTML += `<li><strong>Total Swing:</strong> ${formatter.format(mostSensitive.swing)}</li>`;
+            insightHTML += `<li><strong>What this means:</strong> A ±20% change in this variable creates the largest impact on your ROI.</li>`;
+            insightHTML += `</ul>`;
+
+            // Action recommendations
+            if (mostSensitive.name.includes('Effect Size')) {
+                insightHTML += '<p>💡 <strong>Recommended Action:</strong> Prioritize program quality above all else. Use evidence-based methods, pilot test interventions, and measure results carefully. Small improvements in effect size yield massive returns.</p>';
+            } else if (mostSensitive.name.includes('SDy')) {
+                insightHTML += '<p>💡 <strong>Recommended Action:</strong> Validate your salary and performance data. Consider focusing training on roles where performance variability has the highest dollar value (sales, technical roles, management).</p>';
+            } else if (mostSensitive.name.includes('Duration')) {
+                insightHTML += '<p>💡 <strong>Recommended Action:</strong> Don\'t expect instant results. Build sustainment into your program design—refresher sessions, ongoing coaching, manager support, and measurement over multiple years.</p>';
+            } else if (mostSensitive.name.includes('Trainees')) {
+                insightHTML += '<p>💡 <strong>Recommended Action:</strong> Scale strategically. More participants = more impact, but only if you can maintain quality. Consider cohort-based rollouts.</p>';
+            } else if (mostSensitive.name.includes('Cost')) {
+                insightHTML += '<p>💡 <strong>Recommended Action:</strong> Focus on cost control. Negotiate with vendors, use internal facilitators, leverage technology, or explore blended learning to reduce per-person costs without sacrificing quality.</p>';
             }
 
-            insightHTML += `<p><strong>Least Sensitive:</strong> ${leastSensitive} - Changes here have minimal impact, so don't over-optimize this variable.</p>`;
+            insightHTML += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">`;
+            insightHTML += `<p style="font-size: 0.9em; color: #64748b;"><strong>Least Sensitive:</strong> ${leastSensitive.name} (swing: ${formatter.format(leastSensitive.swing)}). Don't over-optimize this—focus your energy on the variables that matter most.</p>`;
             insightHTML += '</div>';
 
             document.getElementById('tornadoInsights').innerHTML = insightHTML;
