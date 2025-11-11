@@ -1574,55 +1574,72 @@
                     </code>
                 </div>
 
-                <h3 style="margin-top: 40px;">Visual Formula Flow</h3>
-                <p>See how each variable flows into the calculation:</p>
+                <h3 style="margin-top: 40px;">Visual Formula Flow (Two-Step Calculation)</h3>
+                <p>The formula calculates Net Utility in two steps:</p>
 
-                <div class="formula-flow">
-                    <div class="formula-node input chart-element-interactive" data-variable="N">
-                        <div style="font-size: 0.8em; color: #666;">Number of</div>
-                        <div style="font-size: 1.5em; font-weight: bold;">N</div>
-                        <div style="font-size: 0.8em; color: #666;">Trainees</div>
-                    </div>
-                    <span class="formula-arrow">×</span>
-                    <div class="formula-node input chart-element-interactive" data-variable="T">
-                        <div style="font-size: 0.8em; color: #666;">Duration</div>
-                        <div style="font-size: 1.5em; font-weight: bold;">T</div>
-                        <div style="font-size: 0.8em; color: #666;">Years</div>
-                    </div>
-                    <span class="formula-arrow">×</span>
-                    <div class="formula-node input chart-element-interactive" data-variable="d">
-                        <div style="font-size: 0.8em; color: #666;">Effect Size</div>
-                        <div style="font-size: 1.5em; font-weight: bold;">d</div>
-                        <div style="font-size: 0.8em; color: #666;">Impact</div>
-                    </div>
-                    <span class="formula-arrow">×</span>
-                    <div class="formula-node input chart-element-interactive" data-variable="SDy">
-                        <div style="font-size: 0.8em; color: #666;">Performance $</div>
-                        <div style="font-size: 1.5em; font-weight: bold;">SDy</div>
-                        <div style="font-size: 0.8em; color: #666;">Value</div>
-                    </div>
-                    <span class="formula-arrow">=</span>
-                    <div class="formula-node operation chart-element-interactive">
-                        <div style="font-size: 0.8em; color: #666;">Gross Gain</div>
-                        <div style="font-size: 1.3em; font-weight: bold;">Total Benefit</div>
-                    </div>
-                    <span class="formula-arrow">−</span>
-                    <div class="formula-node input chart-element-interactive" data-variable="C">
-                        <div style="font-size: 0.8em; color: #666;">Total Cost</div>
-                        <div style="font-size: 1.5em; font-weight: bold;">N × C</div>
-                        <div style="font-size: 0.8em; color: #666;">Investment</div>
-                    </div>
-                    <span class="formula-arrow">=</span>
-                    <div class="formula-node output chart-element-interactive">
-                        <div style="font-size: 0.8em; color: #666;">Net Utility</div>
-                        <div style="font-size: 1.8em; font-weight: bold;">ΔU</div>
-                        <div style="font-size: 0.8em; color: #666;">ROI in $</div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="background: #f8f9fa; padding: 30px; border-radius: 15px; display: inline-block; max-width: 100%;">
+                        <!-- Step 1: Calculate Gross Gain -->
+                        <div style="margin-bottom: 30px;">
+                            <div style="font-size: 1em; color: #1e3c72; margin-bottom: 15px; font-weight: bold;">Step 1: Calculate Gross Gain (Total Benefit)</div>
+                            <div class="formula-flow" style="justify-content: center;">
+                                <div class="formula-node input chart-element-interactive" data-variable="N">
+                                    <div style="font-size: 0.8em; color: #666;">Number of</div>
+                                    <div style="font-size: 1.5em; font-weight: bold;">N</div>
+                                    <div style="font-size: 0.8em; color: #666;">Trainees</div>
+                                </div>
+                                <span class="formula-arrow">×</span>
+                                <div class="formula-node input chart-element-interactive" data-variable="T">
+                                    <div style="font-size: 0.8em; color: #666;">Duration</div>
+                                    <div style="font-size: 1.5em; font-weight: bold;">T</div>
+                                    <div style="font-size: 0.8em; color: #666;">Years</div>
+                                </div>
+                                <span class="formula-arrow">×</span>
+                                <div class="formula-node input chart-element-interactive" data-variable="d">
+                                    <div style="font-size: 0.8em; color: #666;">Effect Size</div>
+                                    <div style="font-size: 1.5em; font-weight: bold;">d</div>
+                                    <div style="font-size: 0.8em; color: #666;">Impact</div>
+                                </div>
+                                <span class="formula-arrow">×</span>
+                                <div class="formula-node input chart-element-interactive" data-variable="SDy">
+                                    <div style="font-size: 0.8em; color: #666;">Performance $</div>
+                                    <div style="font-size: 1.5em; font-weight: bold;">SDy</div>
+                                    <div style="font-size: 0.8em; color: #666;">Value</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arrow pointing down -->
+                        <div style="font-size: 2em; color: #2a5298; margin: 10px 0;">↓</div>
+
+                        <!-- Step 2: Subtract Total Cost -->
+                        <div style="margin-bottom: 20px;">
+                            <div style="font-size: 1em; color: #1e3c72; margin-bottom: 15px; font-weight: bold;">Step 2: Subtract Total Cost to Get Net Utility</div>
+                            <div class="formula-flow" style="justify-content: center;">
+                                <div class="formula-node operation" style="border-color: #ff9800;">
+                                    <div style="font-size: 0.8em; color: #666;">Gross Gain</div>
+                                    <div style="font-size: 1.2em; font-weight: bold;">N×T×d×SDy</div>
+                                </div>
+                                <span class="formula-arrow">−</span>
+                                <div class="formula-node input chart-element-interactive" data-variable="C">
+                                    <div style="font-size: 0.8em; color: #666;">Total Cost</div>
+                                    <div style="font-size: 1.5em; font-weight: bold;">N × C</div>
+                                    <div style="font-size: 0.8em; color: #666;">Investment</div>
+                                </div>
+                                <span class="formula-arrow">=</span>
+                                <div class="formula-node output chart-element-interactive">
+                                    <div style="font-size: 0.8em; color: #666;">Net Utility</div>
+                                    <div style="font-size: 1.8em; font-weight: bold;">ΔU</div>
+                                    <div style="font-size: 0.8em; color: #666;">ROI in $</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="contextual-insight" style="margin-top: 20px;">
                     <div class="insight-title">Key Insight: Hover over each variable above!</div>
-                    <div class="insight-body">Each component of the formula plays a critical role. Hover over any blue box to see detailed insights about how that variable affects your ROI calculation.</div>
+                    <div class="insight-body">Each component of the formula plays a critical role. Hover over any variable box to see detailed insights about how it affects your ROI calculation. The two-step process clearly shows: (1) First, calculate the total benefit from improved performance, then (2) Subtract your investment to get the net gain.</div>
                 </div>
                 
                 <table>
