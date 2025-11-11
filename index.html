@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimating ROI on Leadership Development - Avolio et al. (2010)</title>
+    <!-- 
+      This HTML file is an adaptation of a template, using its CSS and structure
+      to visualize the concepts from:
+      Avolio, B. J., Avey, J. B., & Quisenberry, D. (2010). 
+      Estimating return on leadership development investment. 
+      The Leadership Quarterly, 21(4), 633-644.
+      
+      VERSION 2: Enhanced fonts (Playfair Display, Lato) and improved
+      visual styling for a more professional presentation.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* FONT UPGRADE: Using Lato for all body text */
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            color: #333;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- UPGRADED TYPOGRAPHY --- */
+        
+        /* FONT UPGRADE: Using Playfair Display for all major headings */
+        h1, h2, h3, .definition-term, .result-box-label, .card h4, .breakdown-header {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        /* Page Navigation */
+        .page-nav-container {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .page-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            font-family: 'Lato', sans-serif; /* Apply body font */
+            font-weight: 700;
+        }
+
+        .page-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .page-btn.active {
+            background: white;
+            color: #1e3c72;
+            border-color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease;
+        }
+
+        .header h1 {
+            font-size: 3.2em; /* Slightly larger */
+            margin-bottom: 15px;
+            /* STYLE UPGRADE: Brighter gradient, softer shadow */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #ffffff, #d4e9fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .header .stats-preview {
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            margin-top: 15px;
+        }
+
+        /* Section Styles */
+        .section {
+            /* STYLE UPGRADE: Softer background, shadow, and radius */
+            background: #fdfdff;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #1e3c72;
+            font-size: 2.2em; /* Slightly larger */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #2a5298;
+            margin: 25px 0 15px;
+            font-size: 1.6em; /* Slightly larger */
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        /* Card Styles */
+        .card {
+            /* STYLE UPGRADE: Cleaner white background, top border accent */
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid #2a5298;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            /* STYLE UPGRADE: Softer hover shadow */
+            box-shadow: 0 12px 24px rgba(30,60,114,0.15);
+            border-color: #2a5298;
+        }
+
+        .card h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.3em; /* Slightly larger */
+        }
+
+        /* Stat Box Styles */
+        .stat-box {
+            /* STYLE UPGRADE: Richer, deeper gradient and softer text */
+            background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
+            color: #f1faee;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(30,60,114,0.4);
+        }
+
+        .stat-value {
+            font-size: 2.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Key Finding Box */
+        .key-finding {
+            /* STYLE UPGRADE: Professional amber/gold gradient */
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-size: 1.15em;
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.3);
+            border-left: 5px solid #d35400;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            /* STYLE UPGRADE: Professional teal gradient */
+            background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0, 95, 115, 0.3);
+        }
+
+        /* Tab System */
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: #f0f4f8;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif; /* Apply body font */
+        }
+
+        .tab:hover {
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-color: #1e3c72;
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e6ed;
+            background: white;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Path Model / Process Flow */
+        .path-model {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .path-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e6ed;
+        }
+
+        .path-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .path-arrow {
+            font-size: 2em;
+            color: #2a5298;
+            margin: 0 10px;
+            display: block;
+            text-align: center;
+        }
+
+        /* --- FEATURE UPGRADE: Interactive Demo --- */
+        .interactive-demo {
+            /* STYLE UPGRADE: Cleaner, bordered look */
+            background: #ffffff;
+            border: 1px solid #e0e6ed;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .slider-group {
+            margin: 25px 0; /* More spacing */
+        }
+        
+        .slider-label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 15px; /* More spacing */
+        }
+        
+        .slider-label span {
+            float: right;
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .slider {
+            width: 100%;
+            height: 10px; /* Thicker track */
+            border-radius: 5px;
+            background: #d0d9e2; /* Track background */
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        .slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: #d0d9e2;
+            border-radius: 5px;
+        }
+        
+        /* STYLE UPGRADE: New thumb design */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #1e3c72;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            margin-top: -8px; /* Center thumb */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #1e3c72;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: none;
+        }
+        
+        /* STYLE UPGRADE: Apply custom gradient to slider track */
+        /* This is a visual trick, the slider itself is simple, this gradient is in the container */
+        .slider-container-visual {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            padding: 2px;
+            border-radius: 7px;
+        }
+        /* Re-styling slider to be transparent and sit on top */
+        .slider.visual {
+            background: transparent;
+        }
+        .slider.visual::-webkit-slider-runnable-track {
+            background: transparent;
+        }
+        /* --- End of Slider Hack --- */
+
+
+        .result-display {
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 3px solid #1e3c72;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .result-grid {
+             display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .result-box-label {
+            font-size: 1.2em; /* Slightly larger */
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+        
+        .result-box-value {
+            font-size: 2.5em; /* Larger font for impact */
+            font-weight: 700;
+        }
+        
+        .positive-value {
+            color: #4caf50;
+        }
+        
+        .negative-value {
+            color: #f44336;
+        }
+
+        /* Argument Results (Replaced Hypothesis) */
+        .argument-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid;
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        /* Attribution */
+        .attribution {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .attribution a {
+            color: #64b5f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .attribution a:hover {
+            color: #90caf9;
+            text-decoration: underline;
+        }
+
+        /* Chart Styles */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+        
+        .chart-axis-y {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            bottom: 40px;
+            width: 2px;
+            background: #aaa;
+        }
+        
+        .chart-axis-x {
+            position: absolute;
+            bottom: 40px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: #aaa;
+        }
+
+        .bar {
+            width: 60px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            /* STYLE UPGRADE: More 3D feel */
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .bar:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .bar-label {
+            padding: 5px;
+            font-size: 0.9em;
+            font-weight: bold;
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+        }
+
+        .bar-value {
+            padding: 10px 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        /* --- FEATURE UPGRADE: Definition Card --- */
+        .definition-card {
+            background: #fdfdff; /* Softer white */
+            border-left: 5px solid #2a5298;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Softer shadow */
+        }
+        
+        /* Special definition card inside calculator */
+        .result-display .definition-card {
+            background: #f8f9fa;
+            border: 1px dashed #2a5298;
+            border-left: 5px solid #2a5298;
+        }
+
+        .definition-term {
+            font-size: 1.4em; /* Slightly larger */
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .definition-content {
+            line-height: 1.8;
+        }
+        
+        .definition-content code {
+            background: #f0f4f8;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #c62828;
+            font-size: 1.1em;
+        }
+
+        /* Practical Breakdown Styles */
+        .breakdown-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .breakdown-header {
+            color: #1e3c72;
+            font-size: 1.5em; /* Slightly larger */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .breakdown-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .section h2 { font-size: 1.8em; }
+            .grid { grid-template-columns: 1fr; }
+            .section { padding: 25px; }
+            .tabs { flex-direction: column; }
+            .tab { width: 100%; text-align: center; }
+            .page-btn { padding: 8px 15px; font-size: 0.9em; }
+            .chart-container { 
+                height: auto; 
+                flex-direction: column; 
+                align-items: stretch; 
+                justify-content: flex-end; 
+                gap: 45px; 
+                padding-bottom: 50px; 
+                background: #f8f9fa;
+            }
+            .bar { 
+                height: 50px !important; 
+                width: 100%; 
+                max-width: none; 
+                flex-direction: row; 
+                align-items: center; 
+                justify-content: space-between; 
+                border-radius: 5px;
+                padding: 0 10px;
+            }
+            .bar-label { 
+                position: static; 
+                color: white; 
+                width: auto; 
+                font-size: 0.8em;
+            }
+            .bar-value { 
+                position: static; 
+                font-size: 1em;
+            }
+            .chart-axis-x, .chart-axis-y { display: none; }
+            
+            table { font-size: 0.85em; }
+            .result-grid { grid-template-columns: 1fr; }
+            .path-arrow { transform: rotate(90deg); margin: 15px 0; }
+        }
+
+        /* Page visibility */
+        #main { display: block; }
+        #analysis { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <div class="page-nav-container">
+        <div class="page-nav">
+            <button class="page-btn active" onclick="switchPage('main', this)">Framework Overview</button>
+            <button class="page-btn" onclick="switchPage('analysis', this)">ROI Calculator & Models</button>
+        </div>
+    </div>
+
+    <!-- Main Page -->
+    <div id="main">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💰 Estimating Return on Leadership Development Investment</h1>
+            <p class="subtitle">A Utility Analysis Framework for HR & Organizations</p>
+            <p class="subtitle">Avolio, Avey & Quisenberry (2010) - Interactive Analysis</p>
+            <div class="stats-preview">
+                📈 Methodological Framework | 📊 Utility Analysis Model | 💡 Evidence-Based HR
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>📈 Executive Summary</h2>
+            <div class="grid">
+                <div class="stat-box">
+                    <div class="stat-value">$100B+</div>
+                    <div class="stat-label">Est. Annual Global LD Spending</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">d ≈ 0.38</div>
+                    <div class="stat-label">Avg. Effect Size of LD (Meta-Analysis)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">40%</div>
+                    <div class="stat-label">Rule-of-Thumb for SDy (of Salary)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">ΔU</div>
+                    <div class="stat-label">The Core Metric: Net Utility Gain ($)</div>
+                </div>
+            </div>
+
+            <div class="key-finding">
+                💡 <strong>Core Argument:</strong> Stop guessing. This paper provides a scientifically-grounded framework using **Utility Analysis (UA)** to move beyond simple satisfaction surveys ("happy sheets") and estimate the actual financial return (ROI) of leadership development in dollar terms.
+            </div>
+
+            <div class="insight-box">
+                🎓 <strong>Key Insight:</strong> The value of "soft skills" like leadership *can* be quantified. By systematically estimating program costs (C), effect size (d), and the value of performance (SDy), organizations can make strategic, data-driven decisions about where to invest their development dollars.
+            </div>
+        </div>
+
+        <!-- Key Terminology -->
+        <div class="section">
+            <h2>📚 Key Concepts & Definitions</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Utility Analysis (UA)</h4>
+                    <p><strong>Definition:</strong> A method from industrial-organizational psychology used to estimate the dollar value of organizational programs, such as selection procedures or training interventions. It calculates the net financial gain (ΔU) of a program.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>Effect Size (d)</h4>
+                    <p><strong>Definition:</strong> A standardized measure of the strength of an intervention. It represents the difference in performance (in standard deviations) between the average trained employee and the average untrained employee.</p>
+                    <p style="margin-top: 10px;"><strong>Example:</strong> d = 0.5 means the average trained leader performs half a standard deviation better than an untrained one.</p>
+                </div>
+
+                <div class="card">
+                    <h4>SDy (Standard Deviation of Performance)</h4>
+                    <p><strong>Definition:</strong> The variability of job performance in dollars. A high SDy means that high-performing leaders are *vastly* more valuable to the company than low-performing ones. This is a critical multiplier in the utility formula.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Kirkpatrick's 4-Level Model</h4>
+                    <p><strong>Definition:</strong> The traditional model for evaluating training:</p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Level 1:</strong> Reaction (Did they like it?)</li>
+                        <li><strong>Level 2:</strong> Learning (Did they learn it?)</li>
+                        <li><strong>Level 3:</strong> Behavior (Do they use it?)</li>
+                        <li><strong>Level 4:</strong> Results (Did it impact the business?)</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Limitation:</strong> Most firms stop at Level 1. UA provides a robust method for assessing Level 4.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- The Utility Framework -->
+        <div class="section">
+            <h2>🔬 The Utility Analysis Framework</h2>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('formula', this)">The Core Formula</button>
+                <button class="tab" onclick="showTab('params', this)">Estimating the Parameters</button>
+                <button class="tab" onclick="showTab('cost', this)">Calculating Total Cost</button>
+            </div>
+
+            <div id="formula" class="tab-content active">
+                <h3>The Core Utility Formula</h3>
+                <p>The paper centers on adapting the classic utility analysis formula to estimate the net financial gain (ΔU) from a leadership development program:</p>
+                
+                <div class="definition-card" style="background: #f8f9fa; border-left-color: #1e3c72; text-align: center;">
+                    <code class="definition-term" style="font-size: 1.2em;">
+                        ΔU = (N * T * d * SDy) - (N * C)
+                    </code>
+                </div>
+                
+                <table>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Definition</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><strong>ΔU</strong></td>
+                        <td><strong>Net Utility Gain</strong> (The final ROI in dollars)</td>
+                        <td>$500,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>N</strong></td>
+                        <td>Number of leaders trained</td>
+                        <td>100 leaders</td>
+                    </tr>
+                    <tr>
+                        <td><strong>T</strong></td>
+                        <td>Average tenure of trainees (duration of the effect)</td>
+                        <td>3 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>d</strong></td>
+                        <td>Effect size of the training program</td>
+                        <td>0.38 (from meta-analysis)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SDy</strong></td>
+                        <td>Standard deviation of performance in dollars</td>
+                        <td>$30,000 (40% of $75k salary)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C</strong></td>
+                        <td>Cost of the training per trainee</td>
+                        <td>$2,500</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="params" class="tab-content">
+                <h3>Estimating the Parameters (The "Hard Part")</h3>
+                <p>The challenge of UA is finding good estimates for <code>d</code> and <code>SDy</code>.</p>
+                
+                <div class="definition-card">
+                    <div class="definition-term">Estimating SDy (Value of Performance)</div>
+                    <div class="definition-content">
+                        <p>This is the most controversial parameter. Avolio et al. (2010) suggest several methods:</p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li><strong>The 40% Rule:</strong> A conservative rule-of-thumb from Hunter & Schmidt (1982) stating that <code>SDy</code> is roughly <strong>40% of the mean salary</strong> for the job. (e.g., for a $100,000/year manager, SDy = $40,000).</li>
+                            <li><strong>Global Expert Estimation:</strong> Having senior executives estimate the dollar value of an average vs. a high-performing (85th percentile) leader.</li>
+                            <li><strong>CREPID:</strong> A complex method involving breaking down job duties and assigning proportional value.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="definition-card">
+                    <div class="definition-term">Finding 'd' (Effect Size)</div>
+                    <div class="definition-content">
+                        <p>How much better do trained leaders actually perform? The paper suggests:</p>
+                         <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li><strong>Use Meta-Analyses (Easiest):</strong> Rely on existing scientific literature. The paper cites meta-analyses showing <code>d</code> values for management training are often between <strong>0.30 and 0.70</strong>.</li>
+                            <li><strong>Run a Control Group Study (Best):</strong> Measure the performance of a trained group vs. an equivalent untrained group. This is the most accurate but most difficult method.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cost" class="tab-content">
+                <h3>Calculating Total Cost (C)</h3>
+                <p>This is more than just the price of the workshop. A full accounting of costs is critical for a true ROI calculation.</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h4>Direct Costs</h4>
+                         <ul style="margin-left: 20px;">
+                            <li>Trainer/Vendor fees</li>
+                            <li>Training materials & licenses</li>
+                            <li>Facility rentals</li>
+                            <li>Travel and lodging</li>
+                            <li>Food and beverages</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Indirect Costs</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Trainees' salary/wages for time spent in training (i.e., time away from their job)</li>
+                            <li>Salary of internal staff who help organize</li>
+                            <li>Lost productivity during the training period</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    <strong>Key Insight:</strong> Indirect costs, especially the cost of trainee time, are often the largest single expense in leadership development and must be included.
+                </div>
+            </div>
+        </div>
+
+        <!-- Path Model Visualization -> Replaced with Process Flow -->
+        <div class="section">
+            <h2>🔄 The 5-Step ROI Estimation Process</h2>
+
+            <div class="path-model" style="text-align: center;">
+                <div class="path-box">
+                    <strong>Step 1: Calculate Total Cost</strong><br>
+                    (Sum all direct & indirect costs per trainee, 'C')
+                </div>
+                <span class="path-arrow">↓</span>
+                <div class="path-box">
+                    <strong>Step 2: Estimate SDy</strong><br>
+                    (e.g., Use 40% of mean leader salary)
+                </div>
+                <span class="path-arrow">↓</span>
+                <div class="path-box">
+                    <strong>Step 3: Determine Effect Size (d)</strong><br>
+                    (Find from meta-analysis or internal study)
+                </div>
+                <span class="path-arrow">↓</span>
+                <div class="path-box">
+                    <strong>Step 4: Calculate Net Utility (ΔU)</strong><br>
+                    (Run the formula: ΔU = (N*T*d*SDy) - (N*C))
+                </div>
+                <span class="path-arrow">↓</span>
+                <div class="path-box" style="background: #e8f5e9;">
+                    <strong>Step 5: Calculate Final ROI</strong><br>
+                    (ROI % = Net Utility / Total Cost)
+                </div>
+            </div>
+        </div>
+        
+        <!-- Attribution -->
+        <div class="attribution">
+            <h3>📚 About This Presentation</h3>
+            <p style="margin-top: 20px;">Interactive visualization of the framework proposed in:</p>
+            <p>Avolio, B. J., Avey, J. B., & Quisenberry, D. (2010).</p>
+            <p>Estimating return on leadership development investment.</p>
+            <p><em>The Leadership Quarterly, 21</em>(4), 633-644.</p>
+            <p style="margin-top: 15px;">DOI: <a href="https://doi.org/10.1016/j.leaqua.2010.06.007" target="_blank">10.1016/j.leaqua.2010.06.007</a></p>
+
+            <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.9;">
+                This presentation synthesizes the core arguments for using Utility Analysis to<br>
+                scientifically estimate the financial returns of leadership development programs.
+            </p>
+
+            <p style="margin-top: 20px;">
+                <a href="httpsjs://doi.org/10.1016/j.leaqua.2010.06.007" target="_blank">Read Full Paper</a>
+            </p>
+        </div>
+    </div>
+    </div>
+
+    <!-- Analysis Page -->
+    <div id="analysis">
+    <div class="container">
+        <!-- Header for Analysis Page -->
+        <div class="header">
+            <h1>🧮 ROI Calculator & Scenario Analysis</h1>
+            <p class="subtitle">Interactively Estimate the Value of Your Leadership Program</p>
+        </div>
+
+        <!-- REVISED CALCULATOR -->
+        <div class="section">
+            <h2>🧮 Interactive ROI Scenario Calculator</h2>
+
+            <div class="interactive-demo">
+                <h3>Estimate Your Program's Net Utility (ΔU) and ROI</h3>
+                <p style="margin-bottom: 20px;">Adjust the sliders based on your program's parameters and the estimation rules from Avolio et al. (2010). The <strong>40% rule</strong> (SDy = 40% of salary) is used for this calculation.</p>
+
+                <div class="slider-group">
+                    <label class="slider-label">Number of Trainees (N): <span id="N_Value">100</span></label>
+                    <div class="slider-container-visual">
+                        <input type="range" class="slider visual" id="N_Slider" min="10" max="500" value="100" step="10" oninput="calculateROI()">
+                    </div>
+                </div>
+                
+                <div class="slider-group">
+                    <label class="slider-label">Avg. Trainee Salary: <span id="Salary_Value">$80,000</span></label>
+                    <div class="slider-container-visual">
+                        <input type="range" class="slider visual" id="Salary_Slider" min="40000" max="250000" value="80000" step="5000" oninput="calculateROI()">
+                    </div>
+                </div>
+                
+                <div class="slider-group">
+                    <label class="slider-label">Program Cost per Trainee (C): <span id="Cost_Value">$5,000</span></label>
+                    <div class="slider-container-visual">
+                        <input type="range" class="slider visual" id="Cost_Slider" min="500" max="20000" value="5000" step="500" oninput="calculateROI()">
+                    </div>
+                </div>
+                
+                <div class="slider-group">
+                    <label class="slider-label">Program Effect Size (d): <span id="d_Value">0.38</span></label>
+                    <p style="font-size: 0.9em; font-style: italic; margin-top: -12px; margin-bottom: 10px; color: #666;">
+                        (e.g., 0.2 = Small, 0.38 = Avg. LD Program, 0.6 = High-Impact)
+                    </p>
+                    <div class="slider-container-visual">
+                        <input type="range" class="slider visual" id="d_Slider" min="0.1" max="1.0" value="0.38" step="0.01" oninput="calculateROI()">
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <label class="slider-label">Effect Duration in Years (T): <span id="T_Value">3</span></label>
+                    <div class="slider-container-visual">
+                        <input type="range" class="slider visual" id="T_Slider" min="1" max="10" value="3" step="1" oninput="calculateROI()">
+                    </div>
+                </div>
+
+                <div id="calculatorResult" class="result-display">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px; text-align: center;">📊 Projected Financial Impact</h3>
+                    
+                    <div class="definition-card">
+                        <div class="definition-term">Key Calculation (SDy)</div>
+                        <div class="definition-content" id="calc_SDy_Display">
+                            <code><strong>SDy (Value of Performance)</strong> = 40% of $80,000 = <strong>$32,000</strong></code>
+                        </div>
+                    </div>
+                    
+                    <div class="result-grid">
+                        <div class="result-box" style="background: #fdebee;">
+                            <div class="result-box-label">Total Program Cost</div>
+                            <div class="result-box-value negative-value" id="res_TotalCost">$500,000</div>
+                        </div>
+                        <div class="result-box" style="background: #e8f5e9;">
+                            <div class="result-box-label">Total Program Gain (Gross)</div>
+                            <div class="result-box-value positive-value" id="res_TotalGain">$3,648,000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-grid" style="margin-top: 10px; grid-template-columns: 1fr;">
+                         <div class="result-box" style="background: #fff3e0; border: 2px solid #ff9800;">
+                            <div class="result-box-label">Net Utility (ΔU)</div>
+                            <div class="result-box-value positive-value" id="res_NetUtility">$3,148,000</div>
+                        </div>
+                        <div class="result-box" style="background: #fff3e0; border: 2px solid #ff9800;">
+                            <div class="result-box-label">Return on Investment (ROI)</div>
+                            <div class="result-box-value positive-value" id="res_ROI">629.6%</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chart 1: Sensitivity Analysis -->
+        <div class="section">
+            <h2>📈 Sensitivity Analysis: Impact of Effect Size (d)</h2>
+            <p>This chart shows how the Net Utility (financial gain) changes based on the program's quality (effect size 'd'), holding other calculator values constant.</p>
+            <div class="chart-container" id="effectSizeChart">
+                <div class="chart-axis-x"></div><div class="chart-axis-y"></div>
+                <!-- Chart will be populated by JavaScript -->
+            </div>
+            <div class="insight-box">
+                <strong>Key Pattern:</strong> The relationship is linear. Doubling your program's effectiveness (e.g., from d=0.2 to d=0.4) will double its gross financial return. This highlights the value of using high-quality, evidence-based program designs.
+            </div>
+        </div>
+
+        <!-- Chart 2: Cost vs. Utility -->
+        <div class="section">
+            <h2>🎯 Sensitivity Analysis: Impact of Program Cost (C)</h2>
+            <p>This chart shows how Net Utility changes based on program cost, holding other calculator values constant. Even an expensive program can have a massive payoff if its effect size ('d') is strong.</p>
+            <div class="chart-container" id="costChart">
+                <div class="chart-axis-x"></div><div class="chart-axis-y"></div>
+                <!-- Chart will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Comprehensive Definitions -->
+        <div class="section">
+            <h2>📖 Comprehensive Glossary of UA Terms</h2>
+
+            <div class="definition-card">
+                <div class="definition-term">Utility Analysis (UA)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> A set of models and methods used to describe, predict, and explain the usefulness or value of organizational interventions (like training) in financial terms.</p>
+                    <p style="margin-top: 10px;"><strong>Purpose:</strong> To move beyond "Did they like it?" (Kirkpatrick Level 1) and "Did they learn it?" (Level 2) to "What financial impact did this program have on the business?" (Level 4).</p>
+                </div>
+            </div>
+            
+            <div class="definition-card">
+                <div class="definition-term">SDy (Standard Deviation of Job Performance in Dollars)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> The monetary value of performance variability. It answers: "How much more valuable (in dollars) is a high-performing leader (e.g., 85th percentile) than an average-performing leader (50th percentile)?"</p>
+                    <p style="margin-top: 10px;"><strong>The 40% Rule:</strong> The most common estimation, based on meta-analyses by Hunter & Schmidt, is that <code>SDy</code> is approximately <strong>40% of the job's mean salary</strong>. Avolio et al. (2010) support this as a "conservative" and reasonable starting point.</p>
+                    <p style="margin-top: 10px;">Example: If a manager's average salary is $100,000, the <code>SDy</code> is estimated at $40,000.</p>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">d (Effect Size)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> The magnitude of the program's impact, expressed in standard deviations. It is the standardized mean difference in performance between the trained and untrained groups.</p>
+                    <p style="margin-top: 10px;"><strong>How to Find 'd':</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>From Meta-Analysis:</strong> Avolio et al. (2010) cite studies showing average <code>d</code> for managerial training is around <strong>0.38</strong>, while some interventions (like Pygmalion-effect training) can be <strong>0.70</strong> or higher.</li>
+                        <li><strong>From Internal Study:</strong> <code>d = (Performance_Trained_Group - Performance_Control_Group) / Pooled_Standard_Deviation</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <div class="definition-term">C (Program Cost)</div>
+                <div class="definition-content">
+                    <p><strong>Core Concept:</strong> The *total* cost per trainee. The paper emphasizes the need to be thorough.</p>
+                    <p style="margin-top: 10px;"><strong>Formula:</strong> <code>C = (Direct Costs + Indirect Costs) / N</code></p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Direct Costs:</strong> Materials, vendor fees, travel, facility rental.</li>
+                        <li><strong>Indirect Costs:</strong> Trainees' salary and benefits for time spent in training (often the largest cost), administrative support time.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="definition-card">
+                <div class="definition-term">ΔU (Net Utility) vs. ROI (Return on Investment)</div>
+                <div class="definition-content">
+                    <p>These are two different, but related, final metrics.</p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Net Utility (ΔU):</strong> The total *dollar value* gained by the organization, after subtracting costs.
+                        <br><code>ΔU = Total Gain - Total Cost</code></li>
+                        <li><strong>Return on Investment (ROI):</strong> The *percentage return* relative to the cost.
+                        <br><code>ROI = (Net Utility / Total Cost) * 100</code></li>
+                    </ul>
+                     <p style="margin-top: 10px;">Both should be presented. A $10M program that returns $11M has a low ROI (10%) but a high Net Utility (+$1M). A $10k program that returns $50k has a high ROI (400%) but a lower Net Utility (+$40k).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Breakdown -->
+        <div class="section">
+            <h2>🛠️ Practical Implementation Guide</h2>
+
+            <div class="breakdown-section">
+                <div class="breakdown-header">Phase 1: Planning & Data Gathering</div>
+                <div class="breakdown-item">
+                    <h4>Step 1: Identify All Program Costs (C)</h4>
+                    <p>Sum all direct costs (vendor, travel, materials) and indirect costs (trainee salary for time in training) and divide by N to get 'C'.</p>
+                </div>
+                <div class="breakdown-item">
+                    <h4>Step 2: Gather Program Data (N, T, Salary)</h4>
+                    <p>Determine the number of trainees (N), their average tenure (T), and their mean salary.</p>
+                </div>
+                 <div class="breakdown-item">
+                    <h4>Step 3: Estimate SDy</h4>
+                    <p>Apply the 40% rule as a conservative, defensible estimate: <code>SDy = Mean Salary * 0.40</code>.</p>
+                </div>
+                 <div class="breakdown-item">
+                    <h4>Step 4: Estimate Effect Size (d)</h4>
+                    <p>Search for meta-analyses on your specific type of training (e.g., "effect size of transformational leadership training") or use a conservative default like d=0.30.</p>
+                </div>
+            </div>
+            
+            <div class="breakdown-section">
+                <div class="breakdown-header">Phase 2: Calculation & Sensitivity Analysis</div>
+                <div class="breakdown-item">
+                    <h4>Step 5: Run the Utility Formula</h4>
+                    <p>Plug all variables into the formula to find the Net Utility (ΔU):<br>
+                    <code>ΔU = (N * T * d * SDy) - (N * C)</code></p>
+                </div>
+                <div class="breakdown-item">
+                    <h4>Step 6: Calculate Final ROI</h4>
+                    <p>Convert the Net Utility into a percentage: <br>
+                    <code>ROI = (ΔU / (N * C)) * 100</code></p>
+                </div>
+                 <div class="breakdown-item">
+                    <h4>Step 7: Run Sensitivity Analysis (Crucial)</h4>
+                    <p>The paper stresses this. Re-run the calculation with "best-case" and "worst-case" estimates for 'd' and 'SDy' to create a credible range of expected returns.</p>
+                    <p>Example: "We project a return between $1.2M (worst-case, d=0.2) and $4.5M (best-case, d=0.6), with the most likely estimate being $2.8M."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Thoughts -->
+        <div class="section" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+            <h2 style="color: white; border-bottom-color: white;">🎯 The Bottom Line for Practitioners</h2>
+
+            <div style="font-size: 1.2em; line-height: 2;">
+                <p>✅ <strong>DO:</strong> Use an evidence-based model like Utility Analysis to justify LD investments.</p>
+                <p>✅ <strong>DO:</strong> Be thorough in calculating *all* costs, especially indirect salary costs.</p>
+                <p>✅ <strong>DO:</strong> Use conservative, defensible estimates for <code>SDy</code> (like the 40% rule) and <code>d</code> (from meta-analyses).</p>
+                <p>✅ <strong>DO:</strong> Present a "sensitivity analysis" with a best-case, worst-case, and most-likely scenario to build credibility.</p>
+
+                <p style="margin-top: 20px;">❌ <strong>DON'T:</strong> Rely only on Level 1 "happy sheets" to prove value.</p>
+                <p>❌ <strong>DON'T:</strong> Be afraid to quantify "soft skills." This framework provides a path.</p>
+                <p>❌ <strong>DON'T:</strong> Present a single, magic ROI number. A calculated *range* is more believable and professional.</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        // --- PAGE/TAB NAVIGATION ---
+        function switchPage(pageId, btn) {
+            document.getElementById('main').style.display = 'none';
+            document.getElementById('analysis').style.display = 'none';
+            document.getElementById(pageId).style.display = 'block';
+
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            if (pageId === 'analysis') {
+                calculateROI(); // Run calculator on page load
+                loadCharts(); // Load charts
+            }
+        }
+
+        function showTab(tabName, btn) {
+            const tabContainer = btn.closest('.section');
+            tabContainer.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            tabContainer.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            btn.classList.add('active');
+            tabContainer.querySelector('#' + tabName).classList.add('active');
+        }
+
+        // --- ROI CALCULATOR ---
+        
+        // Helper to format currency
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0,
+        });
+        
+        // Helper to format numbers
+        const numFormatter = new Intl.NumberFormat('en-US', {
+            maximumFractionDigits: 0,
+        });
+        
+        function calculateROI() {
+            // Get all elements
+            const N_Val = document.getElementById('N_Slider').value;
+            const Salary_Val = document.getElementById('Salary_Slider').value;
+            const Cost_Val = document.getElementById('Cost_Slider').value;
+            const d_Val = document.getElementById('d_Slider').value;
+            const T_Val = document.getElementById('T_Slider').value;
+            
+            // Update labels
+            document.getElementById('N_Value').textContent = numFormatter.format(N_Val);
+            document.getElementById('Salary_Value').textContent = formatter.format(Salary_Val);
+            document.getElementById('Cost_Value').textContent = formatter.format(Cost_Val);
+            document.getElementById('d_Value').textContent = parseFloat(d_Val).toFixed(2);
+            document.getElementById('T_Value').textContent = T_Val;
+            
+            // --- The Calculation ---
+            const N = parseFloat(N_Val);
+            const C = parseFloat(Cost_Val);
+            const d = parseFloat(d_Val);
+            const T = parseFloat(T_Val);
+            const Salary = parseFloat(Salary_Val);
+            
+            // 1. Estimate SDy using the 40% rule
+            const SDy = Salary * 0.40;
+            
+            // 2. Calculate Total Cost
+            const TotalCost = N * C;
+            
+            // 3. Calculate Total Gain (Gross)
+            const TotalGain = N * T * d * SDy;
+            
+            // 4. Calculate Net Utility (ΔU)
+            const NetUtility = TotalGain - TotalCost;
+            
+            // 5. Calculate ROI
+            const ROI = (TotalCost > 0) ? (NetUtility / TotalCost) * 100 : 0;
+            
+            // Update Results Display
+            const resultDiv = document.getElementById('calculatorResult');
+            if (!resultDiv) return; // Only run on analysis page
+            
+            resultDiv.querySelector('#calc_SDy_Display').innerHTML = `
+                <code><strong>SDy (Value of Performance)</strong> = 40% of ${formatter.format(Salary)} = <strong>${formatter.format(SDy)}</strong></code>
+            `;
+            
+            document.getElementById('res_TotalCost').textContent = formatter.format(TotalCost);
+            document.getElementById('res_TotalGain').textContent = formatter.format(TotalGain);
+            document.getElementById('res_NetUtility').textContent = formatter.format(NetUtility);
+            document.getElementById('res_ROI').textContent = numFormatter.format(ROI) + '%';
+            
+            // Update positive/negative colors
+            updateResultColor(document.getElementById('res_NetUtility'), NetUtility);
+            updateResultColor(document.getElementById('res_ROI'), ROI);
+            
+            // Update slider visual fill
+            updateSliderFills();
+        }
+        
+        function updateResultColor(element, value) {
+            element.classList.remove('positive-value', 'negative-value');
+            if (value >= 0) {
+                element.classList.add('positive-value');
+            } else {
+                element.classList.add('negative-value');
+            }
+        }
+        
+        function updateSliderFills() {
+            document.querySelectorAll('.slider.visual').forEach(slider => {
+                const min = parseFloat(slider.min);
+                const max = parseFloat(slider.max);
+                const val = parseFloat(slider.value);
+                const percent = (val - min) / (max - min) * 100;
+                
+                // Find the parent container and apply the gradient
+                const container = slider.closest('.slider-container-visual');
+                if (container) {
+                    container.style.background = `linear-gradient(90deg, #1e3c72 ${percent}%, #d0d9e2 ${percent}%)`;
+                }
+            });
+        }
+        
+        // --- ANALYSIS PAGE CHARTS ---
+        
+        function loadCharts() {
+            // Get current calculator values as baseline
+            const N = parseFloat(document.getElementById('N_Slider').value);
+            const C = parseFloat(document.getElementById('Cost_Slider').value);
+            const T = parseFloat(document.getElementById('T_Slider').value);
+            const Salary = parseFloat(document.getElementById('Salary_Slider').value);
+            const SDy = Salary * 0.40;
+
+            // --- Chart 1: Effect Size Sensitivity ---
+            const effectSizeData = [
+                { name: 'd = 0.2 (Weak)', d: 0.2, color: '#ff9800' },
+                { name: 'd = 0.4 (Average)', d: 0.4, color: '#2196f3' },
+                { name: 'd = 0.6 (Strong)', d: 0.6, color: '#4caf50' },
+                { name: 'd = 0.8 (Excellent)', d: 0.8, color: '#9c27b0' }
+            ];
+            
+            let maxUtility_d = -Infinity;
+            let minUtility_d = Infinity;
+            
+            const d_ChartData = effectSizeData.map(item => {
+                const gain = N * T * item.d * SDy;
+                const cost = N * C;
+                const utility = gain - cost;
+                if (utility > maxUtility_d) maxUtility_d = utility;
+                if (utility < minUtility_d) minUtility_d = utility;
+                return { name: item.name, utility: utility, color: item.color };
+            });
+            
+            // Adjust max for scaling
+            maxUtility_d = Math.max(Math.abs(maxUtility_d), Math.abs(minUtility_d));
+            if (maxUtility_d === 0) maxUtility_d = 1;
+
+            const d_Chart = document.getElementById('effectSizeChart');
+            d_Chart.innerHTML = '<div class="chart-axis-x"></div><div class="chart-axis-y"></div>'; // Clear previous
+            
+            d_ChartData.forEach(item => {
+                const barHeight = (item.utility / maxUtility_d) * 300; // 300px max height
+                const bar = createBar(item.name, formatter.format(item.utility), barHeight, item.color);
+                d_Chart.appendChild(bar);
+            });
+
+            // --- Chart 2: Cost Sensitivity ---
+            const costData = [
+                { name: 'Cost = $1k', cost: 1000, color: '#4caf50' },
+                { name: 'Cost = $5k', cost: 5000, color: '#2196f3' },
+                { name: 'Cost = $10k', cost: 10000, color: '#ff9800' },
+                { name: 'Cost = $15k', cost: 15000, color: '#f44336' }
+            ];
+            
+            const d_baseline = parseFloat(document.getElementById('d_Slider').value);
+            let maxUtility_c = -Infinity;
+            let minUtility_c = Infinity;
+            
+            const c_ChartData = costData.map(item => {
+                const gain = N * T * d_baseline * SDy;
+                const cost = N * item.cost;
+                const utility = gain - cost;
+                if (utility > maxUtility_c) maxUtility_c = utility;
+                if (utility < minUtility_c) minUtility_c = utility;
+                return { name: item.name, utility: utility, color: item.color };
+            });
+            
+            // Adjust max for scaling
+            maxUtility_c = Math.max(Math.abs(maxUtility_c), Math.abs(minUtility_c));
+             if (maxUtility_c === 0) maxUtility_c = 1;
+
+
+            const c_Chart = document.getElementById('costChart');
+            c_Chart.innerHTML = '<div class="chart-axis-x"></div><div class="chart-axis-y"></div>'; // Clear previous
+            
+            c_ChartData.forEach(item => {
+                const barHeight = (item.utility / maxUtility_c) * 300;
+                const bar = createBar(item.name, formatter.format(item.utility), barHeight, item.color);
+                c_Chart.appendChild(bar);
+            });
+        }
+        
+        function createBar(name, value, height, color) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            let displayHeight = Math.abs(height);
+            
+            // Handle negative values
+            if (height < 0) {
+                bar.style.height = displayHeight + 'px';
+                bar.style.background = '#aaa';
+                bar.style.bottom = '40px'; // On top of axis
+            } else {
+                 bar.style.height = (displayHeight > 20 ? displayHeight : 20) + 'px'; // Min height
+                 bar.style.background = color;
+                 bar.style.bottom = '40px';
+            }
+            
+            // For responsive mobile view, height is ignored, but value is still needed
+            bar.innerHTML = `
+                <div class="bar-value">${value}</div>
+                <div class="bar-label" style="color: #333;">${name}</div>
+            `;
+            
+            // Re-apply responsive styles for bar-label
+            if (window.innerWidth <= 768) {
+                 bar.querySelector('.bar-label').style.color = 'white';
+            }
+            
+            return bar;
+        }
+
+        // Initialize calculator and charts on first load
+        (function() {
+            // Check if analysis page is active, if so, init
+            if (document.getElementById('analysis').style.display === 'block') {
+                calculateROI();
+                loadCharts();
+            }
+            
+            // Initial call to set slider fills
+            updateSliderFills();
+            
+            // Add listener to recalculate charts on window resize for mobile
+            window.addEventListener('resize', () => {
+                 if (document.getElementById('analysis').style.display === 'block') {
+                    loadCharts();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
