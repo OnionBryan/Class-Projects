@@ -1453,6 +1453,243 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
+
+        /* --- ENHANCED 5-STEP PROCESS CARDS --- */
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 6px solid #2a5298;
+        }
+
+        body.dark-mode .step-card {
+            background: #1e293b;
+            border-left-color: #3b82f6;
+        }
+
+        .step-card.expanded {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-card-header {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .step-card-header:hover {
+            background: #f8f9fa;
+        }
+
+        body.dark-mode .step-card-header:hover {
+            background: #334155;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .step-header-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        body.dark-mode .step-title {
+            color: #93c5fd;
+        }
+
+        .step-subtitle {
+            color: #666;
+            font-size: 1em;
+        }
+
+        body.dark-mode .step-subtitle {
+            color: #cbd5e1;
+        }
+
+        .step-expand-icon {
+            font-size: 1.5em;
+            color: #2a5298;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card.expanded .step-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .step-card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .step-card.expanded .step-card-body {
+            max-height: 3000px;
+        }
+
+        .step-card-content {
+            padding: 0 25px 25px 25px;
+        }
+
+        .step-section {
+            margin: 25px 0;
+        }
+
+        .step-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark-mode .step-section-title {
+            color: #93c5fd;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .checklist-item {
+            background: #334155;
+        }
+
+        .checklist-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .checklist-item:hover {
+            background: #475569;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checklist-item.checked {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        body.dark-mode .example-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d1b3d 100%);
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        body.dark-mode .example-title {
+            color: #93c5fd;
+        }
+
+        .calculation-step {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            border: 1px solid #e0e6ed;
+        }
+
+        body.dark-mode .calculation-step {
+            background: #1e293b;
+            border-color: #475569;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        body.dark-mode .warning-box {
+            background: #3a2a1a;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        body.dark-mode .tip-box {
+            background: #1a2e1a;
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -1739,59 +1976,411 @@
             </div>
         </div>
 
-        <!-- Path Model Visualization -> Replaced with Process Flow -->
+        <!-- Enhanced 5-Step Process with Interactive Cards -->
         <div class="section">
-            <h2>🔄 The 5-Step ROI Estimation Process</h2>
+            <h2>🔄 The 5-Step ROI Estimation Process<span class="help-icon" data-insight="process-help">?</span></h2>
 
-            <!-- Progress Indicator -->
-            <div class="progress-indicator">
-                <div class="progress-connector"></div>
-                <div class="progress-step completed">
-                    <div class="progress-step-circle">1</div>
-                    <div class="progress-step-label">Calculate Cost</div>
+            <div class="contextual-insight">
+                <div class="insight-title">Interactive Guide</div>
+                <div class="insight-body">Click on any step below to expand detailed instructions, practical examples, checklists, and best practices. Each step builds on the previous one to arrive at your final ROI estimate.</div>
+            </div>
+
+            <!-- Step 1: Calculate Total Cost -->
+            <div class="step-card" onclick="toggleStep(this)">
+                <div class="step-card-header">
+                    <div class="step-number">1</div>
+                    <div class="step-header-content">
+                        <div class="step-title">Calculate Total Cost (C)</div>
+                        <div class="step-subtitle">Sum all direct and indirect costs per trainee</div>
+                    </div>
+                    <div class="step-expand-icon">▼</div>
                 </div>
-                <div class="progress-step completed">
-                    <div class="progress-step-circle">2</div>
-                    <div class="progress-step-label">Estimate SDy</div>
-                </div>
-                <div class="progress-step active">
-                    <div class="progress-step-circle">3</div>
-                    <div class="progress-step-label">Determine d</div>
-                </div>
-                <div class="progress-step">
-                    <div class="progress-step-circle">4</div>
-                    <div class="progress-step-label">Calculate ΔU</div>
-                </div>
-                <div class="progress-step">
-                    <div class="progress-step-circle">5</div>
-                    <div class="progress-step-label">Calculate ROI</div>
+                <div class="step-card-body">
+                    <div class="step-card-content">
+                        <div class="step-section">
+                            <div class="step-section-title">📋 Checklist: Costs to Include</div>
+                            <ul class="checklist">
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Trainer/Vendor fees and consulting costs</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Training materials, workbooks, and digital licenses</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Facility rental or room booking fees</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Travel, lodging, and meal costs for participants</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Technology costs (platform licenses, equipment)</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span><strong>Trainee salary for time in program</strong> (often largest cost!)</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Administrative staff time for coordination</span>
+                                </li>
+                                <li class="checklist-item" onclick="event.stopPropagation(); toggleChecklistItem(this)">
+                                    <input type="checkbox"><span>Lost productivity during training period</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 Practical Example</div>
+                            <div class="example-box">
+                                <div class="example-title">Executive Leadership Program (3-day residential)</div>
+                                <div class="calculation-step">
+                                    <strong>Direct Costs:</strong><br>
+                                    • Facilitator fees: $15,000<br>
+                                    • Materials per person: $200 × 20 people = $4,000<br>
+                                    • Venue (3 days): $8,000<br>
+                                    • Meals & catering: $150/person × 20 = $3,000<br>
+                                    <strong>= $30,000 total direct</strong>
+                                </div>
+                                <div class="calculation-step">
+                                    <strong>Indirect Costs:</strong><br>
+                                    • Participant time: 3 days × 8 hours = 24 hours<br>
+                                    • Avg exec salary: $150,000/year ÷ 2,080 hours = $72/hour<br>
+                                    • Cost per exec: 24 hours × $72 = $1,728<br>
+                                    • 20 execs: $1,728 × 20 = <strong>$34,560</strong><br>
+                                    <strong>= $34,560 total indirect</strong>
+                                </div>
+                                <div class="calculation-step" style="background: #e8f5e9;">
+                                    <strong>Total Program Cost:</strong> $30,000 + $34,560 = $64,560<br>
+                                    <strong>Cost per Trainee (C):</strong> $64,560 ÷ 20 = <strong>$3,228</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Common Mistake:</strong> Most organizations forget to include indirect costs, especially trainee salary/time. This can lead to underestimating true costs by 40-60%!
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 Pro Tip:</strong> For multi-session programs spread over time, include opportunity cost of participant time for all sessions, pre-work, and post-program assignments.
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="path-model" style="text-align: center;">
-                <div class="path-box">
-                    <strong>Step 1: Calculate Total Cost</strong><br>
-                    (Sum all direct & indirect costs per trainee, 'C')
+            <!-- Step 2: Estimate SDy -->
+            <div class="step-card" onclick="toggleStep(this)">
+                <div class="step-card-header">
+                    <div class="step-number">2</div>
+                    <div class="step-header-content">
+                        <div class="step-title">Estimate SDy (Performance Value)</div>
+                        <div class="step-subtitle">Quantify the dollar value of performance variability</div>
+                    </div>
+                    <div class="step-expand-icon">▼</div>
                 </div>
-                <span class="path-arrow">↓</span>
-                <div class="path-box">
-                    <strong>Step 2: Estimate SDy</strong><br>
-                    (e.g., Use 40% of mean leader salary)
+                <div class="step-card-body">
+                    <div class="step-card-content">
+                        <div class="step-section">
+                            <div class="step-section-title">🎯 Three Methods to Estimate SDy</div>
+
+                            <div class="example-box">
+                                <div class="example-title">Method 1: The 40% Rule (Easiest & Most Common)</div>
+                                <p>Based on meta-analyses by Hunter & Schmidt (1982), SDy is approximately <strong>40% of mean annual salary</strong> for most jobs.</p>
+                                <div class="calculation-step">
+                                    <strong>Example:</strong><br>
+                                    Average manager salary: $100,000<br>
+                                    SDy = $100,000 × 0.40 = <strong>$40,000</strong>
+                                </div>
+                                <div class="tip-box">
+                                    <strong>💡 When to use:</strong> Use this method when you need a quick, defensible estimate. It's conservative and widely accepted in academic literature.
+                                </div>
+                            </div>
+
+                            <div class="example-box">
+                                <div class="example-title">Method 2: Global Estimation (More Precise)</div>
+                                <p>Ask 3-5 senior leaders: "What is the dollar value difference between an average-performing leader (50th percentile) and a high-performing leader (85th percentile)?"</p>
+                                <div class="calculation-step">
+                                    <strong>Example Survey Results:</strong><br>
+                                    • Executive 1 estimate: $45,000<br>
+                                    • Executive 2 estimate: $52,000<br>
+                                    • Executive 3 estimate: $38,000<br>
+                                    • Executive 4 estimate: $48,000<br>
+                                    <strong>Average SDy = $45,750</strong>
+                                </div>
+                            </div>
+
+                            <div class="example-box">
+                                <div class="example-title">Method 3: CREPID (Most Detailed)</div>
+                                <p>Break down the job into key duties, assign % of time to each, and estimate performance variance for each duty. Sum weighted values.</p>
+                                <div class="warning-box">
+                                    <strong>⚠️ Note:</strong> CREPID is very time-intensive. Only use if you need maximum precision for a high-stakes business case.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 SDy by Job Complexity</div>
+                            <div class="calculation-step">
+                                <strong>Research-based guidelines:</strong><br>
+                                • Low complexity jobs (routine tasks): SDy ≈ 20-30% of salary<br>
+                                • Medium complexity jobs (supervisory): SDy ≈ 40% of salary<br>
+                                • High complexity jobs (executive, strategic): SDy ≈ 50-70% of salary<br>
+                                • Sales roles: SDy can be 80-120% of salary (due to revenue impact)
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 Recommendation:</strong> Start with the 40% rule for your initial estimate. If challenged, conduct a global estimation survey with your leadership team to refine the number.
+                        </div>
+                    </div>
                 </div>
-                <span class="path-arrow">↓</span>
-                <div class="path-box">
-                    <strong>Step 3: Determine Effect Size (d)</strong><br>
-                    (Find from meta-analysis or internal study)
+            </div>
+
+            <!-- Step 3: Determine Effect Size (d) -->
+            <div class="step-card" onclick="toggleStep(this)">
+                <div class="step-card-header">
+                    <div class="step-number">3</div>
+                    <div class="step-header-content">
+                        <div class="step-title">Determine Effect Size (d)</div>
+                        <div class="step-subtitle">Estimate the program's impact on performance</div>
+                    </div>
+                    <div class="step-expand-icon">▼</div>
                 </div>
-                <span class="path-arrow">↓</span>
-                <div class="path-box">
-                    <strong>Step 4: Calculate Net Utility (ΔU)</strong><br>
-                    (Run the formula: ΔU = (N*T*d*SDy) - (N*C))
+                <div class="step-card-body">
+                    <div class="step-card-content">
+                        <div class="step-section">
+                            <div class="step-section-title">📚 Finding Effect Size from Research</div>
+
+                            <div class="example-box">
+                                <div class="example-title">Typical Effect Sizes from Meta-Analyses</div>
+                                <div class="calculation-step">
+                                    <strong>Management/Leadership Training:</strong><br>
+                                    • General leadership training: d = 0.30 - 0.40<br>
+                                    • Transformational leadership training: d = 0.40 - 0.50<br>
+                                    • Pygmalion leadership training: d = 0.60 - 0.70<br>
+                                    • Executive coaching: d = 0.45 - 0.65<br>
+                                    <br>
+                                    <strong>Specialized Programs:</strong><br>
+                                    • Emotional intelligence training: d = 0.35 - 0.45<br>
+                                    • Conflict resolution skills: d = 0.40 - 0.50<br>
+                                    • Strategic thinking workshops: d = 0.30 - 0.45
+                                </div>
+                            </div>
+
+                            <div class="example-box">
+                                <div class="example-title">Conducting Your Own Effect Size Study</div>
+                                <p>For maximum accuracy, run a controlled study:</p>
+                                <ul class="checklist">
+                                    <li class="checklist-item">
+                                        <span><strong>1.</strong> Measure baseline performance for all participants</span>
+                                    </li>
+                                    <li class="checklist-item">
+                                        <span><strong>2.</strong> Randomly assign to treatment (training) or control (no training) group</span>
+                                    </li>
+                                    <li class="checklist-item">
+                                        <span><strong>3.</strong> Deliver training to treatment group only</span>
+                                    </li>
+                                    <li class="checklist-item">
+                                        <span><strong>4.</strong> Measure post-training performance for both groups</span>
+                                    </li>
+                                    <li class="checklist-item">
+                                        <span><strong>5.</strong> Calculate: d = (Mean_treatment - Mean_control) / Pooled_SD</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 Interpreting Effect Sizes</div>
+                            <div class="calculation-step">
+                                <strong>Cohen's Guidelines (widely used):</strong><br>
+                                • d = 0.2: <strong>Small</strong> effect (noticeable but modest)<br>
+                                • d = 0.5: <strong>Medium</strong> effect (clearly visible improvement)<br>
+                                • d = 0.8: <strong>Large</strong> effect (dramatic, transformational change)<br>
+                                <br>
+                                <strong>For Leadership Development:</strong><br>
+                                • d = 0.30-0.40 is typical and respectable<br>
+                                • d = 0.50-0.60 is excellent (high-quality program)<br>
+                                • d > 0.70 is exceptional (requires strong evidence to claim)
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Be Conservative:</strong> When presenting to skeptical stakeholders, use the <strong>lower end</strong> of published effect size ranges. It's better to under-promise and over-deliver.
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 Best Practice:</strong> Always cite your source when using a published effect size. Example: "Based on Avolio et al.'s (2009) meta-analysis of leadership development, we estimate d = 0.38"
+                        </div>
+                    </div>
                 </div>
-                <span class="path-arrow">↓</span>
-                <div class="path-box" style="background: #e8f5e9;">
-                    <strong>Step 5: Calculate Final ROI</strong><br>
-                    (ROI % = Net Utility / Total Cost)
+            </div>
+
+            <!-- Step 4: Calculate Net Utility (ΔU) -->
+            <div class="step-card" onclick="toggleStep(this)">
+                <div class="step-card-header">
+                    <div class="step-number">4</div>
+                    <div class="step-header-content">
+                        <div class="step-title">Calculate Net Utility (ΔU)</div>
+                        <div class="step-subtitle">Plug all values into the utility formula</div>
+                    </div>
+                    <div class="step-expand-icon">▼</div>
+                </div>
+                <div class="step-card-body">
+                    <div class="step-card-content">
+                        <div class="step-section">
+                            <div class="step-section-title">🧮 The Complete Formula</div>
+                            <div class="calculation-step" style="font-size: 1.1em; text-align: center;">
+                                <strong>ΔU = (N × T × d × SDy) - (N × C)</strong>
+                            </div>
+                            <p style="margin: 15px 0;">Where:</p>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li><strong>N</strong> = Number of trainees</li>
+                                <li><strong>T</strong> = Duration of effect (years)</li>
+                                <li><strong>d</strong> = Effect size</li>
+                                <li><strong>SDy</strong> = Standard deviation of performance ($)</li>
+                                <li><strong>C</strong> = Cost per trainee</li>
+                            </ul>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 Worked Example</div>
+                            <div class="example-box">
+                                <div class="example-title">Mid-Level Manager Leadership Program</div>
+                                <div class="calculation-step">
+                                    <strong>Given Values:</strong><br>
+                                    • N = 50 managers<br>
+                                    • T = 3 years (average tenure after training)<br>
+                                    • d = 0.40 (from meta-analysis)<br>
+                                    • Average salary = $80,000<br>
+                                    • SDy = $80,000 × 0.40 = $32,000<br>
+                                    • C = $4,500 per manager
+                                </div>
+
+                                <div class="calculation-step">
+                                    <strong>Step 1: Calculate Gross Gain</strong><br>
+                                    Gross Gain = N × T × d × SDy<br>
+                                    = 50 × 3 × 0.40 × $32,000<br>
+                                    = 50 × 3 × $12,800<br>
+                                    = <strong>$1,920,000</strong>
+                                </div>
+
+                                <div class="calculation-step">
+                                    <strong>Step 2: Calculate Total Cost</strong><br>
+                                    Total Cost = N × C<br>
+                                    = 50 × $4,500<br>
+                                    = <strong>$225,000</strong>
+                                </div>
+
+                                <div class="calculation-step" style="background: #e8f5e9;">
+                                    <strong>Step 3: Calculate Net Utility</strong><br>
+                                    ΔU = Gross Gain - Total Cost<br>
+                                    = $1,920,000 - $225,000<br>
+                                    = <strong>$1,695,000</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 Sanity Check:</strong> Does your net utility make business sense? For 50 managers over 3 years, $1.7M in value is very reasonable (~$11K value per manager per year).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Calculate ROI -->
+            <div class="step-card" onclick="toggleStep(this)">
+                <div class="step-card-header">
+                    <div class="step-number">5</div>
+                    <div class="step-header-content">
+                        <div class="step-title">Calculate Final ROI Percentage</div>
+                        <div class="step-subtitle">Convert net utility to return on investment</div>
+                    </div>
+                    <div class="step-expand-icon">▼</div>
+                </div>
+                <div class="step-card-body">
+                    <div class="step-card-content">
+                        <div class="step-section">
+                            <div class="step-section-title">💰 The ROI Formula</div>
+                            <div class="calculation-step" style="font-size: 1.1em; text-align: center;">
+                                <strong>ROI (%) = (Net Utility ÷ Total Cost) × 100</strong>
+                            </div>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 Continuing the Example</div>
+                            <div class="example-box">
+                                <div class="example-title">Mid-Level Manager Program (from Step 4)</div>
+                                <div class="calculation-step">
+                                    <strong>Values from Step 4:</strong><br>
+                                    • Net Utility (ΔU) = $1,695,000<br>
+                                    • Total Cost = $225,000
+                                </div>
+
+                                <div class="calculation-step" style="background: #e8f5e9;">
+                                    <strong>Calculate ROI:</strong><br>
+                                    ROI = ($1,695,000 ÷ $225,000) × 100<br>
+                                    ROI = 7.53 × 100<br>
+                                    ROI = <strong>753%</strong>
+                                </div>
+
+                                <div class="tip-box">
+                                    <strong>💡 What this means:</strong> For every $1 invested, the organization receives $7.53 in return. The program returns <strong>$8.53 total</strong> for every dollar spent.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">📊 Interpreting Your ROI</div>
+                            <div class="calculation-step">
+                                <strong>ROI Benchmarks:</strong><br>
+                                • <strong>>500%:</strong> Exceptional - Strong business case<br>
+                                • <strong>200-500%:</strong> Excellent - Easy to justify<br>
+                                • <strong>100-200%:</strong> Good - Solid investment<br>
+                                • <strong>50-100%:</strong> Moderate - May need refinement<br>
+                                • <strong><50%:</strong> Weak - Consider cost reduction or quality improvement
+                            </div>
+                        </div>
+
+                        <div class="step-section">
+                            <div class="step-section-title">🎯 Presenting Your Results</div>
+                            <ul class="checklist">
+                                <li class="checklist-item">
+                                    <span><strong>1.</strong> Present both Net Utility ($) and ROI (%) - they tell different stories</span>
+                                </li>
+                                <li class="checklist-item">
+                                    <span><strong>2.</strong> Always include a sensitivity analysis (best/worst/likely scenarios)</span>
+                                </li>
+                                <li class="checklist-item">
+                                    <span><strong>3.</strong> Document all assumptions clearly (cite sources for d)</span>
+                                </li>
+                                <li class="checklist-item">
+                                    <span><strong>4.</strong> Be conservative - use lower-bound estimates when uncertain</span>
+                                </li>
+                                <li class="checklist-item">
+                                    <span><strong>5.</strong> Acknowledge limitations (e.g., "assumes 3-year duration of effect")</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Common Pitfall:</strong> Don't claim impossibly high ROI numbers (>1000%) without extraordinary evidence. Stakeholders will dismiss unrealistic projections.
+                        </div>
+
+                        <div class="example-box">
+                            <div class="example-title">Sample Executive Summary Statement</div>
+                            <div class="calculation-step" style="white-space: pre-wrap;">
+"Based on Avolio et al.'s (2010) utility analysis framework, we project this leadership development program will generate a Net Utility of $1.7M over 3 years, representing a 753% ROI.
+
+This estimate uses:
+• Effect size (d=0.40) from Collins & Holton (2004) meta-analysis
+• SDy calculated as 40% of mean salary ($32,000)
+• Conservative 3-year duration of effect
+
+<strong>Sensitivity Analysis:</strong>
+• Worst case (d=0.25): ROI = 417%
+• Most likely (d=0.40): ROI = 753%
+• Best case (d=0.55): ROI = 1,089%"
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2232,6 +2821,18 @@
                             <li><strong>T:</strong> Years the training effects will last</li>
                         </ul>
                         <div class="tooltip-insight">💡 Tip: Use conservative estimates for more credible projections</div>`
+                    },
+                    'process-help': {
+                        title: 'The 5-Step Process',
+                        content: `<p>Follow this structured approach from Avolio et al. (2010):</p>
+                        <ol style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                            <li><strong>Calculate Cost:</strong> Include ALL direct and indirect costs</li>
+                            <li><strong>Estimate SDy:</strong> Use the 40% rule or conduct a survey</li>
+                            <li><strong>Determine d:</strong> Find effect sizes from research or your own data</li>
+                            <li><strong>Calculate ΔU:</strong> Apply the formula with all parameters</li>
+                            <li><strong>Calculate ROI:</strong> Convert net utility to percentage</li>
+                        </ol>
+                        <div class="tooltip-insight">💡 Click each step to expand detailed instructions, examples, and checklists!</div>`
                     }
                 };
 
@@ -2338,6 +2939,21 @@
                         <div class="tooltip-insight">${breakEven}</div>`;
             }
         };
+
+        // --- 5-STEP PROCESS INTERACTIVITY ---
+        function toggleStep(stepCard) {
+            stepCard.classList.toggle('expanded');
+        }
+
+        function toggleChecklistItem(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                item.classList.add('checked');
+            } else {
+                item.classList.remove('checked');
+            }
+        }
 
         // --- DARK MODE ---
         function toggleDarkMode() {
