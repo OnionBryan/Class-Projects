@@ -554,33 +554,43 @@
             height: 400px;
             margin: 30px 0;
             background: #f8f9fa;
-            padding: 20px;
+            padding: 40px 20px 60px 20px;
             border-radius: 15px;
             display: flex;
             align-items: flex-end;
             justify-content: space-around;
+            gap: 3px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        
+
+        body.dark-mode .chart-container {
+            background: #1e293b;
+        }
+
         .chart-axis-y {
             position: absolute;
             left: 20px;
-            top: 20px;
-            bottom: 40px;
+            top: 40px;
+            bottom: 60px;
             width: 2px;
             background: #aaa;
+            opacity: 0.5;
         }
-        
+
         .chart-axis-x {
             position: absolute;
-            bottom: 40px;
+            bottom: 60px;
             left: 20px;
             right: 20px;
             height: 2px;
             background: #aaa;
+            opacity: 0.5;
         }
 
         .bar {
-            width: 60px;
+            flex: 1;
+            max-width: 60px;
+            min-width: 20px;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             text-align: center;
@@ -589,11 +599,15 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start;
+            align-items: center;
             position: relative;
-            /* STYLE UPGRADE: More 3D feel */
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .bar:hover {
+            z-index: 5;
         }
 
         .bar:hover {
@@ -2715,26 +2729,29 @@ This estimate uses:
             </div>
         </div>
         
-        <!-- Chart 1: Sensitivity Analysis -->
+        <!-- Chart 1: Enhanced Sensitivity Analysis - Effect Size -->
         <div class="section">
             <h2>📈 Sensitivity Analysis: Impact of Effect Size (d)</h2>
-            <p>This chart shows how the Net Utility (financial gain) changes based on the program's quality (effect size 'd'), holding other calculator values constant.</p>
+            <p><strong>Question:</strong> "How much does program quality matter?" This chart shows your ROI across different effect sizes, from weak (d=0.1) to exceptional (d=1.0) programs. Your current estimate is marked in blue.</p>
             <div class="chart-container" id="effectSizeChart">
                 <div class="chart-axis-x"></div><div class="chart-axis-y"></div>
                 <!-- Chart will be populated by JavaScript -->
             </div>
-            <div class="insight-box">
-                <strong>Key Pattern:</strong> The relationship is linear. Doubling your program's effectiveness (e.g., from d=0.2 to d=0.4) will double its gross financial return. This highlights the value of using high-quality, evidence-based program designs.
+            <div id="effectSizeInsights">
+                <!-- Dynamic insights will be populated by JavaScript -->
             </div>
         </div>
 
-        <!-- Chart 2: Cost vs. Utility -->
+        <!-- Chart 2: Enhanced Sensitivity Analysis - Cost -->
         <div class="section">
             <h2>🎯 Sensitivity Analysis: Impact of Program Cost (C)</h2>
-            <p>This chart shows how Net Utility changes based on program cost, holding other calculator values constant. Even an expensive program can have a massive payoff if its effect size ('d') is strong.</p>
+            <p><strong>Question:</strong> "How much can I afford to spend?" This chart shows your ROI as cost increases from $1K to $20K per trainee. The break-even point (ROI = 0%) is marked in red.</p>
             <div class="chart-container" id="costChart">
                 <div class="chart-axis-x"></div><div class="chart-axis-y"></div>
                 <!-- Chart will be populated by JavaScript -->
+            </div>
+            <div id="costInsights">
+                <!-- Dynamic insights will be populated by JavaScript -->
             </div>
         </div>
 
@@ -3775,82 +3792,236 @@ This estimate uses:
             loadWhatIfTable();
         }
 
-        // --- ANALYSIS PAGE CHARTS (Original Bar Charts) ---
+        // --- ENHANCED SENSITIVITY ANALYSIS CHARTS ---
         function loadCharts() {
             // Get current calculator values as baseline
             const N = parseFloat(document.getElementById('N_Slider').value);
             const C = parseFloat(document.getElementById('Cost_Slider').value);
             const T = parseFloat(document.getElementById('T_Slider').value);
             const Salary = parseFloat(document.getElementById('Salary_Slider').value);
+            const d = parseFloat(document.getElementById('d_Slider').value);
             const SDy = Salary * 0.40;
 
-            // --- Chart 1: Effect Size Sensitivity ---
-            const effectSizeData = [
-                { name: 'd = 0.2 (Weak)', d: 0.2, color: '#ff9800' },
-                { name: 'd = 0.4 (Average)', d: 0.4, color: '#2196f3' },
-                { name: 'd = 0.6 (Strong)', d: 0.6, color: '#4caf50' },
-                { name: 'd = 0.8 (Excellent)', d: 0.8, color: '#9c27b0' }
-            ];
-            
-            let maxUtility_d = -Infinity;
-            let minUtility_d = Infinity;
-            
-            const d_ChartData = effectSizeData.map(item => {
-                const gain = N * T * item.d * SDy;
+            // --- Chart 1: Effect Size Sensitivity (Enhanced) ---
+            const dValues = [];
+            for (let i = 0.1; i <= 1.0; i += 0.1) {
+                dValues.push(i);
+            }
+
+            const effectSizeData = dValues.map(dVal => {
+                const gain = N * T * dVal * SDy;
                 const cost = N * C;
                 const utility = gain - cost;
-                if (utility > maxUtility_d) maxUtility_d = utility;
-                if (utility < minUtility_d) minUtility_d = utility;
-                return { name: item.name, utility: utility, color: item.color };
+                const roi = cost > 0 ? ((utility / cost) * 100) : 0;
+                return { d: dVal, utility: utility, roi: roi };
             });
-            
-            // Adjust max for scaling
-            maxUtility_d = Math.max(Math.abs(maxUtility_d), Math.abs(minUtility_d));
-            if (maxUtility_d === 0) maxUtility_d = 1;
+
+            // Find max/min for scaling
+            const maxROI = Math.max(...effectSizeData.map(d => d.roi));
+            const minROI = Math.min(...effectSizeData.map(d => d.roi), 0);
+            const range = maxROI - minROI;
 
             const d_Chart = document.getElementById('effectSizeChart');
-            d_Chart.innerHTML = '<div class="chart-axis-x"></div><div class="chart-axis-y"></div>'; // Clear previous
-            
-            d_ChartData.forEach(item => {
-                const barHeight = (item.utility / maxUtility_d) * 300; // 300px max height
-                const bar = createBar(item.name, formatter.format(item.utility), barHeight, item.color);
-                d_Chart.appendChild(bar);
+            d_Chart.innerHTML = ''; // Clear previous
+
+            // Create bars with gradient coloring
+            effectSizeData.forEach((item, index) => {
+                const barDiv = document.createElement('div');
+                barDiv.className = 'bar';
+
+                // Calculate height (from 0 line)
+                const heightPercent = range > 0 ? ((item.roi - minROI) / range) * 85 : 50;
+                const isCurrentValue = Math.abs(item.d - d) < 0.05;
+
+                // Color gradient based on ROI
+                let barColor = '#ef4444'; // Red for negative
+                if (item.roi > 500) barColor = '#10b981'; // Green for excellent
+                else if (item.roi > 200) barColor = '#3b82f6'; // Blue for good
+                else if (item.roi > 100) barColor = '#f59e0b'; // Orange for moderate
+                else if (item.roi > 0) barColor = '#fbbf24'; // Yellow for low positive
+
+                barDiv.style.cssText = `
+                    flex: 1;
+                    height: ${heightPercent}%;
+                    background: ${barColor};
+                    margin: 0 2px;
+                    border-radius: 4px 4px 0 0;
+                    position: relative;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    ${isCurrentValue ? 'border: 3px solid #1e3a8a; box-shadow: 0 0 15px rgba(30,58,138,0.5);' : ''}
+                `;
+
+                barDiv.title = `d=${item.d.toFixed(2)}: ROI=${item.roi.toFixed(0)}%, Net Utility=${formatter.format(item.utility)}`;
+
+                // Add hover effect
+                barDiv.onmouseover = function() {
+                    this.style.opacity = '0.8';
+                    this.style.transform = 'scaleY(1.05)';
+                };
+                barDiv.onmouseout = function() {
+                    this.style.opacity = '1';
+                    this.style.transform = 'scaleY(1)';
+                };
+
+                // Add value label on top
+                if (index % 2 === 0 || isCurrentValue) { // Show every other label plus current
+                    const label = document.createElement('div');
+                    label.style.cssText = `
+                        position: absolute;
+                        top: -25px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        font-size: 0.75em;
+                        font-weight: ${isCurrentValue ? 'bold' : '600'};
+                        white-space: nowrap;
+                        color: ${isCurrentValue ? '#1e3a8a' : '#666'};
+                    `;
+                    label.textContent = `${item.d.toFixed(1)}`;
+                    barDiv.appendChild(label);
+                }
+
+                d_Chart.appendChild(barDiv);
             });
 
-            // --- Chart 2: Cost Sensitivity ---
-            const costData = [
-                { name: 'Cost = $1k', cost: 1000, color: '#4caf50' },
-                { name: 'Cost = $5k', cost: 5000, color: '#2196f3' },
-                { name: 'Cost = $10k', cost: 10000, color: '#ff9800' },
-                { name: 'Cost = $15k', cost: 15000, color: '#f44336' }
-            ];
-            
-            const d_baseline = parseFloat(document.getElementById('d_Slider').value);
-            let maxUtility_c = -Infinity;
-            let minUtility_c = Infinity;
-            
-            const c_ChartData = costData.map(item => {
-                const gain = N * T * d_baseline * SDy;
-                const cost = N * item.cost;
-                const utility = gain - cost;
-                if (utility > maxUtility_c) maxUtility_c = utility;
-                if (utility < minUtility_c) minUtility_c = utility;
-                return { name: item.name, utility: utility, color: item.color };
-            });
-            
-            // Adjust max for scaling
-            maxUtility_c = Math.max(Math.abs(maxUtility_c), Math.abs(minUtility_c));
-             if (maxUtility_c === 0) maxUtility_c = 1;
+            // Add insights for Effect Size chart
+            const currentROI = effectSizeData.find(item => Math.abs(item.d - d) < 0.05)?.roi || 0;
+            const worstROI = effectSizeData[0].roi; // d=0.1
+            const bestROI = effectSizeData[effectSizeData.length - 1].roi; // d=1.0
 
+            let effectInsightHTML = '<div class="insight-box">';
+            effectInsightHTML += '<h3 style="margin-top: 0;">📊 Effect Size Analysis:</h3>';
+            effectInsightHTML += `<p><strong>Your Current Position (d=${d.toFixed(2)}):</strong> ROI = ${currentROI.toFixed(0)}%</p>`;
+            effectInsightHTML += `<p><strong>Range of Possibilities:</strong></p><ul style="margin-left: 20px; line-height: 1.8;">`;
+            effectInsightHTML += `<li>If program is weak (d=0.1): ROI = ${worstROI.toFixed(0)}%</li>`;
+            effectInsightHTML += `<li>If program is excellent (d=1.0): ROI = ${bestROI.toFixed(0)}%</li>`;
+            effectInsightHTML += `<li>Potential swing: ${Math.abs(bestROI - worstROI).toFixed(0)} percentage points</li></ul>`;
+
+            effectInsightHTML += '<p><strong>🎯 Key Takeaway:</strong> ';
+            if (currentROI < 200) {
+                effectInsightHTML += 'Effect size is CRITICAL to your ROI. Even a modest improvement (e.g., +0.1 in d) could significantly boost returns. Invest in evidence-based program design and measure impact rigorously.</p>';
+            } else {
+                effectInsightHTML += 'You have strong ROI even at moderate effect sizes. This gives you flexibility, but don\'t compromise on quality - higher d means even better returns.</p>';
+            }
+            effectInsightHTML += '</div>';
+            document.getElementById('effectSizeInsights').innerHTML = effectInsightHTML;
+
+            // --- Chart 2: Cost Sensitivity (Enhanced) ---
+            const costValues = [];
+            for (let cost = 1000; cost <= 20000; cost += 1000) {
+                costValues.push(cost);
+            }
+
+            const costData = costValues.map(costVal => {
+                const gain = N * T * d * SDy;
+                const totalCost = N * costVal;
+                const utility = gain - totalCost;
+                const roi = totalCost > 0 ? ((utility / totalCost) * 100) : 0;
+                return { cost: costVal, utility: utility, roi: roi };
+            });
+
+            // Find break-even point
+            const breakEvenCost = (T * d * SDy) || 0;
+            const maxCostROI = Math.max(...costData.map(c => c.roi));
+            const minCostROI = Math.min(...costData.map(c => c.roi), -100);
+            const costRange = maxCostROI - minCostROI;
 
             const c_Chart = document.getElementById('costChart');
-            c_Chart.innerHTML = '<div class="chart-axis-x"></div><div class="chart-axis-y"></div>'; // Clear previous
-            
-            c_ChartData.forEach(item => {
-                const barHeight = (item.utility / maxUtility_c) * 300;
-                const bar = createBar(item.name, formatter.format(item.utility), barHeight, item.color);
-                c_Chart.appendChild(bar);
+            c_Chart.innerHTML = ''; // Clear previous
+
+            // Create bars
+            costData.forEach((item, index) => {
+                const barDiv = document.createElement('div');
+                barDiv.className = 'bar';
+
+                const heightPercent = costRange > 0 ? ((item.roi - minCostROI) / costRange) * 85 : 50;
+                const isCurrentValue = Math.abs(item.cost - C) < 500;
+                const isBreakEven = Math.abs(item.cost - breakEvenCost) < 1000;
+
+                // Color based on ROI
+                let barColor = '#ef4444';
+                if (item.roi > 500) barColor = '#10b981';
+                else if (item.roi > 200) barColor = '#3b82f6';
+                else if (item.roi > 100) barColor = '#f59e0b';
+                else if (item.roi > 0) barColor = '#fbbf24';
+
+                barDiv.style.cssText = `
+                    flex: 1;
+                    height: ${Math.max(heightPercent, 5)}%;
+                    background: ${barColor};
+                    margin: 0 2px;
+                    border-radius: 4px 4px 0 0;
+                    position: relative;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    ${isCurrentValue ? 'border: 3px solid #1e3a8a; box-shadow: 0 0 15px rgba(30,58,138,0.5);' : ''}
+                    ${isBreakEven ? 'border: 3px solid #dc2626; box-shadow: 0 0 15px rgba(220,38,38,0.5);' : ''}
+                `;
+
+                barDiv.title = `Cost=$${(item.cost/1000).toFixed(0)}K: ROI=${item.roi.toFixed(0)}%, Net Utility=${formatter.format(item.utility)}`;
+
+                barDiv.onmouseover = function() {
+                    this.style.opacity = '0.8';
+                    this.style.transform = 'scaleY(1.05)';
+                };
+                barDiv.onmouseout = function() {
+                    this.style.opacity = '1';
+                    this.style.transform = 'scaleY(1)';
+                };
+
+                // Add label
+                if (index % 3 === 0 || isCurrentValue || isBreakEven) {
+                    const label = document.createElement('div');
+                    label.style.cssText = `
+                        position: absolute;
+                        top: -25px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        font-size: 0.7em;
+                        font-weight: ${(isCurrentValue || isBreakEven) ? 'bold' : '600'};
+                        white-space: nowrap;
+                        color: ${isBreakEven ? '#dc2626' : (isCurrentValue ? '#1e3a8a' : '#666')};
+                    `;
+                    label.textContent = `$${(item.cost/1000).toFixed(0)}K`;
+                    barDiv.appendChild(label);
+                }
+
+                c_Chart.appendChild(barDiv);
             });
+
+            // Add insights for Cost chart
+            const currentCostROI = costData.find(item => Math.abs(item.cost - C) < 500)?.roi || 0;
+            const safetyMargin = ((breakEvenCost - C) / C * 100);
+
+            let costInsightHTML = '<div class="insight-box">';
+            costInsightHTML += '<h3 style="margin-top: 0;">💰 Cost Sensitivity Analysis:</h3>';
+            costInsightHTML += `<p><strong>Your Current Cost ($${(C/1000).toFixed(1)}K):</strong> ROI = ${currentCostROI.toFixed(0)}%</p>`;
+            costInsightHTML += `<p><strong>Break-Even Point:</strong> $${(breakEvenCost/1000).toFixed(1)}K per trainee (ROI = 0%)</p>`;
+
+            if (C < breakEvenCost) {
+                costInsightHTML += `<p><strong>Safety Margin:</strong> You're ${safetyMargin.toFixed(0)}% below break-even. `;
+                if (safetyMargin > 50) {
+                    costInsightHTML += '✅ Excellent buffer - you can afford cost overruns.</p>';
+                } else if (safetyMargin > 20) {
+                    costInsightHTML += '👍 Good buffer - typical contingency range.</p>';
+                } else {
+                    costInsightHTML += '⚠️ Thin margin - budget carefully to avoid losses.</p>';
+                }
+            } else {
+                costInsightHTML += `<p style="color: #dc2626;"><strong>⚠️ WARNING:</strong> Current cost exceeds break-even! You need to either reduce costs or improve effect size (d).</p>`;
+            }
+
+            costInsightHTML += '<p><strong>🎯 Key Takeaway:</strong> ';
+            const costSensitivity = Math.abs(costData[0].roi - costData[costData.length-1].roi);
+            if (costSensitivity > 300) {
+                costInsightHTML += `Cost is HIGHLY sensitive (${costSensitivity.toFixed(0)} point swing). Negotiate aggressively, consider internal delivery, or use technology to reduce per-person costs.</p>`;
+            } else if (costSensitivity > 150) {
+                costInsightHTML += 'Cost matters significantly. Look for efficiencies without sacrificing quality (e.g., cohort sizes, virtual delivery, train-the-trainer).</p>';
+            } else {
+                costInsightHTML += 'Cost has moderate impact. Focus more on maximizing effect size than minimizing costs.</p>';
+            }
+            costInsightHTML += '</div>';
+            document.getElementById('costInsights').innerHTML = costInsightHTML;
         }
         
         function createBar(name, value, height, color) {
