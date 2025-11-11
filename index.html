@@ -1686,42 +1686,267 @@
             background: #1e293b;
         }
 
-        .timeline-line {
+        .timeline-chart-container {
             position: relative;
-            height: 10px;
-            background: linear-gradient(90deg, #1e3c72 0%, #4caf50 100%);
-            border-radius: 5px;
-            margin: 20px 0;
+            width: 100%;
+            height: 400px;
+            margin: 30px 0;
         }
 
-        .timeline-marker {
-            position: absolute;
-            top: -15px;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border: 4px solid #1e3c72;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+        .timeline-growth-line {
+            stroke: #3b82f6;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .timeline-growth-area {
+            fill: url(#timelineGradient);
+            opacity: 0.3;
+        }
+
+        .timeline-break-even-line {
+            stroke: #ef4444;
+            stroke-width: 2;
+            stroke-dasharray: 8 4;
+        }
+
+        .timeline-data-point {
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .timeline-marker:hover {
-            transform: scale(1.2);
+        .timeline-data-point:hover {
+            transform: scale(1.3);
         }
 
-        .timeline-label {
+        .timeline-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .timeline-stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .timeline-stat-card {
+            background: #0f172a;
+        }
+
+        .timeline-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .timeline-stat-label {
+            font-size: 0.85em;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        body.dark-mode .timeline-stat-value {
+            color: #f1f5f9;
+        }
+
+        .timeline-legend {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            justify-content: center;
+        }
+
+        body.dark-mode .timeline-legend {
+            background: #0f172a;
+        }
+
+        /* Break-Even Visualization */
+        .breakeven-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+        }
+
+        body.dark-mode .breakeven-container {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .breakeven-gauge-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .breakeven-gauge {
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+
+        .breakeven-needle {
             position: absolute;
-            top: 35px;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            height: 120px;
+            background: #1e293b;
+            transform-origin: bottom center;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+        }
+
+        body.dark-mode .breakeven-needle {
+            background: #f1f5f9;
+        }
+
+        .breakeven-needle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.9em;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid #1e293b;
+        }
+
+        body.dark-mode .breakeven-needle::before {
+            border-bottom-color: #f1f5f9;
+        }
+
+        .breakeven-center-dot {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #1e293b;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 11;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .breakeven-center-dot {
+            background: #f1f5f9;
+        }
+
+        .breakeven-zones {
+            display: flex;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .breakeven-zone {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 600;
-            white-space: nowrap;
+            font-size: 0.9em;
+            color: white;
+            position: relative;
+        }
+
+        .zone-danger {
+            background: linear-gradient(90deg, #dc2626, #ef4444);
+        }
+
+        .zone-warning {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .zone-safe {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .zone-excellent {
+            background: linear-gradient(90deg, #059669, #10b981);
+        }
+
+        .breakeven-marker {
+            position: absolute;
+            bottom: 100%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .breakeven-comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .breakeven-scenario-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .breakeven-scenario-card {
+            background: #1e293b;
+        }
+
+        .breakeven-scenario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .scenario-title {
+            font-size: 0.9em;
+            color: #64748b;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .scenario-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 10px 0;
+        }
+
+        body.dark-mode .scenario-value {
+            color: #f1f5f9;
+        }
+
+        .scenario-description {
+            font-size: 0.85em;
+            color: #64748b;
+            line-height: 1.6;
         }
 
         /* Confidence Interval */
@@ -3057,31 +3282,64 @@ This estimate uses:
         <!-- NEW: Timeline Visualization -->
         <div class="section">
             <h2>⏳ Value Accumulation Over Time</h2>
-            <p>See how the program's value accumulates year-by-year based on your current parameters:</p>
+            <p>Watch how your training investment grows year-by-year, compounding value through sustained impact. The chart shows cumulative Net Utility after accounting for initial costs.</p>
+
             <div class="timeline-viz" id="timelineViz">
-                <h4 style="text-align: center; margin-bottom: 20px;">Cumulative Utility Over <span id="timeline_years">3</span> Years</h4>
-                <div class="timeline-line" id="timelineLine">
-                    <!-- Timeline markers will be populated by JavaScript -->
+                <!-- Stats Grid -->
+                <div class="timeline-stats-grid" id="timelineStatsGrid">
+                    <!-- Stats will be populated by JavaScript -->
                 </div>
-                <div style="margin-top: 60px; text-align: center; font-size: 1.1em;">
-                    <strong>Year-by-Year Breakdown:</strong>
-                    <div id="timelineBreakdown" style="margin-top: 15px;"></div>
+
+                <!-- Main Chart -->
+                <div class="timeline-chart-container">
+                    <svg id="timelineChart" width="100%" height="400" viewBox="0 0 800 400" style="background: transparent;" role="img" aria-label="Value accumulation timeline chart">
+                        <!-- Chart will be populated by JavaScript -->
+                    </svg>
+                </div>
+
+                <!-- Legend -->
+                <div class="timeline-legend" id="timelineLegend">
+                    <!-- Legend will be populated by JavaScript -->
+                </div>
+
+                <!-- Insights -->
+                <div id="timelineInsights" style="margin-top: 20px;">
+                    <!-- Insights will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
         <!-- NEW: Break-Even Calculator -->
         <div class="section">
-            <h2>⚖️ Break-Even Analysis</h2>
-            <p>At what program cost does ROI reach 0%? This shows your maximum viable cost per trainee:</p>
-            <div class="interactive-demo">
-                <div id="breakEvenDisplay" style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 15px;">
-                    <div style="font-size: 1.2em; margin-bottom: 15px;">Break-Even Cost Per Trainee:</div>
-                    <div style="font-size: 3em; font-weight: bold; color: #ff9800;" id="breakEvenValue">$10,000</div>
-                    <div style="margin-top: 20px; font-size: 1.1em; color: #666;">
-                        Your current cost: <strong id="currentCostDisplay">$5,000</strong><br>
-                        Safety margin: <strong id="safetyMargin" style="color: #4caf50;">$5,000 (50%)</strong>
+            <h2>⚖️ Break-Even Analysis: Know Your Limits</h2>
+            <p>Understanding break-even points helps you negotiate costs, justify investments, and manage risk. This analysis shows multiple break-even scenarios across different variables.</p>
+
+            <div class="breakeven-container">
+                <!-- Gauge Visualization -->
+                <div class="breakeven-gauge-wrapper">
+                    <h3 style="text-align: center; margin-bottom: 25px;">Cost Position Gauge</h3>
+                    <div class="breakeven-gauge">
+                        <svg width="100%" height="250" viewBox="0 0 500 250">
+                            <!-- Gauge will be populated by JavaScript -->
+                        </svg>
+                        <div class="breakeven-needle" id="breakEvenNeedle"></div>
+                        <div class="breakeven-center-dot"></div>
                     </div>
+                </div>
+
+                <!-- Risk Zones -->
+                <div class="breakeven-zones" id="breakEvenZones">
+                    <!-- Zones will be populated by JavaScript -->
+                </div>
+
+                <!-- Comparison Grid -->
+                <div class="breakeven-comparison-grid" id="breakEvenComparison">
+                    <!-- Comparison cards will be populated by JavaScript -->
+                </div>
+
+                <!-- Insights -->
+                <div id="breakEvenInsights" style="margin-top: 25px;">
+                    <!-- Insights will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -4724,68 +4982,192 @@ This estimate uses:
             const T = parseFloat(document.getElementById('T_Slider').value);
             const SDy = Salary * 0.40;
 
-            document.getElementById('timeline_years').textContent = T;
-
             const yearlyGain = N * d * SDy;
             const totalCost = N * C;
 
-            const timelineLine = document.getElementById('timelineLine');
-            timelineLine.innerHTML = '';
+            // Generate data points for each year
+            const dataPoints = [];
+            let cumulative = -totalCost;
 
-            let cumulativeUtility = -totalCost; // Start with negative (cost)
+            dataPoints.push({ year: 0, value: cumulative, gain: 0 });
 
-            for (let year = 0; year <= T; year++) {
-                const marker = document.createElement('div');
-                marker.className = 'timeline-marker chart-element-interactive';
-                marker.style.left = `${(year / T) * 100}%`;
-                marker.textContent = year;
+            for (let year = 1; year <= T; year++) {
+                cumulative += yearlyGain;
+                dataPoints.push({ year: year, value: cumulative, gain: yearlyGain });
+            }
 
-                const label = document.createElement('div');
-                label.className = 'timeline-label';
-                label.textContent = formatter.format(cumulativeUtility);
-
-                // Store current cumulative for tooltip
-                const currentCumulative = cumulativeUtility;
-
-                // Add tooltip interactivity
-                marker.addEventListener('mouseenter', (e) => {
-                    const content = InsightEngine.getTimelineInsight({
-                        year: year,
-                        cumulative: currentCumulative
-                    });
-                    InsightEngine.showTooltip(`Year ${year}`, content, e);
-                });
-                marker.addEventListener('mouseleave', () => {
-                    InsightEngine.hideTooltip();
-                });
-                marker.addEventListener('mousemove', (e) => {
-                    const x = e.clientX + 15;
-                    const y = e.clientY + 15;
-                    InsightEngine.tooltip.style.left = x + 'px';
-                    InsightEngine.tooltip.style.top = y + 'px';
-                });
-
-                marker.appendChild(label);
-                timelineLine.appendChild(marker);
-
-                if (year < T) {
-                    cumulativeUtility += yearlyGain;
+            // Find break-even year (where cumulative crosses 0)
+            let breakEvenYear = null;
+            for (let i = 0; i < dataPoints.length - 1; i++) {
+                if (dataPoints[i].value <= 0 && dataPoints[i+1].value > 0) {
+                    // Linear interpolation
+                    const t = -dataPoints[i].value / (dataPoints[i+1].value - dataPoints[i].value);
+                    breakEvenYear = dataPoints[i].year + t;
+                    break;
                 }
             }
 
-            // Year-by-year breakdown
-            const breakdown = document.getElementById('timelineBreakdown');
-            breakdown.innerHTML = '';
-            cumulativeUtility = -totalCost;
+            // Stats Grid
+            const finalValue = dataPoints[dataPoints.length - 1].value;
+            const totalGain = finalValue + totalCost;
+            const roi = (finalValue / totalCost) * 100;
 
-            for (let year = 1; year <= T; year++) {
-                cumulativeUtility += yearlyGain;
-                const yearDiv = document.createElement('div');
-                yearDiv.style.display = 'inline-block';
-                yearDiv.style.margin = '5px 15px';
-                yearDiv.innerHTML = `<strong>Year ${year}:</strong> ${formatter.format(cumulativeUtility)}`;
-                breakdown.appendChild(yearDiv);
+            const statsGrid = document.getElementById('timelineStatsGrid');
+            statsGrid.innerHTML = `
+                <div class="timeline-stat-card" style="border-left-color: #ef4444;">
+                    <div class="timeline-stat-label">Initial Investment</div>
+                    <div class="timeline-stat-value">${formatter.format(totalCost)}</div>
+                </div>
+                <div class="timeline-stat-card" style="border-left-color: #10b981;">
+                    <div class="timeline-stat-label">Final Value (Year ${T})</div>
+                    <div class="timeline-stat-value">${formatter.format(finalValue)}</div>
+                </div>
+                <div class="timeline-stat-card" style="border-left-color: #3b82f6;">
+                    <div class="timeline-stat-label">Annual Value Add</div>
+                    <div class="timeline-stat-value">${formatter.format(yearlyGain)}</div>
+                </div>
+                <div class="timeline-stat-card" style="border-left-color: #fbbf24;">
+                    <div class="timeline-stat-label">${breakEvenYear ? 'Break-Even' : 'ROI'}</div>
+                    <div class="timeline-stat-value">${breakEvenYear ? `Year ${breakEvenYear.toFixed(1)}` : `${roi.toFixed(0)}%`}</div>
+                </div>
+            `;
+
+            // Create SVG Chart
+            const svg = document.getElementById('timelineChart');
+            const width = 800;
+            const height = 400;
+            const padding = { top: 40, right: 60, bottom: 60, left: 80 };
+            const plotWidth = width - padding.left - padding.right;
+            const plotHeight = height - padding.top - padding.bottom;
+
+            const minValue = Math.min(...dataPoints.map(d => d.value), 0);
+            const maxValue = Math.max(...dataPoints.map(d => d.value));
+            const valueRange = maxValue - minValue;
+
+            let svgContent = `
+                <defs>
+                    <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.1" />
+                    </linearGradient>
+                </defs>
+            `;
+
+            // Grid lines
+            for (let i = 0; i <= 5; i++) {
+                const y = padding.top + (plotHeight / 5) * i;
+                svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" class="sensitivity-grid-line"/>`;
             }
+
+            // Y-axis labels
+            for (let i = 0; i <= 5; i++) {
+                const value = maxValue - (valueRange / 5) * i;
+                const y = padding.top + (plotHeight / 5) * i;
+                svgContent += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" class="sensitivity-axis-label">${formatter.format(value)}</text>`;
+            }
+
+            // X-axis labels
+            for (let year = 0; year <= T; year++) {
+                const x = padding.left + (year / T) * plotWidth;
+                svgContent += `<text x="${x}" y="${height - padding.bottom + 25}" text-anchor="middle" class="sensitivity-axis-label">Year ${year}</text>`;
+            }
+
+            // Axis titles
+            svgContent += `<text x="${padding.left - 60}" y="${padding.top + plotHeight / 2}" text-anchor="middle" transform="rotate(-90 ${padding.left - 60} ${padding.top + plotHeight / 2})" class="svg-text-axis">Cumulative Net Utility ($)</text>`;
+            svgContent += `<text x="${padding.left + plotWidth / 2}" y="${height - 10}" text-anchor="middle" class="svg-text-axis">Time (Years)</text>`;
+
+            // Zero line (break-even)
+            if (minValue < 0) {
+                const zeroY = padding.top + plotHeight - ((0 - minValue) / valueRange) * plotHeight;
+                svgContent += `<line x1="${padding.left}" y1="${zeroY}" x2="${width - padding.right}" y2="${zeroY}" class="timeline-break-even-line"/>`;
+                svgContent += `<text x="${width - padding.right + 10}" y="${zeroY + 5}" class="sensitivity-axis-label" style="fill: #ef4444; font-weight: 600;">Break-Even</text>`;
+
+                // Break-even year marker
+                if (breakEvenYear !== null && breakEvenYear <= T) {
+                    const beX = padding.left + (breakEvenYear / T) * plotWidth;
+                    svgContent += `<line x1="${beX}" y1="${padding.top}" x2="${beX}" y2="${padding.top + plotHeight}" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4"/>`;
+                    svgContent += `<text x="${beX}" y="${padding.top - 10}" text-anchor="middle" style="fill: #fbbf24; font-weight: 600; font-size: 0.9em;">⚡ Break-Even: ${breakEvenYear.toFixed(1)}y</text>`;
+                }
+            }
+
+            // Area under curve
+            let areaPath = `M ${padding.left} ${padding.top + plotHeight} `;
+            dataPoints.forEach(point => {
+                const x = padding.left + (point.year / T) * plotWidth;
+                const y = padding.top + plotHeight - ((point.value - minValue) / valueRange) * plotHeight;
+                areaPath += `L ${x} ${y} `;
+            });
+            areaPath += `L ${padding.left + plotWidth} ${padding.top + plotHeight} Z`;
+            svgContent += `<path d="${areaPath}" class="timeline-growth-area"/>`;
+
+            // Growth line
+            let linePath = 'M ';
+            dataPoints.forEach((point, i) => {
+                const x = padding.left + (point.year / T) * plotWidth;
+                const y = padding.top + plotHeight - ((point.value - minValue) / valueRange) * plotHeight;
+                linePath += `${x} ${y} `;
+                if (i < dataPoints.length - 1) linePath += 'L ';
+            });
+            svgContent += `<path d="${linePath}" class="timeline-growth-line"/>`;
+
+            // Data points
+            dataPoints.forEach(point => {
+                const x = padding.left + (point.year / T) * plotWidth;
+                const y = padding.top + plotHeight - ((point.value - minValue) / valueRange) * plotHeight;
+                const isBreakEven = breakEvenYear && Math.abs(point.year - breakEvenYear) < 0.5;
+                const color = isBreakEven ? '#fbbf24' : (point.value >= 0 ? '#10b981' : '#ef4444');
+
+                svgContent += `<circle cx="${x}" cy="${y}" r="6" fill="${color}" stroke="white" stroke-width="2" class="timeline-data-point">
+                    <title>Year ${point.year}\nCumulative: ${formatter.format(point.value)}\n${point.gain > 0 ? 'Gain: ' + formatter.format(point.gain) : 'Initial Investment'}</title>
+                </circle>`;
+            });
+
+            svg.innerHTML = svgContent;
+
+            // Legend
+            document.getElementById('timelineLegend').innerHTML = `
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3b82f6; height: 3px;"></div>
+                    <span>Cumulative Value</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(to bottom, rgba(16, 185, 129, 0.5), rgba(59, 130, 246, 0.1)); height: 15px;"></div>
+                    <span>Growth Area</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ef4444; height: 2px;"></div>
+                    <span>Break-Even Line (ROI = 0)</span>
+                </div>
+                ${breakEvenYear ? `
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fbbf24; height: 2px; stroke-dasharray: 4;"></div>
+                    <span>Break-Even Year</span>
+                </div>` : ''}
+            `;
+
+            // Insights
+            let insightsHTML = '<div class="insight-box">';
+            insightsHTML += '<h3 style="margin-top: 0;">📊 Timeline Insights</h3>';
+
+            if (breakEvenYear && breakEvenYear <= T) {
+                insightsHTML += `<p>🎯 <strong>Break-Even Point:</strong> Your program pays for itself in <strong>${breakEvenYear.toFixed(1)} years</strong>. After this point, every dollar is pure profit.</p>`;
+                const yearsOfProfit = T - breakEvenYear;
+                const profitPhaseValue = yearsOfProfit * yearlyGain;
+                insightsHTML += `<p>💰 <strong>Profit Phase:</strong> You have <strong>${yearsOfProfit.toFixed(1)} years</strong> of pure value generation, adding ${formatter.format(profitPhaseValue)} in net gains.</p>`;
+            } else if (breakEvenYear && breakEvenYear > T) {
+                insightsHTML += `<p>⚠️ <strong>Extended Timeline Needed:</strong> Based on current parameters, your program would break even in <strong>${breakEvenYear.toFixed(1)} years</strong>—beyond your ${T}-year timeline. Consider extending duration (T) or improving effect size (d).</p>`;
+            } else if (minValue >= 0) {
+                insightsHTML += `<p>✅ <strong>Immediate Profitability:</strong> Your program is profitable from Year 1! The high quality (d=${d.toFixed(2)}) and reasonable costs create immediate value.</p>`;
+            }
+
+            const growthRate = ((finalValue / Math.abs(-totalCost)) - 1) * 100;
+            insightsHTML += `<p>📈 <strong>Value Growth:</strong> Your initial investment of ${formatter.format(totalCost)} grows to ${formatter.format(finalValue)} over ${T} years—a <strong>${growthRate.toFixed(0)}% total return</strong>.</p>`;
+
+            const avgAnnualReturn = (Math.pow((finalValue / totalCost) + 1, 1/T) - 1) * 100;
+            insightsHTML += `<p>💡 <strong>Compound Annual Growth:</strong> This represents an average annual return of <strong>${avgAnnualReturn.toFixed(1)}%</strong>—far exceeding most investment alternatives.</p>`;
+
+            insightsHTML += '</div>';
+            document.getElementById('timelineInsights').innerHTML = insightsHTML;
         }
 
         // --- BREAK-EVEN CALCULATOR ---
@@ -4797,19 +5179,117 @@ This estimate uses:
             const T = parseFloat(document.getElementById('T_Slider').value);
             const SDy = Salary * 0.40;
 
-            // Break-even: NetUtility = 0, so (N*T*d*SDy) - (N*C_breakeven) = 0
-            // C_breakeven = T * d * SDy
-            const breakEvenCost = T * d * SDy;
+            // Calculate break-even for different variables
+            const breakEvenCost = T * d * SDy; // Break-even cost per trainee
+            const breakEvenEffectSize = C / (T * SDy); // Minimum effect size needed
+            const breakEvenDuration = C / (d * SDy); // Minimum duration needed
+            const breakEvenSalary = C / (T * d * 0.40); // Minimum salary level needed
 
-            document.getElementById('breakEvenValue').textContent = formatter.format(breakEvenCost);
-            document.getElementById('currentCostDisplay').textContent = formatter.format(C);
+            // Gauge visualization
+            const svg = document.querySelector('.breakeven-gauge svg');
+            const maxCost = breakEvenCost * 2; // Scale gauge to 2x break-even
+            const currentPercent = (C / maxCost) * 100;
+            const breakEvenPercent = (breakEvenCost / maxCost) * 100;
 
+            let svgContent = `
+                <!-- Gauge Arc Background -->
+                <path d="M 50 240 A 200 200 0 0 1 450 240" fill="none" stroke="#e2e8f0" stroke-width="30" stroke-linecap="round"/>
+
+                <!-- Gauge Arc Segments -->
+                <path d="M 50 240 A 200 200 0 0 1 150 100" fill="none" stroke="#10b981" stroke-width="30" stroke-linecap="round"/>
+                <path d="M 150 100 A 200 200 0 0 1 250 50" fill="none" stroke="#34d399" stroke-width="30" stroke-linecap="round"/>
+                <path d="M 250 50 A 200 200 0 0 1 350 100" fill="none" stroke="#fbbf24" stroke-width="30" stroke-linecap="round"/>
+                <path d="M 350 100 A 200 200 0 0 1 450 240" fill="none" stroke="#ef4444" stroke-width="30" stroke-linecap="round"/>
+
+                <!-- Labels -->
+                <text x="50" y="250" text-anchor="middle" style="font-size: 0.8em; fill: #64748b;">$0</text>
+                <text x="250" y="30" text-anchor="middle" style="font-size: 0.9em; fill: #64748b; font-weight: 600;">Break-Even: ${formatter.format(breakEvenCost)}</text>
+                <text x="450" y="250" text-anchor="middle" style="font-size: 0.8em; fill: #64748b;">2x</text>
+
+                <!-- Current cost marker -->
+                ${C <= maxCost ? `<circle cx="${50 + (C/maxCost) * 400}" cy="${240 - Math.sin(Math.acos(1 - 2*(C/maxCost))) * 200}" r="8" fill="#1e293b" stroke="white" stroke-width="3"/>` : ''}
+            `;
+            svg.innerHTML = svgContent;
+
+            // Needle rotation (-90deg to +90deg based on current cost)
+            const needleAngle = -90 + (currentPercent / 100) * 180;
+            document.getElementById('breakEvenNeedle').style.transform = `rotate(${needleAngle}deg)`;
+
+            // Risk zones
+            const zones = document.getElementById('breakEvenZones');
+            zones.innerHTML = `
+                <div class="breakeven-zone zone-excellent" style="flex: ${Math.min(breakEvenPercent * 0.5, 25)};">
+                    Excellent<br><span style="font-size: 0.75em;">< 50% of max</span>
+                </div>
+                <div class="breakeven-zone zone-safe" style="flex: ${Math.min(breakEvenPercent * 0.3, 25)};">
+                    Safe<br><span style="font-size: 0.75em;">50-80%</span>
+                </div>
+                <div class="breakeven-zone zone-warning" style="flex: ${Math.min((100 - breakEvenPercent) * 0.4, 25)};">
+                    Caution<br><span style="font-size: 0.75em;">80-100%</span>
+                    ${C > breakEvenCost * 0.8 && C < breakEvenCost ? '<div class="breakeven-marker">📍 You</div>' : ''}
+                </div>
+                <div class="breakeven-zone zone-danger" style="flex: ${Math.max(100 - breakEvenPercent, 25)};">
+                    Loss<br><span style="font-size: 0.75em;">> Break-Even</span>
+                    ${C >= breakEvenCost ? '<div class="breakeven-marker">⚠️ You</div>' : ''}
+                </div>
+            `;
+
+            // Comparison cards
+            const comparison = document.getElementById('breakEvenComparison');
+            comparison.innerHTML = `
+                <div class="breakeven-scenario-card">
+                    <div class="scenario-title">💰 Cost Break-Even</div>
+                    <div class="scenario-value">${formatter.format(breakEvenCost)}</div>
+                    <div class="scenario-description">Maximum cost per trainee to break even. Your current cost: <strong>${formatter.format(C)}</strong> (${C < breakEvenCost ? '✅ Safe' : '⚠️ Over limit'})</div>
+                </div>
+                <div class="breakeven-scenario-card">
+                    <div class="scenario-title">📊 Effect Size Break-Even</div>
+                    <div class="scenario-value">d = ${breakEvenEffectSize.toFixed(2)}</div>
+                    <div class="scenario-description">Minimum effect size needed at current cost. Your current d: <strong>${d.toFixed(2)}</strong> (${d > breakEvenEffectSize ? '✅ Sufficient' : '⚠️ Insufficient'})</div>
+                </div>
+                <div class="breakeven-scenario-card">
+                    <div class="scenario-title">⏱️ Duration Break-Even</div>
+                    <div class="scenario-value">${breakEvenDuration.toFixed(1)} years</div>
+                    <div class="scenario-description">Minimum duration needed at current parameters. Your timeline: <strong>${T} years</strong> (${T > breakEvenDuration ? '✅ Sufficient' : '⚠️ Too short'})</div>
+                </div>
+                <div class="breakeven-scenario-card">
+                    <div class="scenario-title">💵 Salary Break-Even</div>
+                    <div class="scenario-value">${formatter.format(breakEvenSalary)}</div>
+                    <div class="scenario-description">Minimum average salary for positive ROI. Current salary: <strong>${formatter.format(Salary)}</strong> (${Salary > breakEvenSalary ? '✅ Viable' : '⚠️ Too low'})</div>
+                </div>
+            `;
+
+            // Insights
             const margin = breakEvenCost - C;
             const marginPercent = (margin / breakEvenCost) * 100;
 
-            const safetyMarginElem = document.getElementById('safetyMargin');
-            safetyMarginElem.textContent = `${formatter.format(margin)} (${marginPercent.toFixed(1)}%)`;
-            safetyMarginElem.style.color = margin > 0 ? '#4caf50' : '#f44336';
+            let insightsHTML = '<div class="insight-box">';
+            insightsHTML += '<h3 style="margin-top: 0;">🎯 Break-Even Insights</h3>';
+
+            if (margin > 0) {
+                insightsHTML += `<p>✅ <strong>Safe Position:</strong> Your costs are <strong>${formatter.format(margin)}</strong> (${marginPercent.toFixed(0)}%) below break-even. You have significant room for cost increases or quality investments.</p>`;
+
+                const costIncreaseRoom = (margin / C) * 100;
+                insightsHTML += `<p>💡 <strong>Negotiation Power:</strong> You could afford a <strong>${costIncreaseRoom.toFixed(0)}%</strong> cost increase and still break even. Use this in vendor negotiations.</p>`;
+            } else {
+                const deficit = Math.abs(margin);
+                insightsHTML += `<p>⚠️ <strong>Over Break-Even:</strong> Your costs exceed break-even by <strong>${formatter.format(deficit)}</strong>. Current parameters yield negative ROI.</p>`;
+
+                const improvementOptions = [];
+                if (d < 0.8) improvementOptions.push(`increase effect size from ${d.toFixed(2)} to ${(breakEvenEffectSize * 1.1).toFixed(2)}`);
+                if (T < 10) improvementOptions.push(`extend duration from ${T} to ${Math.ceil(breakEvenDuration * 1.1)} years`);
+                improvementOptions.push(`reduce cost to ${formatter.format(breakEvenCost * 0.9)}`);
+
+                insightsHTML += `<p>🔧 <strong>Options to reach profitability:</strong></p><ul style="margin-left: 25px;">`;
+                improvementOptions.forEach(opt => insightsHTML += `<li>${opt}</li>`);
+                insightsHTML += '</ul>';
+            }
+
+            insightsHTML += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">`;
+            insightsHTML += `<p><strong>Multi-Variable Break-Even:</strong> You can reach break-even through multiple paths. The comparison cards above show what's needed if you hold other variables constant and adjust just one.</p>`;
+
+            insightsHTML += '</div>';
+            document.getElementById('breakEvenInsights').innerHTML = insightsHTML;
         }
 
         // --- CONFIDENCE INTERVALS ---
