@@ -1333,6 +1333,26 @@
             transform: scaleY(1.08);
         }
 
+        .tornado-value-external {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+            padding: 0 8px;
+        }
+
+        .tornado-value-left {
+            text-align: right;
+        }
+
+        .tornado-value-right {
+            text-align: left;
+        }
+
+        body.dark-mode .tornado-value-external {
+            color: #e2e8f0;
+        }
+
         .tornado-value-label {
             position: absolute;
             font-size: 0.8em;
@@ -4404,23 +4424,23 @@ This estimate uses:
                     <div class="tornado-bar-container">
                         <div class="tornado-center-line"></div>
                         <div class="tornado-bars-wrapper">
-                            <div style="width: 50%; display: flex; justify-content: flex-end; padding-right: 2px;">
+                            <div style="width: 50%; display: flex; justify-content: flex-end; align-items: center; padding-right: 2px;">
+                                <span class="tornado-value-external tornado-value-left">${formatter.format(variable.lowValue)}</span>
                                 <div class="tornado-bar-left"
                                      style="width: ${leftWidth}%;"
                                      role="img"
                                      aria-label="Worst case scenario: ${variable.lowLabel} results in ${formatter.format(variable.lowValue)}"
                                      title="Worst Case: ${variable.lowLabel} → ${formatter.format(variable.lowValue)} (${formatter.format(lowImpact)} vs baseline)">
-                                    ${formatter.format(variable.lowValue)}
                                 </div>
                             </div>
-                            <div style="width: 50%; display: flex; justify-content: flex-start; padding-left: 2px;">
+                            <div style="width: 50%; display: flex; justify-content: flex-start; align-items: center; padding-left: 2px;">
                                 <div class="tornado-bar-right"
                                      style="width: ${rightWidth}%;"
                                      role="img"
                                      aria-label="Best case scenario: ${variable.highLabel} results in ${formatter.format(variable.highValue)}"
                                      title="Best Case: ${variable.highLabel} → ${formatter.format(variable.highValue)} (${formatter.format(highImpact)} vs baseline)">
-                                    ${formatter.format(variable.highValue)}
                                 </div>
+                                <span class="tornado-value-external tornado-value-right">${formatter.format(variable.highValue)}</span>
                             </div>
                         </div>
                     </div>
