@@ -4388,7 +4388,10 @@ This estimate uses:
                     lowValue: (N * T * d * SDy) - (N * (C * 1.2)),  // C increases → utility DECREASES (inverse!)
                     highValue: (N * T * d * SDy) - (N * (C * 0.8)), // C decreases → utility INCREASES (inverse!)
                     lowLabel: 'C × 1.2',
-                    highLabel: 'C × 0.8'
+                    highLabel: 'C × 0.8',
+                    lowCostValue: C * 1.2,  // Actual cost value for display
+                    highCostValue: C * 0.8,  // Actual cost value for display
+                    isCostVariable: true  // Flag to handle display differently
                 }
             ];
 
@@ -4425,7 +4428,11 @@ This estimate uses:
                         <div class="tornado-center-line"></div>
                         <div class="tornado-bars-wrapper">
                             <div style="width: 50%; display: flex; justify-content: flex-end; align-items: center; padding-right: 2px;">
-                                <span class="tornado-value-external tornado-value-left">${formatter.format(variable.lowValue)}</span>
+                                <span class="tornado-value-external tornado-value-left">${
+                                    variable.isCostVariable
+                                        ? formatter.format(variable.lowCostValue)
+                                        : formatter.format(variable.lowValue)
+                                }</span>
                                 <div class="tornado-bar-left"
                                      style="width: ${leftWidth}%;"
                                      role="img"
@@ -4440,7 +4447,11 @@ This estimate uses:
                                      aria-label="Best case scenario: ${variable.highLabel} results in ${formatter.format(variable.highValue)}"
                                      title="Best Case: ${variable.highLabel} → ${formatter.format(variable.highValue)} (${formatter.format(highImpact)} vs baseline)">
                                 </div>
-                                <span class="tornado-value-external tornado-value-right">${formatter.format(variable.highValue)}</span>
+                                <span class="tornado-value-external tornado-value-right">${
+                                    variable.isCostVariable
+                                        ? formatter.format(variable.highCostValue)
+                                        : formatter.format(variable.highValue)
+                                }</span>
                             </div>
                         </div>
                     </div>
